@@ -19,7 +19,7 @@ const App = () => {
 
   useEffect(() => {
     fetchData();
-  }, [data]);
+  }, []);
 
   return (
     <div>
