@@ -26,7 +26,6 @@ package-lock.json
 /build/  
 /dist/  
 /out/  
-/public/  
 /build-output/
 
 # Archivos de configuración de editor
