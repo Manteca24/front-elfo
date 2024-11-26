@@ -1,0 +1,136 @@
+/* Paleta de colores:
+#354037 (verde oscuro), #767154 (verde oliva claro),
+#F4EBE3 (beige), #6F171F (rojo oscuro), #BF9B7A (beige oscuro)
+*/
+
+.navbar {
+    position: sticky;
+    top: 0;
+    left: 0;
+    right: 0;
+    z-index: 1000; 
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 10px 20px;
+    background-color: #354037; 
+    color: #F4EBE3; 
+    box-shadow: 0px 4px 6px rgba(0, 0, 0, 0.1);
+    /* border-radius: 10px; */
+}
+
+.logo a {
+    text-decoration: none;
+    color: #F4EBE3;
+    font-size: 24px;
+    font-weight: bold;
+}
+
+.logoImage {
+  height: 50px; /*tamaño del logo*/
+  width: auto; 
+  cursor: pointer; 
+}
+
+.logo {
+  display: flex;
+  align-items: center;
+}
+
+.navLinks a {
+    margin: 0 10px;
+    text-decoration: none;
+    color: #F4EBE3;
+    font-size: 18px;
+    transition: color 0.3s;
+  }
+  
+  .navLinks a:hover {
+    color: #BF9B7A; 
+  }
+  
+  .searchBar {
+    flex: 1;
+    margin: 0 20px;
+    display: flex;
+    justify-content: center;
+  }
+  
+  .searchBar input {
+    width: 100%;
+    max-width: 400px;
+    padding: 8px 12px;
+    border: 2px solid #767154; 
+    border-radius: 20px;
+    outline: none;
+    font-size: 16px;
+    color: #354037;
+    background-color: #F4EBE3;
+    transition: border-color 0.3s;
+  }
+  
+  .searchBar input:focus {
+    border-color: #6F171F; 
+  }
+  
+  .authButtons {
+    display: flex;
+    gap: 10px;
+  }
+  
+  .button {
+    padding: 8px 15px;
+    text-decoration: none;
+    font-size: 16px;
+    font-weight: bold;
+    color: #F4EBE3;
+    background-color: #6F171F; 
+    border-radius: 5px;
+    transition: background-color 0.3s, transform 0.2s;
+  }
+  
+  .button:hover {
+    background-color: #BF9B7A; 
+    transform: scale(1.05);
+  }
+
+  .profile {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem; 
+    text-decoration: none;
+    color: #F4EBE3; 
+    font-weight: bold;
+    font-size: 1rem;
+  }
+  
+  .profile:hover {
+    color: #BF9B7A; 
+  }
+  
+  .profileIcon {
+    width: 32px; 
+    height: 32px;
+  }
+
+  .profileContainer {
+    display: flex;
+    align-items: center;
+    gap: 1rem; /* Espacio entre el texto, el icono y el botón de logout */
+  }
+  
+  .logoutButton {
+    padding: 8px 15px;
+    text-decoration: none;
+    font-size: 16px;
+    font-weight: bold;
+    color: #F4EBE3;
+    background-color: #6F171F; 
+    border-radius: 5px;
+    transition: background-color 0.3s, transform 0.2s;
+  }
+  
+  .logoutButton:hover {
+    background-color: #BF9B7A; 
+    transform: scale(1.05);
+  }

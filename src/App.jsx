@@ -4,12 +4,14 @@ import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
 import Home from "./pages/Home";
 import Register from "./pages/SignUp"; 
 import LogIn from "./pages/Login";
-import NavBar from "./components/NavBar";
+import NavBar from "./components/NavBar/NavBar";
 import  UserProvider  from "./contexts/UserContext";
 import ProtectedRoute from './components/ProtectedRoute'
 import Dashboard from "./pages/Dashboard";
 import Profile from "./pages/Profile";
 // import LogoutButton from "./components/LogOutButton";
+import ProductDetails from "./pages/ProductDetails";
+
 
 
 const App = () => {
@@ -40,7 +42,7 @@ const App = () => {
         <Route path="/" element={<Home data={data} error={error} />} />
         <Route path="/register" element={<Register />} />
         <Route path="/login" element={<LogIn />} />
-        {/* <Route path="/logout" element={<LogoutButton />} />  */}
+        <Route path="/product/:id" element={<ProductDetails />} />
         <Route 
           path="/dashboard" 
           element={

@@ -1,6 +1,7 @@
 import { useContext } from "react";
 import { useNavigate } from "react-router-dom";
-import { UserContext } from "../contexts/UserContext"; 
+import { UserContext } from "../../contexts/UserContext"; 
+import styles from "./NavBar.module.css";
 
 function LogoutButton() {
   const navigate = useNavigate();
@@ -12,7 +13,7 @@ function LogoutButton() {
     navigate("/");
   };
 
-  return <button onClick={handleLogout}>Logout</button>;
+  return <button className={styles.logoutButton} onClick={handleLogout}>Cerrar Sesión</button>;
 }
 
 export default LogoutButton;

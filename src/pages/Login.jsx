@@ -4,16 +4,20 @@ import { signInWithEmailAndPassword } from "firebase/auth";
 import axios from "../utils/axiosConfig";
 import { useNavigate } from "react-router-dom";
 import { UserContext } from "../contexts/UserContext";
+import '../App.css';
 
 const LogIn = () => {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [error, setError] = useState("");
+  const [loading, setLoading] = useState(false);
   const navigate = useNavigate();
   const { setUser } = useContext(UserContext);
 
   const handleLogin = async (e) => {
     e.preventDefault(); 
+    setLoading(true);
+    setError("");
 
     try {
       const userCredential = await signInWithEmailAndPassword(auth, email, password);
@@ -40,25 +44,44 @@ const LogIn = () => {
     }
   };
 
-  return (
-    <form onSubmit={handleLogin}>
-      <input
-        type="email"
-        value={email}
-        onChange={(e) => setEmail(e.target.value)}
-        required
-        placeholder="Correo electrónico"
-      />
-      <input
-        type="password"
-        value={password}
-        onChange={(e) => setPassword(e.target.value)}
-        required
-        placeholder="Contraseña"
-      />
-      <button type="submit">Iniciar sesión</button>
-      {error && <p>{error}</p>}
-    </form>
+  return  (
+    <div className="login-container">
+      <div className="login-left">
+        <h1>¡Hola, elfo!</h1>
+        <p>Dime quién eres y ¡empezamos!</p>
+        <img src="/elfo.png" alt="Elfo ilustración" className="login-illustration" />
+      </div>
+
+      <div className="login-right">
+        <h2>Inicia sesión</h2>
+        <form onSubmit={handleLogin} className="login-form">
+          <div>
+            <label>Correo electrónico:</label>
+            <input
+              type="email"
+              value={email}
+              onChange={(e) => setEmail(e.target.value)}
+              required
+              placeholder="Introduce tu correo"
+            />
+          </div>
+          <div>
+            <label>Contraseña:</label>
+            <input
+              type="password"
+              value={password}
+              onChange={(e) => setPassword(e.target.value)}
+              required
+              placeholder="Introduce tu contraseña"
+            />
+          </div>
+          {error && <p className="login-error">{error}</p>}
+          <button type="submit" disabled={loading} className="login-button">
+            {loading ? "Iniciando sesión..." : "Inicia sesión"}
+          </button>
+        </form>
+      </div>
+    </div>
   );
 };
 

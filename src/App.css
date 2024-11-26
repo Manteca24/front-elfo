@@ -1,42 +1,253 @@
-#root {
-  max-width: 1280px;
-  margin: 0 auto;
-  padding: 2rem;
+/*pendiente modular*/
+
+
+/*para página ProductDetails*/
+
+.productImage {
+  width: 300px;
+}
+
+/*para dashboard*/
+
+.dashboard {
   text-align: center;
+  margin: 20px;
+}
+
+h1 {
+  font-size: 2rem;
+  color: #354037;
+  margin-bottom: 20px;
+}
+
+.logoContainer {
+  margin: 40px 0;
 }
 
 .logo {
-  height: 6em;
-  padding: 1.5em;
-  will-change: filter;
-  transition: filter 300ms;
-}
-.logo:hover {
-  filter: drop-shadow(0 0 2em #646cffaa);
-}
-.logo.react:hover {
-  filter: drop-shadow(0 0 2em #61dafbaa);
+  width: 150px;
+  height: auto;
 }
 
-@keyframes logo-spin {
-  from {
-    transform: rotate(0deg);
-  }
-  to {
-    transform: rotate(360deg);
-  }
+.sloganContainer {
+  margin-bottom: 30px;
 }
 
-@media (prefers-reduced-motion: no-preference) {
-  a:nth-of-type(2) .logo {
-    animation: logo-spin infinite 20s linear;
-  }
+.slogan {
+  font-size: 1.5rem;
+  font-weight: bold;
+  color: #6F171F;
+  background-color: #F4EBE3;
+  padding: 10px 20px;
+  border-radius: 20px;
+  display: inline-block;
 }
 
-.card {
-  padding: 2em;
+.buttonsContainer {
+  margin-top: 20px;
+  display: flex;
+  justify-content: center;
+  gap: 20px;
 }
 
-.read-the-docs {
-  color: #888;
+.button {
+  padding: 10px 20px;
+  font-size: 1rem;
+  color: #FFF;
+  background-color: #6F171F;
+  border: none;
+  border-radius: 5px;
+  text-decoration: none;
+  transition: background-color 0.3s ease;
+}
+
+.button:hover {
+  background-color: #BF9B7A;
+}
+
+
+/*Home*/
+
+.landing-description {
+  padding: 20px;
+  margin: 20px auto;
+  max-width: 800px;
+  font-size: 1.1rem;
+  text-align: center;
+  background-color: #f4ebe3; 
+  border-radius: 10px;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+}
+
+.landing-description p {
+  margin: 0;
+  color: #354037;
+  line-height: 1.5;
+}
+
+/*register*/
+.register-container {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  min-height: 100vh;
+  padding: 40px;
+}
+
+.register-left {
+  flex: 1;
+  text-align: center;
+  padding: 20px;
+}
+
+.register-left h1 {
+  font-size: 2.5rem;
+  color: #354037;
+}
+
+.register-left p {
+  font-size: 1.2rem;
+  margin: 20px 0;
+  color: #354037;
+}
+
+.register-illustration {
+  max-width: 100%;
+  height: auto;
+  margin-top: 20px;
+}
+
+.register-right {
+  flex: 1;
+  padding: 40px;
+  background-color: #fff;
+  border-radius: 10px;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+}
+
+.register-form {
+  display: flex;
+  flex-direction: column;
+  gap: 15px;
+}
+
+.register-form div {
+  display: flex;
+  flex-direction: column;
+}
+
+.register-form label {
+  font-weight: bold;
+  margin-bottom: 5px;
+  color: #354037;
+}
+
+.register-form input,
+.register-form textarea {
+  padding: 10px;
+  border: 1px solid #ccc;
+  border-radius: 5px;
+}
+
+.register-button {
+  padding: 10px;
+  background-color: #354037;
+  color: #fff;
+  border: none;
+  border-radius: 5px;
+  font-size: 1rem;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+}
+
+.register-button:hover {
+  background-color: #516d5b;
+}
+
+.register-error {
+  color: red;
+  font-size: 0.9rem;
+}
+
+/* login */
+.login-container {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  min-height: 100vh;
+  padding: 40px;
+}
+
+.login-left {
+  flex: 1;
+  text-align: center;
+  padding: 20px;
+}
+
+.login-left h1 {
+  font-size: 2.5rem;
+  color: #354037;
+}
+
+.login-left p {
+  font-size: 1.2rem;
+  margin: 20px 0;
+  color: #354037;
+}
+
+.login-illustration {
+  max-width: 100%;
+  height: auto;
+  margin-top: 20px;
+}
+
+.login-right {
+  flex: 1;
+  padding: 40px;
+  background-color: #fff;
+  border-radius: 10px;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+}
+
+.login-form {
+  display: flex;
+  flex-direction: column;
+  gap: 15px;
+}
+
+.login-form div {
+  display: flex;
+  flex-direction: column;
+}
+
+.login-form label {
+  font-weight: bold;
+  margin-bottom: 5px;
+  color: #354037;
+}
+
+.login-form input {
+  padding: 10px;
+  border: 1px solid #ccc;
+  border-radius: 5px;
+}
+
+.login-button {
+  padding: 10px;
+  background-color: #354037;
+  color: #fff;
+  border: none;
+  border-radius: 5px;
+  font-size: 1rem;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+}
+
+.login-button:hover {
+  background-color: #516d5b;
+}
+
+.login-error {
+  color: red;
+  font-size: 0.9rem;
 }
