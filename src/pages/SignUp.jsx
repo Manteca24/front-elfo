@@ -26,6 +26,7 @@ const Register = () => {
     setLoading(true);
     setError('');
 
+
     try {
       // Registra al usuario en Firebase para obtener el UID
       const userCredential = await createUserWithEmailAndPassword(auth, email, password);
@@ -128,12 +129,16 @@ const Register = () => {
           </div>
           <div>
             <label>Género:</label>
-            <input
-              type="text"
+            <select
+              id="genre"
               value={genre}
               onChange={(e) => setGenre(e.target.value)}
-              required
-            />
+              required>
+                <option value="" disabled>Selecciona una opción</option>
+                <option value="femenino">Femenino</option>
+                <option value="masculino">Masculino</option>
+                <option value="no relevante">No relevante</option>
+            </select>
           </div>
           <div>
             <label>Fecha de Nacimiento:</label>
@@ -156,7 +161,7 @@ const Register = () => {
             <label>Foto de Perfil:</label>
             <input
               type="file"
-              accept="image/*"
+              accept="*.jpg"
               onChange={(e) => setProfilePictureFile(e.target.files[0])} // Guarda el archivo
             />
           </div>
