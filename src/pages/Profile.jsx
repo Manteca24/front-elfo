@@ -1,5 +1,6 @@
 import React, { useContext } from "react";
 import { UserContext } from "../contexts/UserContext";
+import LogoutButton from "../components/NavBar/LogOutButton";
 
 const Profile = () => {
   const { user, loading } = useContext(UserContext);
@@ -10,8 +11,8 @@ const Profile = () => {
 
   return (
     <div style={{ padding: "20px" }}>
-
-      <h1>Perfil de {user.user.name}</h1>
+      <LogoutButton />
+      <h1>Perfil de {user.user.username}</h1>
       <section>
         <h2>Favoritos</h2>
         {user.user.favoriteProducts.length > 0 ? (
@@ -43,13 +44,15 @@ const Profile = () => {
       </section>
 
       <section>
+      {console.log(user.user.comments)} {/*pendiente traer del back populate*/}
         <h2>Comentarios</h2>
         {user.user.comments.length > 0 ? (
           <ul>
+          
             {user.user.comments.map((comment, index) => (
               <li key={index}>
                 <p>
-                  <strong>Comentario:</strong> {comment.text}
+                  <strong>Comentario:</strong> {comment.comment}
                 </p>
                 <p>
                   <small>En: {comment.productName}</small>

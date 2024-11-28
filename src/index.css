@@ -1,5 +1,4 @@
-@import url('https://fonts.googleapis.com/css2?family=Press+Start+2P&family=Roboto:ital,wght@0,100;0,300;0,400;0,500;0,700;0,900;1,100;1,300;1,400;1,500;1,700;1,900&display=swap');
-
+@import url('https://fonts.googleapis.com/css2?family=Quicksand:wght@300..700&display=swap');
 /*RESETEO CSS*/
 
 html, body, div, span, applet, object, iframe,
@@ -53,9 +52,9 @@ table {
 body {
   margin: 0px; 
   padding: 0;
-  font-family: "Roboto", sans-serif;
-  background: linear-gradient(to top, #F4EBE3, #BF9B7A); 
-  color: #354037;
+  font-family: "Quicksand", serif;
+  background: #f8f7f6; 
+  color: black;
   min-height: 100vh;
 } 
 
@@ -73,15 +72,17 @@ body {
 
 h1 {
   font-size: 2.5rem;
-  color: #354037;
+  color: black;
 }
 
 h2 {
   font-size: 2rem; 
-  color: #6F171F;
+  color: #ba1220;
 }
 
 h3 {
   font-size: 1.5rem; 
   color: #BF9B7A; 
 }
+
+

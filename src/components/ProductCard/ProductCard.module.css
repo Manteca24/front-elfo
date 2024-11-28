@@ -1,71 +1,86 @@
 .cardContainer {
-    display: grid;
-    grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
-    gap: 20px;
-    padding: 20px;
-  }
-  
-  .productCard {
-    background-color: #fff;
-    border-radius: 8px;
-    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
-    overflow: hidden;
-    position: relative;
-    transition: transform 0.3s;
-  }
-  
-  .productCard:hover {
-    transform: translateY(-5px);
-  }
-  
-  .productImage {
-    width: 100%;
-    height: 200px;
-    object-fit: cover;
-  }
-  
-  .cardContent {
-    padding: 15px;
-    position: relative;
-  }
-  
-  .productTitle {
-    font-size: 1.2rem;
-    color: #354037;
-    margin: 10px 0;
-  }
-  
-  .priceBubble {
-    position: absolute;
-    top: 10px;
-    right: 10px;
-    background-color: #BF9B7A;
-    color: #fff;
-    padding: 8px 12px;
-    border-radius: 20px;
-    font-size: 1rem;
-  }
-  .favButtonContainer {
-    position: absolute;
-    top: 10px;
-    right: 10px;
-    z-index: 10; /* corazón encima de la imagen */
-  }
-  
-  .favButton {
-    background: none;
-    border: none;
-    color: #FF5C8D;
-    cursor: pointer;
-    transition: color 0.3s, transform 0.2s;
-  }
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
+  gap: 20px;
+  padding: 20px;
+}
 
-  .favButton img{
-    width: 1.5rem;
-  }
-  
-  .favButton:hover {
-    color: #FF2A68;
-    transform: scale(1.2);
-  }
-  
+.productCard {
+  background-color: #f8f7f6; /* Fondo similar al navbar */
+  border-radius: 12px; /* Bordes más suaves */
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+  overflow: hidden;
+  position: relative;
+  transition: transform 0.3s, box-shadow 0.3s;
+}
+
+.productCard:hover {
+  transform: translateY(-8px);
+  box-shadow: 0 6px 15px rgba(0, 0, 0, 0.15);
+}
+
+.productImage {
+  width: 100%;
+  height: 180px; /* Tamaño ligeramente más compacto */
+  object-fit: cover;
+  border-bottom: 3px solid #BF9B7A; /* Separador con color de la paleta */
+}
+
+.cardContent {
+  padding: 15px;
+  position: relative;
+}
+
+.productTitle {
+  font-size: 1.1rem;
+  color: #6F171F; /* Color que combina con los botones del navbar */
+  margin: 10px 0;
+  font-weight: bold;
+  text-transform: capitalize;
+}
+
+.productDescription {
+  font-size: 0.9rem;
+  color: #354037;
+  margin-bottom: 10px;
+  line-height: 1.5;
+}
+
+.priceBubble {
+  position: absolute;
+  top: 10px;
+  right: 10px;
+  background-color: #BF9B7A; /* Color principal */
+  color: #fff;
+  padding: 8px 12px;
+  border-radius: 20px;
+  font-size: 1rem;
+  font-weight: bold;
+  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+}
+
+.favButtonContainer {
+  position: absolute;
+  top: 10px;
+  right: 10px; 
+  z-index: 10;
+}
+
+.favButton {
+  background: none;
+  border: none;
+  cursor: pointer;
+  transition: transform 0.2s, color 0.3s;
+}
+
+.favButton img {
+  width: 24px;
+  filter: brightness(0) saturate(100%) invert(26%) sepia(74%) saturate(407%) hue-rotate(355deg) brightness(96%) contrast(95%);
+  /* Este filtro aplica el color rojo (#b6221d) */
+}
+
+.favButton:hover img {
+  transform: scale(1.2);
+  filter: brightness(0) saturate(100%) invert(14%) sepia(99%) saturate(2465%) hue-rotate(359deg) brightness(89%) contrast(91%);
+  /* Más brillante en hover */
+}

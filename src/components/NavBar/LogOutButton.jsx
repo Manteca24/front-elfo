@@ -13,7 +13,7 @@ function LogoutButton() {
     navigate("/");
   };
 
-  return <button className={styles.logoutButton} onClick={handleLogout}>Cerrar Sesión</button>;
+  return <button className='button' onClick={handleLogout}>Cerrar Sesión</button>;
 }
 
 export default LogoutButton;

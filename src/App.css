@@ -1,110 +1,147 @@
 /*pendiente modular*/
 
-
-
-/*para página ProductDetails*/
-
-.productImage {
-  width: 300px;
-}
-
-
-/*para dashboard*/
-
-.dashboard {
-  text-align: center;
-  margin: 20px;
-}
-
-h1 {
-  font-size: 2rem;
-  color: #354037;
-  margin-bottom: 20px;
-}
-
-.logoContainer {
-  margin: 40px 0;
-}
-
-.logo {
-  margin:10px;
-  width: 300px; /*he cambiado el tamaño del logo*/
-  height: auto;
-}
-
-.sloganContainer {
-  margin-bottom: 30px;
-}
-
-.slogan {
-  font-size: 1.5rem;
-  font-weight: bold;
-  color: #6F171F;
-  background-color: #F4EBE3;
-  padding: 10px 20px;
-  border-radius: 20px;
-  display: inline-block;
-}
-
+/*BOTONES GENERALES*/
 .buttonsContainer {
   margin-top: 20px;
   display: flex;
   justify-content: center;
   gap: 20px;
 }
-
 .button {
-  padding: 10px 20px;
-  font-size: 1rem;
-  color: #FFF;
-  background-color: #6F171F;
-  border: none;
-  border-radius: 5px;
+  cursor: pointer;
+  padding: 8px 15px;
   text-decoration: none;
-  transition: background-color 0.3s ease;
+  font-size: 16px;
+  font-weight: bold;
+  color: #F4EBE3;
+  background-color: rgb(182, 34, 29); 
+  border-radius: 5px;
+  transition: background-color 0.3s, transform 0.2s;
 }
 
 .button:hover {
-  background-color: #BF9B7A;
+  background-color: #BF9B7A; 
+  transform: scale(1.05);
 }
 
 
-/*Home*/
+/* Botones especiales*/
 
-.fotoNavidad {
-	margin: 0;
-	padding: 0;
-	background-image: url('./assets/fondo.jpg'); 
-	background-size: cover; 
-	background-position: center; 
-	background-repeat: no-repeat;
-	height: 100vh; 
+.specialButton {
+  text-decoration: none;
+  background-color: #28a745;
+  color: #fff;
+  padding: 15px 30px;
+  border-radius: 5px;
+  font-size: 1.2rem;
+  font-weight: bold;
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
+  transition: transform 0.2s, box-shadow 0.2s;
 }
 
-.landing-description {
-  padding: 20px;
-  margin: 20px auto;
-  max-width: 800px;
-  font-size: 1.1rem;
+.specialButton:hover {
+  transform: scale(1.5);
+  box-shadow: 0 6px 15px rgba(0, 0, 0, 0.3);
+}
+
+.specialButton:active {
+  transform: scale(2);
+}
+
+
+/********HOME*/
+.heroSection {
+  padding: 100px;
+  position: relative;
+  height: auto;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
   text-align: center;
-  background-color: #f4ebe387; /*fondo descripción*/
+  color: #fff;
+  overflow: hidden;
+}
+
+/* Imagen de fondo desenfocada */
+.heroSection::before {
+  content: "";
+  position: absolute;
+  top: 50;
+  left: 0;
+  width: 140%;
+  height: 100%;
+  background-image: url('./assets/fondo.jpg');
+  background-size: cover;
+  background-position: center;
+  filter: blur(10px); /* Desenfoque */
+  z-index: -1; /* para enviarlo detrás del contenido */
+}
+
+/*¿Qué tarea de elfo quieres hacer hoy?*/
+.welcomeSentence{
+  color: white;
+  font-weight: bold;
+}
+
+/* Logo */
+.logoContainer {
+  margin-bottom: 20px;
+}
+
+.logo {
+  max-width: 300px;
+  height: auto;
+}
+
+/* Slogan */
+.sloganContainer {
+  margin: 10px 0 20px;
+}
+
+.slogan {
+  color: white;
+  font-size: 2.1rem;
+  font-weight: bold;
+}
+
+/* Descripción */
+.landing-description {
+  max-width: 800px;
+  padding: 20px;
   border-radius: 10px;
-  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+  font-size: 1.2rem;
+  color: white;
+  font-weight: bold;
+  line-height: 1.6;
 }
 
-.landing-description p {
-  margin: 0;
-  color: #354037;
-  line-height: 1.5;
+/* Responsivo */
+@media (max-width: 768px) {
+  .slogan {
+    font-size: 1.5rem;
+  }
+
+  .landing-description {
+    font-size: 1rem;
+    padding: 15px;
+  }
+
+  .button {
+    font-size: 1rem;
+    padding: 10px 20px;
+  }
 }
 
+
+/******************REGISTER**/
 /*register*/
 .register-container {
   display: flex;
   justify-content: space-between;
   align-items: center;
-  min-height: 100vh;
-  padding: 40px;
+  height: auto;
+  padding: 30px;
 }
 
 .register-left {
@@ -113,15 +150,15 @@ h1 {
   padding: 20px;
 }
 
-.register-left h1 {
+/* .register-left h1 { // ESTA EN INDEX.css
   font-size: 2.5rem;
-  color: #354037;
-}
+  color: black;
+} */
 
 .register-left p {
   font-size: 1.2rem;
   margin: 20px 0;
-  color: #354037;
+  color: black;
 }
 
 .register-illustration {
@@ -136,6 +173,12 @@ h1 {
   background-color: #fff;
   border-radius: 10px;
   box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+}
+
+.register-right h2{
+  padding-bottom:20px;
+  color: rgb(186, 19, 13);
+  font-weight: bold;  
 }
 
 .register-form {
@@ -162,33 +205,19 @@ h1 {
   border-radius: 5px;
 }
 
-.register-button {
-  padding: 10px;
-  background-color: #354037;
-  color: #fff;
-  border: none;
-  border-radius: 5px;
-  font-size: 1rem;
-  cursor: pointer;
-  transition: background-color 0.3s ease;
-}
-
-.register-button:hover {
-  background-color: #516d5b;
-}
-
 .register-error {
   color: red;
   font-size: 0.9rem;
 }
 
-/* login */
+/**********************************login */
 .login-container {
   display: flex;
   justify-content: space-between;
   align-items: center;
-  min-height: 100vh;
-  padding: 40px;
+  height: auto;
+  padding: 20px;
+  margin-right: 20px;
 }
 
 .login-left {
@@ -197,19 +226,19 @@ h1 {
   padding: 20px;
 }
 
-.login-left h1 {
+/* .login-left h1 { // ESTA EN INDEX.CSS
   font-size: 2.5rem;
-  color: #354037;
-}
+  color: black;
+} */
 
 .login-left p {
   font-size: 1.2rem;
   margin: 20px 0;
-  color: #354037;
+  color: black;
 }
 
 .login-illustration {
-  max-width: 100%;
+  max-width: 90%;
   height: auto;
   margin-top: 20px;
 }
@@ -220,6 +249,12 @@ h1 {
   background-color: #fff;
   border-radius: 10px;
   box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+}
+
+.login-right h2{
+padding-bottom:20px;
+color: rgb(186, 19, 13);
+font-weight: bold;
 }
 
 .login-form {
@@ -245,27 +280,13 @@ h1 {
   border-radius: 5px;
 }
 
-.login-button {
-  padding: 10px;
-  background-color: #354037;
-  color: #fff;
-  border: none;
-  border-radius: 5px;
-  font-size: 1rem;
-  cursor: pointer;
-  transition: background-color 0.3s ease;
-}
-
-.login-button:hover {
-  background-color: #516d5b;
-}
 
 .login-error {
   color: red;
   font-size: 0.9rem;
 }
 
-/*formulario uploadgift*/
+/********************************formulario uploadgift*/
 .upload-gift-container {
   padding: 20px;
   max-width: 600px;
@@ -435,4 +456,125 @@ h1 {
   color: #666;
   margin-top: -5px;
   line-height: 1.4;
+}
+
+
+
+
+/******************página ProductDetails*/
+
+.productImage {
+  width: 300px;
+}
+
+
+/*sección comentarios*/
+
+.product-details {
+  padding: 20px;
+  max-width: 900px;
+  margin: 0 auto;
+}
+
+.product-image {
+  width: 100%;
+  max-width: 500px;
+  margin: 20px 0;
+}
+
+.comments-section {
+  margin-top: 40px;
+  border-top: 2px solid #ccc;
+  padding-top: 20px;
+}
+
+.comments-list {
+  list-style-type: none;
+  padding: 0;
+}
+
+.comment-item {
+  margin-bottom: 20px;
+  padding: 10px;
+  border-bottom: 1px solid #eee;
+  display: flex;
+  flex-direction: column;
+}
+
+.comment-header {
+  display: flex;
+  align-items: center;
+  margin-bottom: 10px;
+}
+
+.profile-pic {
+  width: 40px;
+  height: 40px;
+  border-radius: 50%;
+  margin-right: 15px;
+}
+
+.comment-info {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.comment-info strong {
+  font-size: 16px;
+  color: #333;
+}
+
+.comment-date {
+  font-size: 12px;
+  color: #999;
+}
+
+.comment-text {
+  font-size: 14px;
+  line-height: 1.5;
+}
+
+.comment-form {
+  display: flex;
+  flex-direction: column;
+}
+
+.comment-input {
+  width: 100%;
+  padding: 10px;
+  margin-bottom: 10px;
+  border-radius: 5px;
+  border: 1px solid #ccc;
+  font-size: 14px;
+  line-height: 1.5;
+}
+
+.submit-button {
+  align-self: flex-start;
+  padding: 10px 20px;
+  background-color: #007bff;
+  color: white;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+}
+
+.submit-button:hover {
+  background-color: #0056b3;
+}
+
+.userInfo{
+  display: flex;
+  gap: 10px;
+  align-items: center;
+}
+
+.userInfo p {
+  font-weight: bold;
+}
+
+.isAdmin {
+  color:#4CAF50;
+  font-size: 12px;
 }
