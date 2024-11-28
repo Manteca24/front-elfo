@@ -1,11 +1,13 @@
 /*pendiente modular*/
 
 
+
 /*para página ProductDetails*/
 
 .productImage {
   width: 300px;
 }
+
 
 /*para dashboard*/
 
@@ -25,7 +27,8 @@ h1 {
 }
 
 .logo {
-  width: 150px;
+  margin:10px;
+  width: 300px; /*he cambiado el tamaño del logo*/
   height: auto;
 }
 
@@ -68,13 +71,23 @@ h1 {
 
 /*Home*/
 
+.fotoNavidad {
+	margin: 0;
+	padding: 0;
+	background-image: url('./assets/fondo.jpg'); 
+	background-size: cover; 
+	background-position: center; 
+	background-repeat: no-repeat;
+	height: 100vh; 
+}
+
 .landing-description {
   padding: 20px;
   margin: 20px auto;
   max-width: 800px;
   font-size: 1.1rem;
   text-align: center;
-  background-color: #f4ebe3; 
+  background-color: #f4ebe387; /*fondo descripción*/
   border-radius: 10px;
   box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
 }
@@ -250,4 +263,176 @@ h1 {
 .login-error {
   color: red;
   font-size: 0.9rem;
+}
+
+/*formulario uploadgift*/
+.upload-gift-container {
+  padding: 20px;
+  max-width: 600px;
+  margin: 0 auto;
+  font-family: Arial, sans-serif;
+}
+
+.upload-gift-title {
+  text-align: center;
+  font-size: 2rem;
+  margin-bottom: 20px;
+}
+
+.upload-gift-form {
+  display: flex;
+  flex-direction: column;
+}
+
+.input-name, .input-description, .input-price, .select-genre, .select-ageRange, .input-image, .input-tags {
+  margin: 10px 0;
+  padding: 10px;
+  font-size: 1rem;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+}
+
+.input-description {
+  height: 100px;
+}
+
+.select-genre, .select-ageRange {
+  padding: 10px;
+}
+
+.input-image {
+  padding: 5px;
+}
+
+.tags-list {
+  list-style-type: none;
+  padding: 0;
+}
+
+.tag-item {
+  display: inline-block;
+  background-color: #efefef;
+  margin-right: 5px;
+  padding: 5px;
+  border-radius: 3px;
+}
+
+.categories-container {
+  margin-top: 20px;
+}
+
+.category-container {
+  margin-bottom: 15px;
+}
+
+.category-title {
+  font-weight: bold;
+}
+
+.submit-button {
+  padding: 10px;
+  background-color: #4CAF50;
+  color: white;
+  font-size: 1rem;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+  margin-top: 20px;
+}
+
+.submit-button:hover {
+  background-color: #45a049;
+}
+
+.input-tags {
+  padding: 10px;
+  font-size: 1rem;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+  width: 100%;
+  box-sizing: border-box;
+  margin-bottom: 10px;
+}
+
+.input-tags::placeholder {
+  color: #999;
+}
+
+.tags-list {
+  list-style-type: none;
+  padding: 0;
+}
+
+.tag-item {
+  display: inline-block;
+  background-color: #e0e0e0;
+  border-radius: 12px;
+  padding: 5px 10px;
+  margin: 5px;
+  font-size: 14px;
+  color: #333;
+  position: relative; /* Para posicionar el botón de eliminar */
+}
+
+.tag-item {
+  background-color: #e0e0e0;
+  color: #333;
+  border-radius: 15px;
+  margin-right: 8px;
+  margin-top: 8px;
+  padding: 6px 12px;
+  font-size: 0.9rem;
+}
+
+.tag-item:hover {
+  background-color: #d0d0d0;
+  cursor: pointer;
+}
+
+.remove-tag-button {
+  background: transparent;
+  border: none;
+  color: red;
+  font-size: 16px;
+  cursor: pointer;
+  position: absolute;
+  top: 0;
+  right: 0;
+  transform: translate(50%, -50%);
+  font-weight: bold;
+}
+
+.remove-tag-button:hover {
+  color: darkred;
+}
+
+.label-image {
+  font-size: 1rem;
+  font-weight: bold;
+  color: #333;
+  margin-bottom: 5px;
+}
+
+.input-image-url {
+  width: 100%;
+  padding: 10px;
+  font-size: 1rem;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+  margin-bottom: 5px;
+  box-sizing: border-box;
+}
+
+.input-image-url:focus {
+  border-color: #007BFF;
+  outline: none;
+  box-shadow: 0 0 3px rgba(0, 123, 255, 0.5);
+}
+
+/* Texto de ayuda debajo del input */
+.image-help-text {
+  font-size: 0.875rem;
+  color: #666;
+  margin-top: -5px;
+  line-height: 1.4;
 }

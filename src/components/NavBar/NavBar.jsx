@@ -14,7 +14,7 @@ const NavBar = () => {
     <nav className={styles.navbar}>
       <div className={styles.logo}>
         <Link to={user ? "/dashboard" : "/"}>
-          <img src="/favicon2.png" alt="Elfo favicon" className={styles.logoImage} />
+          <img src="/logo1.png" alt="Elfo logo" className={styles.logoImage} />
         </Link>
       </div>
       <div className={styles.navLinks}>

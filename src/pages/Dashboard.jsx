@@ -14,7 +14,6 @@ const Dashboard = () => {
     {user ? (
         <>
           {/* {console.log(user) /*User es un objeto con un objeto User dentro y otro objeto Prototype con sus métodos.*/}
-
           <div className="logoContainer">
             <img src="/logo1.png" alt="Elfo Logo" className="logo" />
           </div>

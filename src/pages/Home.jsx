@@ -9,8 +9,9 @@ const Home = ({ data, error }) => {
   
     return (
       <div className="dashboard">
+        <div className="fotoNavidad">
         <div className="logoContainer">
-            <img src="/logo1.png" alt="Elfo Logo" className="logo" />
+            <img src="/logo_invertido.png" alt="Elfo Logo" className="logo" />
           </div>
 
           <div className="sloganContainer">
@@ -30,6 +31,7 @@ const Home = ({ data, error }) => {
           <div className="buttonsContainer">
             <Link to="/register" className="button">Quiero convertirme en Elfo</Link>
             {/*+botones?botón más grande con otro estilo? pendiente diseño*/}
+          </div>
           </div>
 
         <ProductCard />

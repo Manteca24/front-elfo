@@ -11,6 +11,7 @@ import Dashboard from "./pages/Dashboard";
 import Profile from "./pages/Profile";
 // import LogoutButton from "./components/LogOutButton";
 import ProductDetails from "./pages/ProductDetails";
+import UploadGift from "./pages/UploadGift";
 
 
 
@@ -55,7 +56,12 @@ const App = () => {
             <ProtectedRoute>
             <Profile />
             </ProtectedRoute>} />    
-
+        <Route 
+          path="/upload-gift" 
+          element={
+            <ProtectedRoute>
+            <UploadGift />
+            </ProtectedRoute>} />        
       </Routes>
     </Router>
     </UserProvider>
