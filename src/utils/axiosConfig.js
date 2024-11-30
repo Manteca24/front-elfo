@@ -1,4 +1,3 @@
-// src/axiosConfig.js
 import axios from "axios";
 
 // Configura la URL base para todas las solicitudes de axios

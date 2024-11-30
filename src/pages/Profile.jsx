@@ -1,6 +1,6 @@
-import React, { useContext } from "react";
+import React, { useContext, useEffect, useState } from "react";
 import { UserContext } from "../contexts/UserContext";
-import LogoutButton from "../components/NavBar/LogOutButton";
+import LogoutButton from "../components/LogOutButton";
 
 const Profile = () => {
   const { user, loading } = useContext(UserContext);
@@ -11,7 +11,10 @@ const Profile = () => {
 
   return (
     <div style={{ padding: "20px" }}>
-      <LogoutButton />
+
+      {console.log(user)}
+      <LogoutButton />.
+      <img src={user.user.profilePicture} alt="profileImage" />
       <h1>Perfil de {user.user.username}</h1>
       <section>
         <h2>Favoritos</h2>

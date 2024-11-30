@@ -6,8 +6,8 @@
 }
 
 .productCard {
-  background-color: #f8f7f6; /* Fondo similar al navbar */
-  border-radius: 12px; /* Bordes más suaves */
+  background-color: #f8f7f6; 
+  border-radius: 12px; 
   box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
   overflow: hidden;
   position: relative;
@@ -21,22 +21,27 @@
 
 .productImage {
   width: 100%;
-  height: 180px; /* Tamaño ligeramente más compacto */
+  height: 180px;
   object-fit: cover;
-  border-bottom: 3px solid #BF9B7A; /* Separador con color de la paleta */
+  border-bottom: 3px solid #BF9B7A; 
 }
 
 .cardContent {
-  padding: 15px;
+  display: flex;
+  padding: 5px;
+  justify-content:space-between;
+  align-items: center;
   position: relative;
 }
 
 .productTitle {
   font-size: 1.1rem;
-  color: #6F171F; /* Color que combina con los botones del navbar */
+  color: #6F171F;
   margin: 10px 0;
   font-weight: bold;
-  text-transform: capitalize;
+  text-decoration: none;
+  /* text-transform:uppercase; */ /*¿HAGO ALGO PARA UQE SEAN TODOS IGUALES?*/
+
 }
 
 .productDescription {
@@ -47,10 +52,12 @@
 }
 
 .priceBubble {
-  position: absolute;
-  top: 10px;
-  right: 10px;
-  background-color: #BF9B7A; /* Color principal */
+  display: flex;
+  align-items: center;
+  width: auto;
+  height: 20px;
+  justify-content: center;
+  background-color: #BF9B7A; 
   color: #fff;
   padding: 8px 12px;
   border-radius: 20px;
@@ -84,3 +91,18 @@
   filter: brightness(0) saturate(100%) invert(14%) sepia(99%) saturate(2465%) hue-rotate(359deg) brightness(89%) contrast(91%);
   /* Más brillante en hover */
 }
+
+.owner {
+  position: absolute;
+  top: 10px;
+  left: 5px;
+  font-size: 0.9rem; 
+  color: #6F171F;
+  font-weight: normal; 
+}
+
+.owner:hover{
+  color:#9e1521;
+  font-weight: bold;
+}
+

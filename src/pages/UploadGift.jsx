@@ -3,6 +3,9 @@ import { useNavigate } from 'react-router-dom';
 import axios from 'axios';
 import { UserContext } from '../contexts/UserContext';
 import Select from 'react-select';
+import { storage } from '../config/firebase';
+import { ref, uploadBytes, getDownloadURL } from 'firebase/storage';
+import imageCompression from 'browser-image-compression'; // librería para achicar la imagen
 
 const UploadGift = () => {
   const { user, loading } = useContext(UserContext);
@@ -10,7 +13,7 @@ const UploadGift = () => {
     name: '',
     description: '',
     price: '',
-    categories: [], // Categorías y filtros seleccionados
+    categories: [],
     genre: 'no relevante',
     ageRange: '',
     tags: [],
@@ -18,9 +21,9 @@ const UploadGift = () => {
     firebaseUid: '',
   });
   const [categoriesWithFilters, setCategoriesWithFilters] = useState([]);
+  const [selectedFile, setSelectedFile] = useState(null);
   const navigate = useNavigate();
 
-  // Obtener categorías y filtros desde el backend
   useEffect(() => {
     const fetchCategoriesWithFilters = async () => {
       try {
@@ -33,13 +36,18 @@ const UploadGift = () => {
     fetchCategoriesWithFilters();
   }, []);
 
-  // Manejo del cambio en los inputs (nombre, descripción, etc.)
   const handleInputChange = (e) => {
     const { name, value } = e.target;
     setFormData({ ...formData, [name]: value });
   };
 
-  // Manejo de los tags (agregar al presionar "Enter")
+  const handleFileChange = (e) => {
+    const file = e.target.files[0];
+    if (file) {
+      setSelectedFile(file);
+    }
+  };
+
   const handleAddTag = (e) => {
     if (e.key === 'Enter') {
       e.preventDefault();
@@ -51,7 +59,6 @@ const UploadGift = () => {
     }
   };
 
-  // Manejo de la selección de filtros dentro de cada categoría
   const handleFilterChange = (categoryId, selectedFilters) => {
     setFormData((prevState) => {
       const updatedCategories = [...prevState.categories];
@@ -67,11 +74,55 @@ const UploadGift = () => {
     });
   };
 
-  // Enviar el formulario al backend
+  const compressImage = async (file) => {
+    const options = {
+      maxSizeMB: 0.2, // Tamaño máximo en MB
+      maxWidthOrHeight: 800, // Redimensionar a un tamaño máximo de 800px
+      useWebWorker: true,
+    };
+    try {
+      const compressedFile = await imageCompression(file, options);
+      return compressedFile;
+    } catch (error) {
+      console.error('Error al comprimir la imagen:', error);
+      alert('No se pudo comprimir la imagen.');
+      return null;
+    }
+  };
+
+  const uploadImageToFirebase = async (file) => {
+    const compressedFile = await compressImage(file);
+    if (!compressedFile) return null;
+
+    const storageRef = ref(storage, `images/${compressedFile.name}`);
+    try {
+      const snapshot = await uploadBytes(storageRef, compressedFile);
+      const downloadURL = await getDownloadURL(snapshot.ref);
+      return downloadURL;
+    } catch (error) {
+      console.error('Error al subir la imagen a Firebase:', error);
+      alert('No se pudo subir la imagen. Intenta de nuevo.');
+      return null;
+    }
+  };
+
   const handleSubmit = async (e) => {
     e.preventDefault();
 
     const { name, description, price, categories, genre, ageRange, tags, image } = formData;
+
+    let imageUrl = formData.image;
+
+    if (selectedFile) {
+      try {
+        imageUrl = await uploadImageToFirebase(selectedFile);
+        if (!imageUrl) return;
+      } catch (error) {
+        console.error('Error al subir la imagen:', error);
+        alert('No se pudo subir la imagen. Intenta de nuevo.');
+        return;
+      }
+    }
 
     const payload = {
       name,
@@ -81,15 +132,16 @@ const UploadGift = () => {
       genre,
       ageRange,
       tags,
-      image, 
-      firebaseUid: `${user.user.firebaseUid}`, 
+      image: imageUrl,
+      firebaseUid: `${user.user.firebaseUid}`,
     };
 
     try {
       const response = await axios.post('/products/', payload);
 
-      if (response.status === 200) {
+      if (response.status === 200 || response.status === 201) {
         console.log('Producto creado:', response.data.product);
+        navigate('/dashboard');
       } else {
         console.error('Error al crear el producto:', response.data.message);
       }
@@ -103,20 +155,17 @@ const UploadGift = () => {
     setFormData({ ...formData, tags: updatedTags });
   };
 
-  // Si el usuario aún está cargando
   if (loading) {
     return <p>Cargando...</p>;
   }
 
-  // Si no hay usuario logueado
   if (!user) {
     navigate('/login');
     return null;
   }
-
   return (
     <div className="upload-gift-container">
-      <h1 className="upload-gift-title">Subir Producto</h1>
+      <h2 className="upload-gift-title">Subir Producto</h2>
       <form className="upload-gift-form" onSubmit={handleSubmit}>
         {/* Nombre */}
         <input
@@ -177,23 +226,19 @@ const UploadGift = () => {
           <option value="anciano">Anciano</option>
         </select>
 
-        {/* URL de la imagen */}
-        <label htmlFor="image" className="label-image">
-  URL de la imagen:
-</label>
-<input
-  className="input-image-url"
-  type="text"
-  name="image"
-  id="image"
-  placeholder="Ejemplo: https://misregalos.com/imagen.png"
-  value={formData.image || ''}
-  onChange={handleInputChange}
-  required
-/>
-<small className="image-help-text">
-  Por favor, proporciona un enlace directo a una imagen en formato PNG o JPG. Asegúrate de que sea accesible públicamente.
-</small>
+        {/* Subida de Imagen */}
+        <label htmlFor="imageUpload" className="label-image">
+          Subir imagen:
+        </label>
+        <input
+          className="input-image-file"
+          type="file"
+          id="imageUpload"
+          name="image"
+          accept="image/png, image/jpeg"
+          onChange={handleFileChange}
+        />
+
         {/* Filtros de Categorías */}
         <div className="categories-container">
           {categoriesWithFilters.map((category) => (
@@ -244,7 +289,10 @@ const UploadGift = () => {
           ))}
         </ul>
 
-        <button className="submit-button" type="submit">Subir Producto</button>
+        {/* Botón de envío */}
+        <button type="submit" className="submit-button">
+          Subir Producto
+        </button>
       </form>
     </div>
   );

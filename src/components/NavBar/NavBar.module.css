@@ -12,7 +12,7 @@
     /* box-shadow: 0px 4px 6px rgba(0, 0, 0, 0.1); */
     /* border-radius: 10px; */
 }
-
+      
 .logoImage {
   height: 40px;
   margin: 5px;
@@ -31,7 +31,7 @@
   }
 
   .navLinks a:first-child{
-    color: rgb(207, 11, 5);
+    color: #cf0b05;
   }
   
   .navLinks a:hover {
@@ -100,11 +100,116 @@
   .profileContainer {
     display: flex;
     align-items: center;
-    gap: 1rem; /* Espacio entre el texto, el icono y el botón de logout */
   }
   
 
 
 
 /* Media Queries */
+/* Media Queries para pantallas más pequeñas */
+@media (max-width: 768px) {
+  .navbar {
+    flex-wrap: wrap; /* Permite que los elementos se ajusten a la pantalla */
+    padding: 10px;
+  }
 
+  .navLinks {
+    display: none; /* Ocultamos los enlaces en móviles */
+    flex-direction: column;
+    background-color: #f8f7f6;
+    position: absolute;
+    top: 100%;
+    right: 0;
+    width: 100%;
+    box-shadow: 0px 4px 6px rgba(0, 0, 0, 0.1);
+  }
+
+  .navLinks a {
+    padding: 10px 20px;
+    border-bottom: 1px solid #ddd;
+    margin: 5px;
+  }
+
+  .navLinks a:first-child {
+    color: black;
+  }
+
+  .navLinks a:last-child {
+    border-bottom: none;
+    color: #cf0b05;
+  }
+
+  /* .searchBar {
+    display: none;
+  } */
+
+  .authButtons {
+    flex-direction: column;
+    gap: 5px;
+  }
+
+}
+
+/* Mostrar el menú cuando se active */
+.menuButton {
+  display: none;
+}
+
+@media (max-width: 768px) {
+  .navBar{
+    display: flex;
+  }
+
+  .navBar div{
+    order: 0;
+  }
+
+
+  .menuButton {
+    display: flex;
+    background: url('menu.png');
+    background-size: contain;
+    width: 30px;
+    height: 30px;
+    cursor: pointer;
+    margin-left: auto;
+    order: 2;
+
+  }
+
+  .menuButton.active + .navLinks {
+    display: flex; /* Muestra el menú cuando se active */
+  }
+}
+
+/* Visibilidad controlada */
+.desktopOnly {
+  display: none;
+}
+
+.mobileOnly {
+  display: none;
+}
+
+/* Pantallas grandes */
+@media (min-width: 769px) {
+  .desktopOnly {
+    display: flex;
+  }
+  .mobileOnly {
+    display: none;
+  }
+}
+
+/* Pantallas pequeñas */
+@media (max-width: 768px) {
+  .desktopOnly {
+    display: none;
+  }
+  .mobileOnly {
+    display: flex;
+    flex-direction: column;
+    padding: 10px 20px;
+    gap: 5px;
+  }
+}

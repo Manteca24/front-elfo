@@ -1,7 +1,6 @@
 import { useContext } from "react";
 import { useNavigate } from "react-router-dom";
-import { UserContext } from "../../contexts/UserContext"; 
-import styles from "./NavBar.module.css";
+import { UserContext } from "../contexts/UserContext"; 
 
 function LogoutButton() {
   const navigate = useNavigate();

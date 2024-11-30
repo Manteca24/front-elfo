@@ -21,9 +21,9 @@ const Home = ({ data, error }) => {
             <div className="landing-description">
               <p>
                 Elfo es una red social donde podrás compartir y encontrar regalos personalizados. 
-                Sube tus regalos y conviértete en la inspiración de miles de personas que saben 
+                </p><p>Sube tus regalos y conviértete en la inspiración de miles de personas que saben 
                 muchísimas cosas sobre la persona a la que quieren regalar pero no saben qué regalarle 
-                en un día especial. Navega entre los regalos que han subido otros elfos y habla con ellos 
+                en un día especial. </p><p>Navega entre los regalos que han subido otros elfos y habla con ellos 
                 hasta encontrar el regalo perfecto.
               </p>
             </div>
