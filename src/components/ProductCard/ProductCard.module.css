@@ -106,3 +106,19 @@
   font-weight: bold;
 }
 
+/*media queries*/
+/*pendiente a preguntar qué es más bonito*/ 
+/* @media (max-width: 768px) {
+  .cardContainer {
+    display: flex;
+    flex-wrap: wrap;
+  }
+  .productCard{
+    width: 9rem;
+    height: auto;
+  }
+  .cardContent h2, div>p{
+    font-size: 12px;
+  }
+
+} */

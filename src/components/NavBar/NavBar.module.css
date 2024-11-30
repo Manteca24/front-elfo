@@ -72,11 +72,11 @@
     border-color: #6F171F; 
   }
   
-  .authButtons {
+  /* .authButtons {
     display: flex;
     gap: 10px;
   }
-  
+   */
 
   .profile {
     display: flex;
@@ -108,13 +108,15 @@
 /* Media Queries */
 /* Media Queries para pantallas más pequeñas */
 @media (max-width: 768px) {
+  
   .navbar {
-    flex-wrap: wrap; /* Permite que los elementos se ajusten a la pantalla */
+    flex-wrap: wrap; 
     padding: 10px;
   }
 
+
   .navLinks {
-    display: none; /* Ocultamos los enlaces en móviles */
+    display: none; 
     flex-direction: column;
     background-color: #f8f7f6;
     position: absolute;
@@ -136,17 +138,17 @@
 
   .navLinks a:last-child {
     border-bottom: none;
-    color: #cf0b05;
+    /* color: #cf0b05; */
   }
 
   /* .searchBar {
     display: none;
   } */
 
-  .authButtons {
+  /* .authButtons {
     flex-direction: column;
     gap: 5px;
-  }
+  } */
 
 }
 
@@ -178,7 +180,7 @@
   }
 
   .menuButton.active + .navLinks {
-    display: flex; /* Muestra el menú cuando se active */
+    display: flex; 
   }
 }
 
@@ -206,10 +208,13 @@
   .desktopOnly {
     display: none;
   }
-  .mobileOnly {
+   .mobileOnly {
     display: flex;
     flex-direction: column;
     padding: 10px 20px;
-    gap: 5px;
+    gap: 10px;
+    text-align: center; 
   }
+
+
 }

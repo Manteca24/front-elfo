@@ -10,8 +10,8 @@ const NavBar = () => {
   const [menuOpen, setMenuOpen] = useState(false);
   if (loading) return <p>Loading...</p>;
 
-   // Cierra el menú al hacer clic en un enlace
-   const handleLinkClick = () => {
+  // Cierra el menú al hacer clic en un enlace
+  const handleLinkClick = () => {
     setMenuOpen(false);
   };
 
@@ -27,11 +27,19 @@ const NavBar = () => {
         onClick={() => setMenuOpen(!menuOpen)}
       ></div>
       <div className={`${styles.navLinks} ${menuOpen ? styles.active : ""}`}>
-        <Link to="/most-gifted" onClick={handleLinkClick}>LOS MÁS REGALADOS</Link>
-        <Link to="/news" onClick={handleLinkClick}>NOVEDADES</Link>
-        {user && (
-          <div className={`${styles.profileContainer} ${styles.mobileOnly}`}>
-            <Link to="/profile" className={styles.profile} onClick={handleLinkClick}>
+        <Link to="/most-gifted" onClick={handleLinkClick}>
+          LOS MÁS REGALADOS
+        </Link>
+        <Link to="/news" onClick={handleLinkClick}>
+          NOVEDADES
+        </Link>
+        {user ? (
+          <div className={styles.mobileOnly}>
+            <Link
+              to="/profile"
+              className={styles.profile}
+              onClick={handleLinkClick}
+            >
               <img
                 src="/elfoProfile.png"
                 alt="Perfil"
@@ -40,10 +48,19 @@ const NavBar = () => {
               <span>Perfil de {user.user.username}</span>
             </Link>
           </div>
+        ) : (
+          <div className={styles.mobileOnly}>
+            <Link to="/login" className="button" onClick={handleLinkClick}>
+              Iniciar Sesión
+            </Link>
+            <Link to="/register" className="button" onClick={handleLinkClick}>
+              Registrarse
+            </Link>
+          </div>
         )}
       </div>
       <div className={styles.searchBar}>
-        <input type="text" placeholder="Quiero un regalo para..." /> {/*+ hashtags*/}
+        <input type="text" placeholder="Quiero un regalo para..." />
       </div>
       <div
         className={`${styles.authButtons} ${
@@ -62,14 +79,14 @@ const NavBar = () => {
             </Link>
           </div>
         ) : (
-          <>
-            <Link to="/login" className="button">
+          <div className={styles.desktopOnly}>
+            <Link to="/login" className="button" >
               Iniciar Sesión
             </Link>
             <Link to="/register" className="button">
               Registrarse
             </Link>
-          </>
+          </div>
         )}
       </div>
     </nav>
