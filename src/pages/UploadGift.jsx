@@ -9,15 +9,20 @@ import imageCompression from 'browser-image-compression'; // librería para achi
 
 const UploadGift = () => {
   const { user, loading } = useContext(UserContext);
+  const [previewImage, setPreviewImage] = useState(null);
   const [formData, setFormData] = useState({
     name: '',
     description: '',
     price: '',
     categories: [],
-    genre: 'no relevante',
+    gender: 'no relevante',
     ageRange: '',
     tags: [],
     image: '',
+    purchaseLocation: {
+      storeName: '',  // Almacena el nombre de la tienda
+      url: ''         // Almacena la URL de la tienda
+    },
     firebaseUid: '',
   });
   const [categoriesWithFilters, setCategoriesWithFilters] = useState([]);
@@ -38,15 +43,30 @@ const UploadGift = () => {
 
   const handleInputChange = (e) => {
     const { name, value } = e.target;
-    setFormData({ ...formData, [name]: value });
+    if(value==='prefiero-no-decirlo' || value==='otro' || value==='no-binario'){
+      setFormData({ ...formData, [name]: 'no-relevante' });
+    } else {
+      setFormData({ ...formData, [name]: value });
+    }
   };
 
   const handleFileChange = (e) => {
     const file = e.target.files[0];
     if (file) {
       setSelectedFile(file);
+      const imageUrl = URL.createObjectURL(file); // Crea una URL para la vista previa
+      setPreviewImage(imageUrl); // Guarda la URL en el estado
     }
   };
+  
+  // Opcional: Limpia la URL anterior al desmontar el componente
+  useEffect(() => {
+    return () => {
+      if (previewImage) {
+        URL.revokeObjectURL(previewImage); // Libera la memoria de la URL creada
+      }
+    };
+  }, [previewImage]);
 
   const handleAddTag = (e) => {
     if (e.key === 'Enter') {
@@ -109,7 +129,7 @@ const UploadGift = () => {
   const handleSubmit = async (e) => {
     e.preventDefault();
 
-    const { name, description, price, categories, genre, ageRange, tags, image } = formData;
+    const { name, description, price, categories, gender, ageRange, tags, image, purchaseLocation } = formData;
 
     let imageUrl = formData.image;
 
@@ -129,10 +149,11 @@ const UploadGift = () => {
       description,
       price,
       categories,
-      genre,
+      gender,
       ageRange,
       tags,
       image: imageUrl,
+      purchaseLocation,
       firebaseUid: `${user.user.firebaseUid}`,
     };
 
@@ -148,6 +169,17 @@ const UploadGift = () => {
     } catch (err) {
       console.error('Error de red:', err);
     }
+  };
+
+  const handlePurchaseLocationChange = (e) => {
+    const { name, value } = e.target;
+    setFormData({
+      ...formData,
+      purchaseLocation: {
+        ...formData.purchaseLocation,
+        [name]: value  // Actualiza solo la propiedad que cambió (storeName o url)
+      }
+    });
   };
 
   const handleRemoveTag = (index) => {
@@ -199,16 +231,25 @@ const UploadGift = () => {
         />
 
         {/* Género */}
-        <select
-          className="select-genre"
-          name="genre"
-          value={formData.genre}
-          onChange={handleInputChange}
-        >
-          <option value="no relevante">No relevante</option>
-          <option value="masculino">Masculino</option>
-          <option value="femenino">Femenino</option>
-        </select>
+        <div>
+            <label>Género:</label>
+            <select
+              className="select-gender"
+              name="gender"
+              id="gender"
+              onChange={handleInputChange}
+              required>
+            {console.log(formData.gender)}
+              <option value="no-relevante" disabled selected>
+                Selecciona una opción
+              </option>
+              <option value="femenino">Femenino</option>
+              <option value="masculino">Masculino</option>
+              <option value="no-binario">No binario</option>
+              <option value="prefiero-no-decirlo">Prefiero no decirlo</option>
+              <option value="otro">Otro</option>
+            </select>
+          </div>
 
         {/* Rango de Edad */}
         <select
@@ -226,6 +267,29 @@ const UploadGift = () => {
           <option value="anciano">Anciano</option>
         </select>
 
+        {/* Ubicación de compra */}
+        <div className="purchase-location">
+          <label htmlFor="storeName">¿Dónde lo compraste?</label>
+          <input
+            type="text"
+            id="storeName"
+            name="storeName"
+            value={formData.purchaseLocation.storeName}
+            onChange={handlePurchaseLocationChange}
+            placeholder="En Amazon / Lo hice yo"
+          />
+
+          <label htmlFor="url">URL de la tienda:</label>
+          <input
+            type="url"
+            id="url"
+            name="url"
+            value={formData.purchaseLocation.url}
+            onChange={handlePurchaseLocationChange}
+            placeholder="URL de la tienda (opcional)"
+          />
+        </div>
+
         {/* Subida de Imagen */}
         <label htmlFor="imageUpload" className="label-image">
           Subir imagen:
@@ -238,6 +302,14 @@ const UploadGift = () => {
           accept="image/png, image/jpeg"
           onChange={handleFileChange}
         />
+
+
+          {/* Vista previa de la imagen */}
+          {previewImage && (
+            <div className="image-preview">
+              <img src={previewImage} alt="Vista previa" style={{ maxWidth: '100%', maxHeight: '200px' }} />
+            </div>
+          )}
 
         {/* Filtros de Categorías */}
         <div className="categories-container">
