@@ -169,7 +169,7 @@
 
   .menuButton {
     display: flex;
-    background: url('menu.png');
+    background: url('/menu.png');
     background-size: contain;
     width: 30px;
     height: 30px;
