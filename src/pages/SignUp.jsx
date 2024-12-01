@@ -84,7 +84,7 @@ const Register = () => {
     setError("");
 
     try {
-      const { email, password, profilePicture, ...rest } = formData;
+      const { email, password, profilePicture, ...rest } = formData; //REST???
       console.log(formData)
       // Crear usuario en Firebase Auth
       const userCredential = await createUserWithEmailAndPassword(auth, email, password);

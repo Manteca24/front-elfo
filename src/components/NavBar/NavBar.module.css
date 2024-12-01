@@ -29,15 +29,19 @@
     font-size: 18px;
     transition: color 0.3s;
   }
-
+/* 
   .navLinks a:first-child{
     color: #cf0b05;
-  }
+  } */
   
   .navLinks a:hover {
     color: #b0a169; 
   }
-  
+
+  .exploreLinks{
+    display: flex;
+  }
+
   .searchBar {
     flex: 1;
     margin: 15px;
@@ -132,9 +136,9 @@
     margin: 5px;
   }
 
-  .navLinks a:first-child {
+  /* .navLinks a:first-child {
     color: black;
-  }
+  } */
 
   .navLinks a:last-child {
     border-bottom: none;
@@ -193,6 +197,9 @@
   display: none;
 }
 
+/*botones en menu hamburguesa*/
+
+
 /* Pantallas grandes */
 @media (min-width: 769px) {
   .desktopOnly {
@@ -214,6 +221,11 @@
     padding: 10px 20px;
     gap: 10px;
     text-align: center; 
+  } 
+
+  .exploreLinks{
+    display: flex;
+    flex-direction: column;
   }
 
 

@@ -12,6 +12,8 @@ import Profile from "./pages/Profile";
 // import LogoutButton from "./components/LogOutButton";
 import ProductDetails from "./pages/ProductDetails";
 import UploadGift from "./pages/UploadGift";
+import CategoryManager from "./components/CategoryManager/CategoryManager";
+import Admin from "./pages/Admin";
 
 
 
@@ -61,7 +63,19 @@ const App = () => {
           element={
             <ProtectedRoute>
             <UploadGift />
-            </ProtectedRoute>} />        
+            </ProtectedRoute>} />  
+            <Route
+          path="/admin"
+          element={
+            <ProtectedRoute>
+              <Admin />
+            </ProtectedRoute>} />      
+        <Route
+          path="/admin/categories"
+          element={
+            <ProtectedRoute>
+              <CategoryManager />
+            </ProtectedRoute>} />         
       </Routes>
     </Router>
     </UserProvider>

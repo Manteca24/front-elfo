@@ -27,12 +27,14 @@ const NavBar = () => {
         onClick={() => setMenuOpen(!menuOpen)}
       ></div>
       <div className={`${styles.navLinks} ${menuOpen ? styles.active : ""}`}>
-        <Link to="/most-gifted" onClick={handleLinkClick}>
+        <div className={styles.exploreLinks}>
+        <Link to="/most-gifted" onClick={handleLinkClick} style={{color: "#cf0b05"}}>
           LOS MÁS REGALADOS
         </Link>
         <Link to="/news" onClick={handleLinkClick}>
           NOVEDADES
         </Link>
+        </div>
         {user ? (
           <div className={styles.mobileOnly}>
             <Link
@@ -50,10 +52,10 @@ const NavBar = () => {
           </div>
         ) : (
           <div className={styles.mobileOnly}>
-            <Link to="/login" className="button" onClick={handleLinkClick}>
+            <Link to="/login" className={styles.button} onClick={handleLinkClick}>
               Iniciar Sesión
             </Link>
-            <Link to="/register" className="button" onClick={handleLinkClick}>
+            <Link to="/register" className={styles.button} onClick={handleLinkClick}>
               Registrarse
             </Link>
           </div>
