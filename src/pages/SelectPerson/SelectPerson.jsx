@@ -15,7 +15,9 @@ const SelectPerson = () => {
     const fetchSavedPeople = async () => {
       try {
         const firebaseUid = user.user.firebaseUid; // Obtén el UID de Firebase desde el contexto
-        const response = await axios.get(`/users/saved-people/${firebaseUid}`); // Solicitud GET con firebaseUid
+        const response = await axios.get(`/users/saved-people/`, {
+          headers: { Authorization: `Bearer ${localStorage.getItem('authToken')}` },
+        });
         setSavedPeople(response.data);
       } catch (err) {
         console.error("Error fetching saved people:", err);
@@ -86,6 +88,7 @@ const SelectPerson = () => {
 
       {/* Mostrar las personas guardadas */}
       <div className="saved-people-container">
+        {console.log(savedPeople)}
         {savedPeople.map((person) => (
           <div key={person._id} className="saved-person-container">
             <h3>{person.name}</h3>
