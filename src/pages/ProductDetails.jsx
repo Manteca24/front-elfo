@@ -3,6 +3,7 @@ import { useParams } from "react-router-dom";
 import axios from "../utils/axiosConfig"; // Ahora usamos tu configuración de axios
 import { UserContext } from "../contexts/UserContext";
 import "../App.css";
+import "../styles/comments.css"
 import moment from 'moment'; // Para formatear la fecha
 
 const ProductDetails = () => {

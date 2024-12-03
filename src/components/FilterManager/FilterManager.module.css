@@ -1,0 +1,142 @@
+
+/* Tabla de filtros */
+.filterTable {
+    width: 100%;
+    border-collapse: collapse;
+    margin: 20px 0;
+    box-shadow: 0px 2px 4px rgba(0, 0, 0, 0.1);
+    background: white;
+  }
+  
+  .filterTable th, .filterTable td {
+    padding: 1px;
+    text-align: left;
+    border-bottom: 1px solid #ddd;
+  }
+  
+  .filterTable th {
+    background-color: #b6221d;
+    color: white;
+  }
+  
+  .filterTable tr:nth-child(even) {
+    background-color: #f9f9f9;
+  }
+  
+  .filterTable tr:hover {
+    background-color: #f1f1f1;
+  }
+  
+  /* Botón en la tabla */
+  .filterTable button {
+    background-color: #4caf50;
+    color: white;
+    border: none;
+    padding: 8px 8px;
+    border-radius: 5px;
+    cursor: pointer;
+  }
+  
+  .filterTable button:hover {
+    background-color: #45a049;
+  }
+  
+  /* Modal */
+  .modal {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0, 0, 0, 0.6);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    z-index: 1000;
+  }
+  
+  .modalContent {
+    background-color: white;
+    padding: 20px;
+    border-radius: 10px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+    width: 80%;
+    height: 80%;
+    position: relative;
+  }
+  
+  .modalContent h2 {
+    margin-top: 0;
+    color: #007bff;
+  }
+  
+  .modalContent ul {
+    list-style: none;
+    display: flex;
+    flex-wrap: wrap;
+    padding: 1px;
+    margin: 10px 0;
+  }
+  
+  .modalContent ul li {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 5px 0;
+    border-bottom: 1px solid #ddd;
+  }
+  
+  .modalContent ul li button {
+    background-color: #dc3545;
+    color: white;
+    border: none;
+    padding: 5px 10px;
+    border-radius: 5px;
+    cursor: pointer;
+  }
+  
+  .modalContent ul li button:hover {
+    background-color: #a71d2a;
+  }
+  
+  .modalContent input {
+    width: calc(100% - 22px);
+    padding: 8px;
+    margin: 10px 0;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+  }
+  
+  .modalContent button {
+    display: inline-block;
+    padding: 10px 15px;
+    margin: 5px;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+  }
+  
+  .modalContent button:nth-of-type(1) {
+    background-color: #28a745;
+    color: white;
+  }
+  
+  .modalContent button:nth-of-type(1):hover {
+    background-color: #218838;
+  }
+  
+  .modalContent button:nth-of-type(2) {
+    background-color: #6c757d;
+    color: white;
+  }
+  
+  .modalContent button:nth-of-type(2):hover {
+    background-color: #5a6268;
+  }
+  
+  /* Mensaje de éxito */
+  .successMessage {
+    color: #28a745;
+    font-size: 14px;
+    margin-bottom: 10px;
+  }

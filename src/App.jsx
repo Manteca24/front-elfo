@@ -8,13 +8,14 @@ import NavBar from "./components/NavBar/NavBar";
 import  UserProvider  from "./contexts/UserContext";
 import ProtectedRoute from './components/ProtectedRoute'
 import Dashboard from "./pages/Dashboard";
-import Profile from "./pages/Profile";
+import Profile from "./pages/Profile/Profile";
 // import LogoutButton from "./components/LogOutButton";
 import ProductDetails from "./pages/ProductDetails";
 import UploadGift from "./pages/UploadGift";
 import CategoryManager from "./components/CategoryManager/CategoryManager";
 import Admin from "./pages/Admin";
-
+import FilterManager from "./components/FilterManager/FilterManager";
+import SelectPerson from "./pages/SelectPerson/SelectPerson";
 
 
 const App = () => {
@@ -75,7 +76,20 @@ const App = () => {
           element={
             <ProtectedRoute>
               <CategoryManager />
-            </ProtectedRoute>} />         
+            </ProtectedRoute>} />   
+          <Route
+          path="/admin/filters"
+          element={
+            <ProtectedRoute>
+              <FilterManager />
+            </ProtectedRoute>} />
+
+          <Route
+          path="/select-person"
+          element={
+            <ProtectedRoute>
+              <SelectPerson />
+            </ProtectedRoute>} />               
       </Routes>
     </Router>
     </UserProvider>

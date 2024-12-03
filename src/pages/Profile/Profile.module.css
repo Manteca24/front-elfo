@@ -1,0 +1,45 @@
+/* .profileBody{
+} */
+
+h3 {
+    text-align: left;
+}
+.profilePicElfo {
+    width: 200px;
+    height: 200px;
+    border-radius: 50%;
+    margin-right: 15px;
+}
+
+/* .logOutButton {
+}
+
+.adminPanelLink {
+} 
+
+.myFavorites{
+
+}
+
+.favoritePeople{
+
+} 
+
+.commentContent{
+
+} 
+
+.commentText{
+
+} */
+
+.fromProduct {
+    display: flex;
+    gap: 5px;
+    font-weight: bold;
+}
+.fromProduct a {
+    text-decoration: underline; 
+    color: inherit; 
+    font-weight: normal; 
+  }

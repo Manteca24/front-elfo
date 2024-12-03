@@ -1,6 +1,7 @@
 import ProductCard from "../components/ProductCard/ProductCard";
 import { Link } from "react-router-dom";
 import "../App.css"
+import "../styles/buttons.css"
 
 const Home = ({ data, error }) => {
     if (error) {

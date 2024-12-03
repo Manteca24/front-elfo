@@ -25,7 +25,7 @@ const Dashboard = () => {
 
             <h2 className="welcomeSentence">¿Qué tarea de elfos quieres hacer hoy, {user.user.username}?</h2>
             <div className="buttonsContainer">
-              <Link to="/select-gift" className="button">Buscar un regalo</Link>
+              <Link to="/select-person" className="button">Buscar un regalo</Link>
               <Link to="/upload-gift" className="button">Subir un regalo</Link>
             </div>
         </div>
