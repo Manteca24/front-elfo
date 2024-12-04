@@ -81,6 +81,17 @@ const SelectPerson = () => {
     }
   };
 
+  const handleRegalar = async (personId) => {
+    try {
+      const response = await axios.get(`/search/person/${personId}`);
+      const products = response.data;
+      console.log('Productos encontrados:', products);
+      // Aquí puedes hacer lo que quieras con los productos, como mostrarlos en la UI.
+    } catch (error) {
+      console.error('Error al buscar productos:', error);
+    }
+  };
+
   return (
     <div>
       <h1>Gestionar personas guardadas y sus tags</h1>
@@ -93,6 +104,7 @@ const SelectPerson = () => {
             <h3>{person.name}</h3>
             <p>Tags: {person.filters.map((filter) => filter.tags.join(", ")).join("; ")}</p>
             <button onClick={() => handleOpenTagsModal(person)}>Gestionar tags</button>
+            <button onClick={() => handleRegalar(person._id)}>Regalar</button>
           </div>
         ))}
       </div>

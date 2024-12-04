@@ -1,19 +1,18 @@
 import React, { useState, useEffect, useContext } from "react";
 import axios from "axios";
 import { UserContext } from "../contexts/UserContext";
-import styles from "./AddPerson.module.css";
 import { auth } from "../config/firebase";
-
+import styles from "./AddPerson.module.css";
 
 const AddPerson = () => {
   const { user } = useContext(UserContext);
   const [name, setName] = useState("");
-  const [categories, setCategories] = useState([]); // Categorías con filtros
-  const [selectedFilters, setSelectedFilters] = useState({}); // {filterId: [tags]}
+  const [categories, setCategories] = useState([]);
+  const [selectedFilters, setSelectedFilters] = useState({});
   const [newTag, setNewTag] = useState("");
   const [suggestions, setSuggestions] = useState([]);
 
-  // Cargar categorías desde el backend
+  // Cargar categorías al principio
   useEffect(() => {
     const fetchCategories = async () => {
       try {
@@ -26,25 +25,24 @@ const AddPerson = () => {
     if (user) fetchCategories();
   }, [user]);
 
-  // Actualizar nombre
-  const handleNameChange = (e) => {
-    setName(e.target.value);
-  };
+  // Cambiar el nombre
+  const handleNameChange = (e) => setName(e.target.value);
 
-  // Seleccionar/deseleccionar un filtro
-  const handleFilterToggle = (filterId) => {
+  // Seleccionar/deseleccionar filtros
+  const toggleFilter = (filterId) => {
     setSelectedFilters((prev) => {
-      if (prev[filterId]) {
-        const { [filterId]: _, ...rest } = prev;
-        return rest;
+      const updatedFilters = { ...prev };
+      if (updatedFilters[filterId]) {
+        delete updatedFilters[filterId];
       } else {
-        return { ...prev, [filterId]: [] };
+        updatedFilters[filterId] = [];
       }
+      return updatedFilters;
     });
   };
 
-  // Añadir un tag al filtro
-  const handleAddTag = (filterId, tag) => {
+  // Agregar etiqueta a un filtro
+  const addTagToFilter = (filterId, tag) => {
     if (!tag.trim()) return;
     setSelectedFilters((prev) => ({
       ...prev,
@@ -53,24 +51,22 @@ const AddPerson = () => {
     setNewTag(""); // Limpiar input
   };
 
-  // Eliminar un tag del filtro
-  const handleRemoveTag = (filterId, tag) => {
+  // Eliminar etiqueta de un filtro
+  const removeTagFromFilter = (filterId, tag) => {
     setSelectedFilters((prev) => ({
       ...prev,
       [filterId]: prev[filterId].filter((t) => t !== tag),
     }));
   };
 
-  // Manejar sugerencias de tags dinámicamente
+  // Manejar cambios en el input de nuevo tag
   const handleNewTagChange = (e, filterId) => {
     const value = e.target.value;
     setNewTag(value);
-
     if (value.trim()) {
       const filter = categories
         .flatMap((cat) => cat.filters)
         .find((f) => f._id === filterId);
-
       if (filter) {
         const matchingTags = filter.tags.filter((tag) =>
           tag.toLowerCase().includes(value.toLowerCase())
@@ -90,7 +86,6 @@ const AddPerson = () => {
       return;
     }
   
-    // Convertir selectedFilters en el formato esperado por el backend
     const filters = Object.entries(selectedFilters).map(([filterId, tags]) => ({
       filterId,
       tags,
@@ -99,13 +94,11 @@ const AddPerson = () => {
     try {
       const user = auth.currentUser;
       const token = await user.getIdToken();
-      console.log(token)
-      const response = await axios.post(
+      await axios.post(
         "/users/saved-people",
         { name, filters },
-        { headers: { Authorization: `Bearer ${token}` } } 
+        { headers: { Authorization: `Bearer ${token}` } }
       );
-  
       alert("Persona añadida correctamente.");
       setName("");
       setSelectedFilters({});
@@ -141,7 +134,7 @@ const AddPerson = () => {
                     <input
                       type="checkbox"
                       checked={!!selectedFilters[filter._id]}
-                      onChange={() => handleFilterToggle(filter._id)}
+                      onChange={() => toggleFilter(filter._id)}
                     />
                     {filter.name}
                   </label>
@@ -156,7 +149,7 @@ const AddPerson = () => {
                             <button
                               type="button"
                               onClick={() =>
-                                handleRemoveTag(filter._id, tag)
+                                removeTagFromFilter(filter._id, tag)
                               }
                             >
                               X
@@ -169,29 +162,23 @@ const AddPerson = () => {
                       <input
                         type="text"
                         value={newTag}
-                        onChange={(e) =>
-                          handleNewTagChange(e, filter._id)
-                        }
+                        onChange={(e) => handleNewTagChange(e, filter._id)}
                         placeholder="Nuevo tag"
                       />
                       <button
                         type="button"
-                        onClick={() =>
-                          handleAddTag(filter._id, newTag)
-                        }
+                        onClick={() => addTagToFilter(filter._id, newTag)}
                       >
                         Añadir
                       </button>
 
-                      {/* Mostrar sugerencias */}
+                      {/* Sugerencias de tags */}
                       {suggestions.length > 0 && (
                         <ul className={styles.suggestions}>
                           {suggestions.map((tag, idx) => (
                             <li
                               key={idx}
-                              onClick={() =>
-                                handleAddTag(filter._id, tag)
-                              }
+                              onClick={() => addTagToFilter(filter._id, tag)}
                             >
                               {tag}
                             </li>

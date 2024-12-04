@@ -14,14 +14,16 @@ const UploadGift = () => {
     name: '',
     description: '',
     price: '',
+    tags: [],
+    type: '',
     categories: [],
     gender: 'no relevante',
     ageRange: '',
-    tags: [],
     image: '',
     purchaseLocation: {
-      storeName: '',  // Almacena el nombre de la tienda
-      url: ''         // Almacena la URL de la tienda
+      ubication: '',
+      storeName: '',  
+      url: ''      
     },
     firebaseUid: '',
   });
@@ -129,9 +131,9 @@ const UploadGift = () => {
   const handleSubmit = async (e) => {
     e.preventDefault();
 
-    const { name, description, price, categories, gender, ageRange, tags, image, purchaseLocation } = formData;
+    const { name, description, price, type, categories, gender, ageRange, tags, image, purchaseLocation } = formData;
 
-    let imageUrl = formData.image;
+    let imageUrl = image;
 
     if (selectedFile) {
       try {
@@ -148,6 +150,7 @@ const UploadGift = () => {
       name,
       description,
       price,
+      type,
       categories,
       gender,
       ageRange,
@@ -177,8 +180,16 @@ const UploadGift = () => {
       ...formData,
       purchaseLocation: {
         ...formData.purchaseLocation,
-        [name]: value  // Actualiza solo la propiedad que cambió (storeName o url)
-      }
+        [name]: value,  // Actualiza la propiedad correspondiente (storeName, url, ubication)
+      },
+    });
+  };
+
+  const handleTypeChange = (e) => {
+    const { value } = e.target;
+    setFormData({
+      ...formData,
+      type: value, // Actualiza 'type' directamente con el valor seleccionado
     });
   };
 
@@ -230,6 +241,20 @@ const UploadGift = () => {
           required
         />
 
+        {/*Tipo de regalo*/}
+          <select
+            className="input-type"
+            name="type"
+            type="string"
+            placeholder="Tipo de regalo"
+            value={formData.type}
+            onChange={handleTypeChange}
+            required>
+            <option value="diy">DIY (hazlo tú mismo)</option>
+            <option value="experiencia">Experiencia</option>
+            <option value="material">Material</option>
+          </select>
+
         {/* Género */}
         <div>
             <label>Género:</label>
@@ -239,7 +264,7 @@ const UploadGift = () => {
               id="gender"
               onChange={handleInputChange}
               required>
-            {console.log(formData.gender)}
+            {/* {console.log(formData.gender)} */}
               <option value="no-relevante" disabled selected>
                 Selecciona una opción
               </option>
@@ -269,6 +294,16 @@ const UploadGift = () => {
 
         {/* Ubicación de compra */}
         <div className="purchase-location">
+          <select
+            type="string"
+            name="ubication"
+            value={formData.purchaseLocation.ubication}
+            onChange={handlePurchaseLocationChange}>
+            <option value="diy">Lo hice yo</option>
+            <option value="online">Online</option>
+            <option value="cadena">Cadena</option>
+            <option value="local">Tienda Local</option>
+          </select>
           <label htmlFor="storeName">¿Dónde lo compraste?</label>
           <input
             type="text"
