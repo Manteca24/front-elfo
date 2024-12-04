@@ -5,16 +5,15 @@ import { UserContext } from "../../contexts/UserContext";
 import AddPerson from "../../components/AddPerson";
 
 const SelectPerson = () => {
-  const [savedPeople, setSavedPeople] = useState([]); // Personas guardadas
-  const [isModalOpen, setIsModalOpen] = useState(false); // Control del modal
-  const [selectedPerson, setSelectedPerson] = useState(null); // Persona seleccionada para actualizar los tags
-  const { user } = useContext(UserContext); // Obtén el contexto del usuario
+  const [savedPeople, setSavedPeople] = useState([]); 
+  const [isModalOpen, setIsModalOpen] = useState(false); 
+  const [selectedPerson, setSelectedPerson] = useState(null); 
+  const { user } = useContext(UserContext); 
 
   // Fetch inicial para cargar las personas guardadas
   useEffect(() => {
     const fetchSavedPeople = async () => {
       try {
-        const firebaseUid = user.user.firebaseUid; // Obtén el UID de Firebase desde el contexto
         const response = await axios.get(`/users/saved-people/`, {
           headers: { Authorization: `Bearer ${localStorage.getItem('authToken')}` },
         });
@@ -56,7 +55,7 @@ const SelectPerson = () => {
             person._id === personId ? { ...person, tags: [...person.tags, newTag] } : person
           )
         );
-        e.target.value = ""; // Limpiar el input
+        e.target.value = ""; 
       } catch (err) {
         console.error("Error adding tag:", err);
       }
@@ -88,7 +87,7 @@ const SelectPerson = () => {
 
       {/* Mostrar las personas guardadas */}
       <div className="saved-people-container">
-        {console.log(savedPeople)}
+        {console.log('savedPeople', savedPeople)}
         {savedPeople.map((person) => (
           <div key={person._id} className="saved-person-container">
             <h3>{person.name}</h3>

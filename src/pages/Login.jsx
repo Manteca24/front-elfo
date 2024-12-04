@@ -44,6 +44,23 @@ const LogIn = () => {
     }
   };
 
+  // // Obtener el TOKEN
+  // const getToken = async () => {
+  //   try {
+  //     const user = auth.currentUser; // Usuario autenticado
+  //     if (user) {
+  //       const token = await user.getIdToken(); // Obtener el token de acceso
+  //       console.log('Token:', token); // Copia este token
+  //     } else {
+  //       console.error('No hay usuario autenticado');
+  //     }
+  //   } catch (error) {
+  //     console.error('Error al obtener el token:', error);
+  //   }
+  // };
+  
+  // getToken();
+
   return  (
     <div className="login-container">
       <div className="login-left">

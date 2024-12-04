@@ -1,150 +1,203 @@
 import React, { useState, useEffect, useContext } from "react";
 import axios from "axios";
 import { UserContext } from "../contexts/UserContext";
+import styles from "./AddPerson.module.css";
+import { auth } from "../config/firebase";
+
 
 const AddPerson = () => {
-  const { user } = useContext(UserContext); // Obtener el contexto del usuario
-  const [name, setName] = useState(""); // Nombre de la persona
-  const [filters, setFilters] = useState([]); // Filtros de la persona
-  const [tags, setTags] = useState({}); // Tags para cada filtro
-  const [categories, setCategories] = useState([]); // Categorías de filtros
-  const [openModal, setOpenModal] = useState(false); // Controlar la visibilidad del modal
-  const [currentFilterId, setCurrentFilterId] = useState(null); // ID del filtro que se está editando
-  const [newTag, setNewTag] = useState(""); // Tag nuevo para añadir
+  const { user } = useContext(UserContext);
+  const [name, setName] = useState("");
+  const [categories, setCategories] = useState([]); // Categorías con filtros
+  const [selectedFilters, setSelectedFilters] = useState({}); // {filterId: [tags]}
+  const [newTag, setNewTag] = useState("");
+  const [suggestions, setSuggestions] = useState([]);
 
-  // Fetch de las categorías y filtros agrupados
+  // Cargar categorías desde el backend
   useEffect(() => {
-    const fetchGroupedFilters = async () => {
+    const fetchCategories = async () => {
       try {
-        const response = await axios.get("/filters/grouped"); // Obtener los filtros agrupados por categoría
-        setCategories(response.data);
-
-        // Inicializar los tags en el estado al hacer fetch
-        const initialTags = {};
-        response.data.forEach((category) => {
-          category.filters.forEach((filter) => {
-            initialTags[filter._id] = filter.tags || []; // Asignar los tags de cada filtro al estado
-          });
-        });
-        setTags(initialTags); // Guardar los tags en el estado
+        const { data } = await axios.get("/filters/grouped");
+        setCategories(data);
       } catch (err) {
-        console.error("Error fetching grouped filters:", err);
+        console.error("Error fetching categories:", err);
       }
     };
-
-    if (user) {
-      fetchGroupedFilters();
-    }
+    if (user) fetchCategories();
   }, [user]);
 
-  // Manejar el cambio del nombre
+  // Actualizar nombre
   const handleNameChange = (e) => {
     setName(e.target.value);
   };
 
-  // Manejar el cambio de los tags para un filtro
-  const handleTagChange = (filterId, tag) => {
-    setTags((prevTags) => ({
-      ...prevTags,
-      [filterId]: tag,
+  // Seleccionar/deseleccionar un filtro
+  const handleFilterToggle = (filterId) => {
+    setSelectedFilters((prev) => {
+      if (prev[filterId]) {
+        const { [filterId]: _, ...rest } = prev;
+        return rest;
+      } else {
+        return { ...prev, [filterId]: [] };
+      }
+    });
+  };
+
+  // Añadir un tag al filtro
+  const handleAddTag = (filterId, tag) => {
+    if (!tag.trim()) return;
+    setSelectedFilters((prev) => ({
+      ...prev,
+      [filterId]: [...(prev[filterId] || []), tag],
+    }));
+    setNewTag(""); // Limpiar input
+  };
+
+  // Eliminar un tag del filtro
+  const handleRemoveTag = (filterId, tag) => {
+    setSelectedFilters((prev) => ({
+      ...prev,
+      [filterId]: prev[filterId].filter((t) => t !== tag),
     }));
   };
 
-  // Manejar la selección de filtros
-  const handleFilterSelect = (filterId) => {
-    if (!filters.includes(filterId)) {
-      setFilters([...filters, filterId]);
+  // Manejar sugerencias de tags dinámicamente
+  const handleNewTagChange = (e, filterId) => {
+    const value = e.target.value;
+    setNewTag(value);
+
+    if (value.trim()) {
+      const filter = categories
+        .flatMap((cat) => cat.filters)
+        .find((f) => f._id === filterId);
+
+      if (filter) {
+        const matchingTags = filter.tags.filter((tag) =>
+          tag.toLowerCase().includes(value.toLowerCase())
+        );
+        setSuggestions(matchingTags);
+      }
+    } else {
+      setSuggestions([]);
     }
   };
 
-  // Abrir el modal para añadir tags
-  const openTagModal = (filterId) => {
-    setCurrentFilterId(filterId);
-    setOpenModal(true);
-  };
-
-  // Cerrar el modal
-  const closeTagModal = () => {
-    setOpenModal(false);
-    setNewTag(""); // Limpiar el campo del tag
-  };
-
-  // Añadir un nuevo tag al filtro seleccionado
-  const handleAddTag = () => {
-    if (!newTag) return; // No añadir tags vacíos
-
-    setTags((prevTags) => ({
-      ...prevTags,
-      [currentFilterId]: [
-        ...(prevTags[currentFilterId] || []),
-        newTag, // Añadir el nuevo tag
-      ],
-    }));
-
-    setNewTag(""); // Limpiar el campo de tag
-    closeTagModal(); // Cerrar el modal
-  };
-
-  // Enviar el formulario para añadir la persona
+  // Enviar datos al backend
   const handleSubmit = async (e) => {
     e.preventDefault();
-
-    if (!name || filters.length === 0) {
-      alert("Por favor, ingresa un nombre y selecciona al menos un filtro.");
+    if (!name.trim() || Object.keys(selectedFilters).length === 0) {
+      alert("Por favor, completa el nombre y selecciona al menos un filtro.");
       return;
     }
-
-    const personFilters = filters.map((filterId) => ({
+  
+    // Convertir selectedFilters en el formato esperado por el backend
+    const filters = Object.entries(selectedFilters).map(([filterId, tags]) => ({
       filterId,
-      tags: tags[filterId] ? tags[filterId] : [], // Si no hay tag, se guarda un array vacío
+      tags,
     }));
-
+  
     try {
-      const response = await axios.post("/saved-people", {
-        name,
-        filters: personFilters,
-      });
-
+      const user = auth.currentUser;
+      const token = await user.getIdToken();
+      console.log(token)
+      const response = await axios.post(
+        "/users/saved-people",
+        { name, filters },
+        { headers: { Authorization: `Bearer ${token}` } } 
+      );
+  
       alert("Persona añadida correctamente.");
-      setName(""); // Limpiar el nombre
-      setFilters([]); // Limpiar los filtros seleccionados
-      setTags({}); // Limpiar los tags
-    } catch (err) {
-      console.error("Error adding person:", err);
-      alert("Error al añadir la persona.");
+      setName("");
+      setSelectedFilters({});
+    } catch (error) {
+      console.error("Error añadiendo persona:", error);
+      alert("No se pudo añadir la persona.");
     }
   };
 
   return (
-    <div>
-      <h1>Añadir persona</h1>
+    <div className={styles.container}>
+      <h1>Añadir Persona</h1>
       <form onSubmit={handleSubmit}>
-        <div>
-          <label>Nombre de la persona:</label>
-          <input type="text" value={name} onChange={handleNameChange} required />
+        {/* Nombre */}
+        <div className={styles.inputGroup}>
+          <label>Nombre:</label>
+          <input
+            type="text"
+            value={name}
+            onChange={handleNameChange}
+            required
+          />
         </div>
 
-        <div>
-          <h3>Selecciona los filtros por categoría</h3>
+        {/* Categorías y filtros */}
+        <div className={styles.categories}>
           {categories.map((category) => (
-            <div key={category._id}>
-              <h4>{category.name}</h4>
+            <div key={category._id} className={styles.category}>
+              <h3>{category.name}</h3>
               {category.filters.map((filter) => (
-                <div key={filter._id}>
+                <div key={filter._id} className={styles.filter}>
                   <label>
                     <input
                       type="checkbox"
-                      checked={filters.includes(filter._id)}
-                      onChange={() => handleFilterSelect(filter._id)}
+                      checked={!!selectedFilters[filter._id]}
+                      onChange={() => handleFilterToggle(filter._id)}
                     />
                     {filter.name}
                   </label>
 
-                  {filters.includes(filter._id) && (
+                  {/* Tags asociados al filtro */}
+                  {selectedFilters[filter._id] && (
                     <div>
-                      <button type="button" onClick={() => openTagModal(filter._id)}>
-                        Ver Tags y Añadir
+                      <div className={styles.tags}>
+                        {selectedFilters[filter._id].map((tag, idx) => (
+                          <span key={idx} className={styles.tag}>
+                            {tag}
+                            <button
+                              type="button"
+                              onClick={() =>
+                                handleRemoveTag(filter._id, tag)
+                              }
+                            >
+                              X
+                            </button>
+                          </span>
+                        ))}
+                      </div>
+
+                      {/* Añadir nuevo tag */}
+                      <input
+                        type="text"
+                        value={newTag}
+                        onChange={(e) =>
+                          handleNewTagChange(e, filter._id)
+                        }
+                        placeholder="Nuevo tag"
+                      />
+                      <button
+                        type="button"
+                        onClick={() =>
+                          handleAddTag(filter._id, newTag)
+                        }
+                      >
+                        Añadir
                       </button>
+
+                      {/* Mostrar sugerencias */}
+                      {suggestions.length > 0 && (
+                        <ul className={styles.suggestions}>
+                          {suggestions.map((tag, idx) => (
+                            <li
+                              key={idx}
+                              onClick={() =>
+                                handleAddTag(filter._id, tag)
+                              }
+                            >
+                              {tag}
+                            </li>
+                          ))}
+                        </ul>
+                      )}
                     </div>
                   )}
                 </div>
@@ -155,41 +208,6 @@ const AddPerson = () => {
 
         <button type="submit">Añadir Persona</button>
       </form>
-
-      {/* Modal para añadir un tag */}
-      {openModal && (
-        <div className="modal">
-          <div className="modal-content">
-            <h3>Añadir Tag para {categories
-              .flatMap((category) => category.filters)
-              .find((filter) => filter._id === currentFilterId)?.name}</h3>
-            <div>
-              <label>Nuevo Tag:</label>
-              <input
-                type="text"
-                value={newTag}
-                onChange={(e) => setNewTag(e.target.value)}
-                placeholder="Introduce un tag"
-              />
-            </div>
-            <button type="button" onClick={handleAddTag}>
-              Añadir Tag
-            </button>
-            <button type="button" onClick={closeTagModal}>
-              Cerrar
-            </button>
-
-            <div>
-              <h4>Tags existentes:</h4>
-              <ul>
-                {(tags[currentFilterId] || []).map((tag, index) => (
-                  <li key={index}>{tag}</li>
-                ))}
-              </ul>
-            </div>
-          </div>
-        </div>
-      )}
     </div>
   );
 };
