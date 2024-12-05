@@ -44,18 +44,28 @@ const SelectPerson = () => {
     if (e.key === "Enter" && e.target.value.trim() !== "") {
       const newTag = e.target.value.trim();
       try {
-        // Petición PUT para añadir el tag
-        await axios.put(`/users/saved-people/${personId}/filters/${filterId}/tags`, {
-          tags: [...selectedPerson.tags, newTag],
-        });
-
+        // Actualizar en el backend
+        await axios.put(
+          `/users/saved-people/${personId}/filters/${filterId}/tags`,
+          { tags: [...selectedPerson.filters.find(f => f.filterId._id === filterId).tags, newTag] }
+        );
+  
         // Actualizar estado local
         setSavedPeople((prevPeople) =>
           prevPeople.map((person) =>
-            person._id === personId ? { ...person, tags: [...person.tags, newTag] } : person
+            person._id === personId
+              ? {
+                  ...person,
+                  filters: person.filters.map((filter) =>
+                    filter.filterId._id === filterId
+                      ? { ...filter, tags: [...filter.tags, newTag] }
+                      : filter
+                  ),
+                }
+              : person
           )
         );
-        e.target.value = ""; 
+        e.target.value = ""; // Limpiar el input
       } catch (err) {
         console.error("Error adding tag:", err);
       }
@@ -65,15 +75,25 @@ const SelectPerson = () => {
   // Eliminar un tag de una persona guardada
   const handleRemoveTag = async (personId, filterId, tagToRemove) => {
     try {
-      // Petición PUT para eliminar el tag
-      await axios.put(`/users/saved-people/${personId}/filters/${filterId}/tags`, {
-        tags: selectedPerson.tags.filter((tag) => tag !== tagToRemove),
-      });
-
+      // Actualizar en el backend
+      await axios.put(
+        `/users/saved-people/${personId}/filters/${filterId}/tags`,
+        { tags: selectedPerson.filters.find(f => f.filterId._id === filterId).tags.filter(tag => tag !== tagToRemove) }
+      );
+  
       // Actualizar estado local
       setSavedPeople((prevPeople) =>
         prevPeople.map((person) =>
-          person._id === personId ? { ...person, tags: person.tags.filter((tag) => tag !== tagToRemove) } : person
+          person._id === personId
+            ? {
+                ...person,
+                filters: person.filters.map((filter) =>
+                  filter.filterId._id === filterId
+                    ? { ...filter, tags: filter.tags.filter((tag) => tag !== tagToRemove) }
+                    : filter
+                ),
+              }
+            : person
         )
       );
     } catch (err) {
@@ -102,7 +122,16 @@ const SelectPerson = () => {
         {savedPeople.map((person) => (
           <div key={person._id} className="saved-person-container">
             <h3>{person.name}</h3>
-            <p>Tags: {person.filters.map((filter) => filter.tags.join(", ")).join("; ")}</p>
+            <p>Relación: {person.relation}</p> 
+            <p>
+                Tags:{" "}
+                {person.filters
+                  .map(
+                    (filter) =>
+                      `${filter.filterId.name}: ${filter.tags.join(", ")}`
+                  )
+                  .join("; ")}
+            </p>
             <button onClick={() => handleOpenTagsModal(person)}>Gestionar tags</button>
             <button onClick={() => handleRegalar(person._id)}>Regalar</button>
           </div>

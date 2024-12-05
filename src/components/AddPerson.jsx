@@ -11,6 +11,9 @@ const AddPerson = () => {
   const [selectedFilters, setSelectedFilters] = useState({});
   const [newTag, setNewTag] = useState("");
   const [suggestions, setSuggestions] = useState([]);
+  const [gender, setGender] = useState("");
+  const [ageRange, setAgeRange] = useState("");
+  const [relation, setRelation] = useState("");
 
   // Cargar categorías al principio
   useEffect(() => {
@@ -81,26 +84,37 @@ const AddPerson = () => {
   // Enviar datos al backend
   const handleSubmit = async (e) => {
     e.preventDefault();
-    if (!name.trim() || Object.keys(selectedFilters).length === 0) {
-      alert("Por favor, completa el nombre y selecciona al menos un filtro.");
+    if (
+      !name.trim() ||
+      !gender ||
+      !ageRange ||
+      !relation ||
+      Object.keys(selectedFilters).length === 0
+    ) {
+      alert(
+        "Por favor, completa todo los campos y selecciona al menos un filtro."
+      );
       return;
     }
-  
+
+    // Transformar selectedFilters a la estructura correcta
     const filters = Object.entries(selectedFilters).map(([filterId, tags]) => ({
       filterId,
       tags,
     }));
-  
+
     try {
       const user = auth.currentUser;
       const token = await user.getIdToken();
       await axios.post(
         "/users/saved-people",
-        { name, filters },
+        { name, gender, ageRange, relation, filters },
         { headers: { Authorization: `Bearer ${token}` } }
       );
       alert("Persona añadida correctamente.");
       setName("");
+      setGender("");
+      setAgeRange("");
       setSelectedFilters({});
     } catch (error) {
       console.error("Error añadiendo persona:", error);
@@ -121,6 +135,85 @@ const AddPerson = () => {
             onChange={handleNameChange}
             required
           />
+        </div>
+
+        {/* Género */}
+        <div className={styles.inputGroup}>
+          <label>Género:</label>
+          <select
+            value={gender}
+            onChange={(e) => setGender(e.target.value)}
+            required
+          >
+            <option value="">Seleccionar</option>
+            <option value="masculino">Masculino</option>
+            <option value="femenino">Femenino</option>
+            <option value="no relevante">No relevante</option>
+          </select>
+        </div>
+
+        {/*Relación con el usuario*/}
+        <div className={styles.inputRelation}>
+          <label>Relación contigo:</label>
+          <select
+            name="relation"
+            value={relation}
+            onChange={(e) => setRelation(e.target.value)}
+            required
+          >
+            <option value="">Selecciona una relación</option>
+            <option value="madre">Madre</option>
+            <option value="padre">Padre</option>
+            <option value="hermana">Hermana</option>
+            <option value="hermano">Hermano</option>
+            <option value="hija">Hija</option>
+            <option value="hijo">Hijo</option>
+            <option value="abuela">Abuela</option>
+            <option value="abuelo">Abuelo</option>
+            <option value="tía">Tía</option>
+            <option value="tío">Tío</option>
+            <option value="prima">Prima</option>
+            <option value="primo">Primo</option>
+            <option value="amiga">Amiga</option>
+            <option value="amigo">Amigo</option>
+            <option value="sobrina">Sobrina</option>
+            <option value="sobrino">Sobrino</option>
+            <option value="pareja">Pareja</option>
+            <option value="novia">Novia</option>
+            <option value="novio">Novio</option>
+            <option value="esposo">Esposo</option>
+            <option value="esposa">Esposa</option>
+            <option value="compañero de trabajo">Compañero de trabajo</option>
+            <option value="compañera de trabajo">Compañera de trabajo</option>
+            <option value="jefe">Jefe</option>
+            <option value="jefa">Jefa</option>
+            <option value="vecino">Vecino</option>
+            <option value="profesor">Profesor</option>
+            <option value="alumno">Alumno</option>
+            <option value="alumna">Alumna</option>
+            <option value="profesora">Profesora</option>
+            <option value="vecina">Vecina</option>
+            <option value="cliente">Cliente</option>
+            <option value="mascota">Mascota</option>
+          </select>
+        </div>
+
+        {/* Rango de edad */}
+
+        <div className={styles.inputGroup}>
+          <label>Rango de Edad:</label>
+          <select
+            value={ageRange}
+            onChange={(e) => setAgeRange(e.target.value)}
+            required
+          >
+            <option value="">Seleccionar</option>
+            <option value="bebé">Bebé</option>
+            <option value="niño">Niño</option>
+            <option value="adolescente">Adolescente</option>
+            <option value="adulto">Adulto</option>
+            <option value="anciano">Anciano</option>
+          </select>
         </div>
 
         {/* Categorías y filtros */}
@@ -163,6 +256,12 @@ const AddPerson = () => {
                         type="text"
                         value={newTag}
                         onChange={(e) => handleNewTagChange(e, filter._id)}
+                        onKeyDown={(e) => {
+                          if (e.key === "Enter") {
+                            e.preventDefault();
+                            addTagToFilter(filter._id, newTag);
+                          }
+                        }}
                         placeholder="Nuevo tag"
                       />
                       <button
