@@ -1,10 +1,12 @@
 import React, { useState } from "react";
+import { useNavigate } from "react-router-dom";
 
 const GiveAPresent = ({ person, onClose }) => {
   console.log(person);
   const [type, setType] = useState("");
   const [purchaseLocation, setPurchaseLocation] = useState("");
   const [price, setPrice] = useState("");
+  const navigate = useNavigate();
 
   const handleSubmit = (e) => {
     e.preventDefault();
@@ -22,7 +24,7 @@ const GiveAPresent = ({ person, onClose }) => {
     };
 
     // Redirige a la página de resultados con los parámetros
-    window.location.href = `/results?${new URLSearchParams(searchParams)}`;
+    navigate(`/results?${new URLSearchParams(searchParams).toString()}`);
   };
 
   return (

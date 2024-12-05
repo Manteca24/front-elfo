@@ -1,31 +1,31 @@
-import React, { useState, useEffect, useContext } from 'react';
-import { useNavigate } from 'react-router-dom';
-import axios from 'axios';
-import { UserContext } from '../contexts/UserContext';
-import Select from 'react-select';
-import { storage } from '../config/firebase';
-import { ref, uploadBytes, getDownloadURL } from 'firebase/storage';
-import imageCompression from 'browser-image-compression'; // librería para achicar la imagen
+import React, { useState, useEffect, useContext } from "react";
+import { useNavigate } from "react-router-dom";
+import axios from "axios";
+import { UserContext } from "../contexts/UserContext";
+import Select from "react-select";
+import { storage } from "../config/firebase";
+import { ref, uploadBytes, getDownloadURL } from "firebase/storage";
+import imageCompression from "browser-image-compression"; // librería para achicar la imagen
 
 const UploadGift = () => {
   const { user, loading } = useContext(UserContext);
   const [previewImage, setPreviewImage] = useState(null);
   const [formData, setFormData] = useState({
-    name: '',
-    description: '',
-    price: '',
+    name: "",
+    description: "",
+    price: "",
     tags: [],
-    type: '',
+    type: "",
     categories: [],
-    gender: 'no relevante',
-    ageRange: '',
-    image: '',
+    gender: "no relevante",
+    ageRange: "",
+    image: "",
     purchaseLocation: {
-      ubication: '',
-      storeName: '',  
-      url: ''      
+      ubication: "",
+      storeName: "",
+      url: "",
     },
-    firebaseUid: '',
+    firebaseUid: "",
   });
   const [categoriesWithFilters, setCategoriesWithFilters] = useState([]);
   const [selectedFile, setSelectedFile] = useState(null);
@@ -34,10 +34,10 @@ const UploadGift = () => {
   useEffect(() => {
     const fetchCategoriesWithFilters = async () => {
       try {
-        const response = await axios.get('/filters/grouped');
+        const response = await axios.get("/filters/grouped");
         setCategoriesWithFilters(response.data);
       } catch (err) {
-        console.error('Error fetching categories with filters:', err);
+        console.error("Error fetching categories with filters:", err);
       }
     };
     fetchCategoriesWithFilters();
@@ -45,8 +45,12 @@ const UploadGift = () => {
 
   const handleInputChange = (e) => {
     const { name, value } = e.target;
-    if(value==='prefiero-no-decirlo' || value==='otro' || value==='no-binario'){
-      setFormData({ ...formData, [name]: 'no-relevante' });
+    if (
+      value === "prefiero-no-decirlo" ||
+      value === "otro" ||
+      value === "no-binario"
+    ) {
+      setFormData({ ...formData, [name]: "no-relevante" });
     } else {
       setFormData({ ...formData, [name]: value });
     }
@@ -60,7 +64,7 @@ const UploadGift = () => {
       setPreviewImage(imageUrl); // Guarda la URL en el estado
     }
   };
-  
+
   // Opcional: Limpia la URL anterior al desmontar el componente
   useEffect(() => {
     return () => {
@@ -71,23 +75,28 @@ const UploadGift = () => {
   }, [previewImage]);
 
   const handleAddTag = (e) => {
-    if (e.key === 'Enter') {
+    if (e.key === "Enter") {
       e.preventDefault();
       setFormData({
         ...formData,
         tags: [...formData.tags, e.target.value],
       });
-      e.target.value = '';
+      e.target.value = "";
     }
   };
 
   const handleFilterChange = (categoryId, selectedFilters) => {
     setFormData((prevState) => {
       const updatedCategories = [...prevState.categories];
-      const categoryIndex = updatedCategories.findIndex((cat) => cat.category === categoryId);
+      const categoryIndex = updatedCategories.findIndex(
+        (cat) => cat.category === categoryId
+      );
 
       if (categoryIndex === -1) {
-        updatedCategories.push({ category: categoryId, filters: selectedFilters });
+        updatedCategories.push({
+          category: categoryId,
+          filters: selectedFilters,
+        });
       } else {
         updatedCategories[categoryIndex].filters = selectedFilters;
       }
@@ -106,8 +115,8 @@ const UploadGift = () => {
       const compressedFile = await imageCompression(file, options);
       return compressedFile;
     } catch (error) {
-      console.error('Error al comprimir la imagen:', error);
-      alert('No se pudo comprimir la imagen.');
+      console.error("Error al comprimir la imagen:", error);
+      alert("No se pudo comprimir la imagen.");
       return null;
     }
   };
@@ -122,8 +131,8 @@ const UploadGift = () => {
       const downloadURL = await getDownloadURL(snapshot.ref);
       return downloadURL;
     } catch (error) {
-      console.error('Error al subir la imagen a Firebase:', error);
-      alert('No se pudo subir la imagen. Intenta de nuevo.');
+      console.error("Error al subir la imagen a Firebase:", error);
+      alert("No se pudo subir la imagen. Intenta de nuevo.");
       return null;
     }
   };
@@ -131,7 +140,18 @@ const UploadGift = () => {
   const handleSubmit = async (e) => {
     e.preventDefault();
 
-    const { name, description, price, type, categories, gender, ageRange, tags, image, purchaseLocation } = formData;
+    const {
+      name,
+      description,
+      price,
+      type,
+      categories,
+      gender,
+      ageRange,
+      tags,
+      image,
+      purchaseLocation,
+    } = formData;
 
     let imageUrl = image;
 
@@ -140,8 +160,8 @@ const UploadGift = () => {
         imageUrl = await uploadImageToFirebase(selectedFile);
         if (!imageUrl) return;
       } catch (error) {
-        console.error('Error al subir la imagen:', error);
-        alert('No se pudo subir la imagen. Intenta de nuevo.');
+        console.error("Error al subir la imagen:", error);
+        alert("No se pudo subir la imagen. Intenta de nuevo.");
         return;
       }
     }
@@ -161,16 +181,16 @@ const UploadGift = () => {
     };
 
     try {
-      const response = await axios.post('/products/', payload);
+      const response = await axios.post("/products/", payload);
 
       if (response.status === 200 || response.status === 201) {
-        console.log('Producto creado:', response.data.product);
-        navigate('/dashboard');
+        console.log("Producto creado:", response.data.product);
+        navigate("/dashboard");
       } else {
-        console.error('Error al crear el producto:', response.data.message);
+        console.error("Error al crear el producto:", response.data.message);
       }
     } catch (err) {
-      console.error('Error de red:', err);
+      console.error("Error de red:", err);
     }
   };
 
@@ -180,7 +200,7 @@ const UploadGift = () => {
       ...formData,
       purchaseLocation: {
         ...formData.purchaseLocation,
-        [name]: value,  // Actualiza la propiedad correspondiente (storeName, url, ubication)
+        [name]: value, // Actualiza la propiedad correspondiente (storeName, url, ubication)
       },
     });
   };
@@ -194,7 +214,9 @@ const UploadGift = () => {
   };
 
   const handleRemoveTag = (index) => {
-    const updatedTags = formData.tags.filter((_, tagIndex) => tagIndex !== index);
+    const updatedTags = formData.tags.filter(
+      (_, tagIndex) => tagIndex !== index
+    );
     setFormData({ ...formData, tags: updatedTags });
   };
 
@@ -203,7 +225,7 @@ const UploadGift = () => {
   }
 
   if (!user) {
-    navigate('/login');
+    navigate("/login");
     return null;
   }
   return (
@@ -242,39 +264,39 @@ const UploadGift = () => {
         />
 
         {/*Tipo de regalo*/}
-          <select
-            className="input-type"
-            name="type"
-            type="string"
-            placeholder="Tipo de regalo"
-            value={formData.type}
-            onChange={handleTypeChange}
-            required>
-            <option value="diy">DIY (hazlo tú mismo)</option>
-            <option value="experiencia">Experiencia</option>
-            <option value="material">Material</option>
-          </select>
+        <select
+          className="input-type"
+          name="type"
+          type="string"
+          placeholder="Tipo de regalo"
+          value={formData.type}
+          onChange={handleTypeChange}
+          required
+        >
+          <option value="diy">DIY (hazlo tú mismo)</option>
+          <option value="experiencia">Experiencia</option>
+          <option value="material">Material</option>
+        </select>
 
         {/* Género */}
         <div>
-            <label>Género:</label>
-            <select
-              className="select-gender"
-              name="gender"
-              id="gender"
-              onChange={handleInputChange}
-              required>
+          <label>Género:</label>
+          <select
+            className="select-gender"
+            name="gender"
+            id="gender"
+            onChange={handleInputChange}
+            required
+          >
             {/* {console.log(formData.gender)} */}
-              <option value="no-relevante" disabled selected>
-                Selecciona una opción
-              </option>
-              <option value="femenino">Femenino</option>
-              <option value="masculino">Masculino</option>
-              <option value="no-binario">No binario</option>
-              <option value="prefiero-no-decirlo">Prefiero no decirlo</option>
-              <option value="otro">Otro</option>
-            </select>
-          </div>
+            <option value="">Selecciona una opción</option>
+            <option value="femenino">Femenino</option>
+            <option value="masculino">Masculino</option>
+            <option value="no-binario">No binario</option>
+            <option value="prefiero-no-decirlo">Prefiero no decirlo</option>
+            <option value="otro">Otro</option>
+          </select>
+        </div>
 
         {/* Rango de Edad */}
         <select
@@ -298,7 +320,8 @@ const UploadGift = () => {
             type="string"
             name="ubication"
             value={formData.purchaseLocation.ubication}
-            onChange={handlePurchaseLocationChange}>
+            onChange={handlePurchaseLocationChange}
+          >
             <option value="diy">Lo hice yo</option>
             <option value="online">Online</option>
             <option value="cadena">Cadena</option>
@@ -338,13 +361,16 @@ const UploadGift = () => {
           onChange={handleFileChange}
         />
 
-
-          {/* Vista previa de la imagen */}
-          {previewImage && (
-            <div className="image-preview">
-              <img src={previewImage} alt="Vista previa" style={{ maxWidth: '100%', maxHeight: '200px' }} />
-            </div>
-          )}
+        {/* Vista previa de la imagen */}
+        {previewImage && (
+          <div className="image-preview">
+            <img
+              src={previewImage}
+              alt="Vista previa"
+              style={{ maxWidth: "100%", maxHeight: "200px" }}
+            />
+          </div>
+        )}
 
         {/* Filtros de Categorías */}
         <div className="categories-container">
@@ -360,15 +386,23 @@ const UploadGift = () => {
                   label: filter.name,
                 }))}
                 onChange={(selectedFilters) => {
-                  const selectedFilterIds = selectedFilters.map((filter) => filter.value);
+                  const selectedFilterIds = selectedFilters.map(
+                    (filter) => filter.value
+                  );
                   handleFilterChange(category._id, selectedFilterIds);
                 }}
-                value={category.filters.filter((filter) =>
-                  formData.categories.some((cat) => cat.category === category._id && cat.filters.includes(filter._id))
-                ).map((filter) => ({
-                  value: filter._id,
-                  label: filter.name,
-                }))}
+                value={category.filters
+                  .filter((filter) =>
+                    formData.categories.some(
+                      (cat) =>
+                        cat.category === category._id &&
+                        cat.filters.includes(filter._id)
+                    )
+                  )
+                  .map((filter) => ({
+                    value: filter._id,
+                    label: filter.name,
+                  }))}
               />
             </div>
           ))}

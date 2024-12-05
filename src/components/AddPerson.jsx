@@ -3,6 +3,7 @@ import axios from "axios";
 import { UserContext } from "../contexts/UserContext";
 import { auth } from "../config/firebase";
 import styles from "./AddPerson.module.css";
+import ChooseTags from "./ChooseTags";
 
 const AddPerson = () => {
   const { user } = useContext(UserContext);
@@ -58,10 +59,20 @@ const AddPerson = () => {
 
   // Agregar tag al filtro seleccionado
   const addTagToFilter = (tag) => {
-    setSelectedFilters((prev) => ({
-      ...prev,
-      [currentFilter._id]: [...(prev[currentFilter._id] || []), tag],
-    }));
+    setSelectedFilters((prev) => {
+      const currentTags = prev[currentFilter._id] || [];
+
+      // Verifica si la etiqueta ya existe antes de agregarla
+      if (!currentTags.includes(tag)) {
+        return {
+          ...prev,
+          [currentFilter._id]: [...currentTags, tag],
+        };
+      }
+
+      // Si la etiqueta ya existe, no hace nada
+      return prev;
+    });
   };
 
   // Manejar el envío de un tag personalizado
@@ -156,6 +167,38 @@ const AddPerson = () => {
           >
             <option value="">Selecciona una relación</option>
             <option value="madre">Madre</option>
+            <option value="padre">Padre</option>
+            <option value="hermana">Hermana</option>
+            <option value="hermano">Hermano</option>
+            <option value="hija">Hija</option>
+            <option value="hijo">Hijo</option>
+            <option value="abuela">Abuela</option>
+            <option value="abuelo">Abuelo</option>
+            <option value="tía">Tía</option>
+            <option value="tío">Tío</option>
+            <option value="prima">Prima</option>
+            <option value="primo">Primo</option>
+            <option value="amiga">Amiga</option>
+            <option value="amigo">Amigo</option>
+            <option value="sobrina">Sobrina</option>
+            <option value="sobrino">Sobrino</option>
+            <option value="pareja">Pareja</option>
+            <option value="novia">Novia</option>
+            <option value="novio">Novio</option>
+            <option value="esposo">Esposo</option>
+            <option value="esposa">Esposa</option>
+            <option value="compañero de trabajo">Compañero de trabajo</option>
+            <option value="compañera de trabajo">Compañera de trabajo</option>
+            <option value="jefe">Jefe</option>
+            <option value="jefa">Jefa</option>
+            <option value="vecino">Vecino</option>
+            <option value="profesor">Profesor</option>
+            <option value="alumno">Alumno</option>
+            <option value="alumna">Alumna</option>
+            <option value="profesora">Profesora</option>
+            <option value="vecina">Vecina</option>
+            <option value="cliente">Cliente</option>
+            <option value="mascota">Mascota</option>{" "}
           </select>
         </div>
 
@@ -176,78 +219,22 @@ const AddPerson = () => {
           </select>
         </div>
 
-        {/* Lista de filtros disponibles */}
-        <div className={styles.filters}>
-          <h3>Filtros disponibles:</h3>
-          {categories.map((category) => (
-            <div key={category._id}>
-              <h4>{category.name}</h4>
-              {category.filters.map((filter) => (
-                <div key={filter._id}>
-                  <button
-                    type="button"
-                    onClick={() => toggleFilter(filter._id)}
-                  >
-                    {selectedFilters[filter._id] ? "Eliminar" : "Añadir"}{" "}
-                    {filter.name}
-                  </button>
-                  {/* Mostrar solo los filtros seleccionados */}
-                  {selectedFilters[filter._id] && (
-                    <div>
-                      <button type="button" onClick={() => openModal(filter)}>
-                        Editar tags
-                      </button>
-                      <ul>
-                        {selectedFilters[filter._id].map((tag) => (
-                          <li key={tag}>{tag}</li>
-                        ))}
-                      </ul>
-                    </div>
-                  )}
-                </div>
-              ))}
-            </div>
-          ))}
-        </div>
+        <ChooseTags
+          categories={categories}
+          selectedFilters={selectedFilters}
+          toggleFilter={toggleFilter}
+          openModal={openModal}
+          currentFilter={currentFilter}
+          showModal={showModal}
+          closeModal={closeModal}
+          addTagToFilter={addTagToFilter}
+          customTag={customTag}
+          setCustomTag={setCustomTag}
+          handleAddCustomTag={handleAddCustomTag}
+        />
 
         <button type="submit">Guardar Persona</button>
       </form>
-
-      {/* Modal de filtro */}
-      {showModal && currentFilter && (
-        <div className={styles.modal}>
-          <div className={styles.modalContent}>
-            <h2>{currentFilter.name}</h2>
-            <div className={styles.tagList}>
-              {currentFilter.tags.map((tag) => (
-                <button
-                  key={tag}
-                  type="button"
-                  onClick={() => addTagToFilter(tag)}
-                  className={styles.tagButton}
-                >
-                  {tag}
-                </button>
-              ))}
-            </div>
-
-            {/* Input para tags personalizados */}
-            <div>
-              <input
-                type="text"
-                value={customTag}
-                onChange={(e) => setCustomTag(e.target.value)}
-                placeholder="Añadir un tag personalizado"
-              />
-              <button type="button" onClick={handleAddCustomTag}>
-                Añadir Tag
-              </button>
-            </div>
-
-            <button onClick={closeModal}>Cerrar</button>
-          </div>
-        </div>
-      )}
     </div>
   );
 };

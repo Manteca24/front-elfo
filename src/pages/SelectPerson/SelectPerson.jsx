@@ -57,6 +57,11 @@ const SelectPerson = () => {
                 .tags,
               newTag,
             ],
+          },
+          {
+            headers: {
+              Authorization: `Bearer ${localStorage.getItem("authToken")}`,
+            },
           }
         );
 
@@ -92,6 +97,11 @@ const SelectPerson = () => {
           tags: selectedPerson.filters
             .find((f) => f.filterId._id === filterId)
             .tags.filter((tag) => tag !== tagToRemove),
+        },
+        {
+          headers: {
+            Authorization: `Bearer ${localStorage.getItem("authToken")}`,
+          },
         }
       );
 
@@ -113,6 +123,23 @@ const SelectPerson = () => {
             : person
         )
       );
+      // Actualizar también selectedPerson para reflejar el cambio en el modal
+      setSelectedPerson((prevSelectedPerson) => {
+        if (prevSelectedPerson._id === personId) {
+          return {
+            ...prevSelectedPerson,
+            filters: prevSelectedPerson.filters.map((filter) =>
+              filter.filterId._id === filterId
+                ? {
+                    ...filter,
+                    tags: filter.tags.filter((tag) => tag !== tagToRemove),
+                  }
+                : filter
+            ),
+          };
+        }
+        return prevSelectedPerson;
+      });
     } catch (err) {
       console.error("Error removing tag:", err);
     }
@@ -138,6 +165,9 @@ const SelectPerson = () => {
                 )
                 .join("; ")}
             </p>
+            <button onClick={() => handleOpenTagsModal(person)}>
+              Gestionar tags
+            </button>
             <button
               onClick={() => {
                 setSelectedPerson(person);
