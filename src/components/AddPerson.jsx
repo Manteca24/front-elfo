@@ -9,11 +9,12 @@ const AddPerson = () => {
   const [name, setName] = useState("");
   const [categories, setCategories] = useState([]);
   const [selectedFilters, setSelectedFilters] = useState({});
-  const [newTag, setNewTag] = useState("");
-  const [suggestions, setSuggestions] = useState([]);
+  const [showModal, setShowModal] = useState(false); // Para mostrar/ocultar modal
+  const [currentFilter, setCurrentFilter] = useState(null); // Filtro actual para el modal
   const [gender, setGender] = useState("");
   const [ageRange, setAgeRange] = useState("");
   const [relation, setRelation] = useState("");
+  const [customTag, setCustomTag] = useState(""); // Nuevo estado para tags personalizados
 
   // Cargar categorías al principio
   useEffect(() => {
@@ -44,41 +45,33 @@ const AddPerson = () => {
     });
   };
 
-  // Agregar etiqueta a un filtro
-  const addTagToFilter = (filterId, tag) => {
-    if (!tag.trim()) return;
-    setSelectedFilters((prev) => ({
-      ...prev,
-      [filterId]: [...(prev[filterId] || []), tag],
-    }));
-    setNewTag(""); // Limpiar input
+  // Mostrar el modal para añadir tags
+  const openModal = (filter) => {
+    setCurrentFilter(filter);
+    setShowModal(true);
   };
 
-  // Eliminar etiqueta de un filtro
-  const removeTagFromFilter = (filterId, tag) => {
+  // Cerrar el modal
+  const closeModal = () => {
+    setShowModal(false);
+  };
+
+  // Agregar tag al filtro seleccionado
+  const addTagToFilter = (tag) => {
     setSelectedFilters((prev) => ({
       ...prev,
-      [filterId]: prev[filterId].filter((t) => t !== tag),
+      [currentFilter._id]: [...(prev[currentFilter._id] || []), tag],
     }));
   };
 
-  // Manejar cambios en el input de nuevo tag
-  const handleNewTagChange = (e, filterId) => {
-    const value = e.target.value;
-    setNewTag(value);
-    if (value.trim()) {
-      const filter = categories
-        .flatMap((cat) => cat.filters)
-        .find((f) => f._id === filterId);
-      if (filter) {
-        const matchingTags = filter.tags.filter((tag) =>
-          tag.toLowerCase().includes(value.toLowerCase())
-        );
-        setSuggestions(matchingTags);
-      }
-    } else {
-      setSuggestions([]);
-    }
+  // Manejar el envío de un tag personalizado
+  const handleAddCustomTag = () => {
+    if (!customTag.trim()) return; // No hacer nada si el campo está vacío
+    setSelectedFilters((prev) => ({
+      ...prev,
+      [currentFilter._id]: [...(prev[currentFilter._id] || []), customTag],
+    }));
+    setCustomTag(""); // Limpiar el campo de entrada
   };
 
   // Enviar datos al backend
@@ -92,7 +85,7 @@ const AddPerson = () => {
       Object.keys(selectedFilters).length === 0
     ) {
       alert(
-        "Por favor, completa todo los campos y selecciona al menos un filtro."
+        "Por favor, completa todos los campos y selecciona al menos un filtro."
       );
       return;
     }
@@ -152,7 +145,7 @@ const AddPerson = () => {
           </select>
         </div>
 
-        {/*Relación con el usuario*/}
+        {/* Relación con el usuario */}
         <div className={styles.inputRelation}>
           <label>Relación contigo:</label>
           <select
@@ -163,43 +156,10 @@ const AddPerson = () => {
           >
             <option value="">Selecciona una relación</option>
             <option value="madre">Madre</option>
-            <option value="padre">Padre</option>
-            <option value="hermana">Hermana</option>
-            <option value="hermano">Hermano</option>
-            <option value="hija">Hija</option>
-            <option value="hijo">Hijo</option>
-            <option value="abuela">Abuela</option>
-            <option value="abuelo">Abuelo</option>
-            <option value="tía">Tía</option>
-            <option value="tío">Tío</option>
-            <option value="prima">Prima</option>
-            <option value="primo">Primo</option>
-            <option value="amiga">Amiga</option>
-            <option value="amigo">Amigo</option>
-            <option value="sobrina">Sobrina</option>
-            <option value="sobrino">Sobrino</option>
-            <option value="pareja">Pareja</option>
-            <option value="novia">Novia</option>
-            <option value="novio">Novio</option>
-            <option value="esposo">Esposo</option>
-            <option value="esposa">Esposa</option>
-            <option value="compañero de trabajo">Compañero de trabajo</option>
-            <option value="compañera de trabajo">Compañera de trabajo</option>
-            <option value="jefe">Jefe</option>
-            <option value="jefa">Jefa</option>
-            <option value="vecino">Vecino</option>
-            <option value="profesor">Profesor</option>
-            <option value="alumno">Alumno</option>
-            <option value="alumna">Alumna</option>
-            <option value="profesora">Profesora</option>
-            <option value="vecina">Vecina</option>
-            <option value="cliente">Cliente</option>
-            <option value="mascota">Mascota</option>
           </select>
         </div>
 
         {/* Rango de edad */}
-
         <div className={styles.inputGroup}>
           <label>Rango de Edad:</label>
           <select
@@ -216,74 +176,32 @@ const AddPerson = () => {
           </select>
         </div>
 
-        {/* Categorías y filtros */}
-        <div className={styles.categories}>
+        {/* Lista de filtros disponibles */}
+        <div className={styles.filters}>
+          <h3>Filtros disponibles:</h3>
           {categories.map((category) => (
-            <div key={category._id} className={styles.category}>
-              <h3>{category.name}</h3>
+            <div key={category._id}>
+              <h4>{category.name}</h4>
               {category.filters.map((filter) => (
-                <div key={filter._id} className={styles.filter}>
-                  <label>
-                    <input
-                      type="checkbox"
-                      checked={!!selectedFilters[filter._id]}
-                      onChange={() => toggleFilter(filter._id)}
-                    />
+                <div key={filter._id}>
+                  <button
+                    type="button"
+                    onClick={() => toggleFilter(filter._id)}
+                  >
+                    {selectedFilters[filter._id] ? "Eliminar" : "Añadir"}{" "}
                     {filter.name}
-                  </label>
-
-                  {/* Tags asociados al filtro */}
+                  </button>
+                  {/* Mostrar solo los filtros seleccionados */}
                   {selectedFilters[filter._id] && (
                     <div>
-                      <div className={styles.tags}>
-                        {selectedFilters[filter._id].map((tag, idx) => (
-                          <span key={idx} className={styles.tag}>
-                            {tag}
-                            <button
-                              type="button"
-                              onClick={() =>
-                                removeTagFromFilter(filter._id, tag)
-                              }
-                            >
-                              X
-                            </button>
-                          </span>
-                        ))}
-                      </div>
-
-                      {/* Añadir nuevo tag */}
-                      <input
-                        type="text"
-                        value={newTag}
-                        onChange={(e) => handleNewTagChange(e, filter._id)}
-                        onKeyDown={(e) => {
-                          if (e.key === "Enter") {
-                            e.preventDefault();
-                            addTagToFilter(filter._id, newTag);
-                          }
-                        }}
-                        placeholder="Nuevo tag"
-                      />
-                      <button
-                        type="button"
-                        onClick={() => addTagToFilter(filter._id, newTag)}
-                      >
-                        Añadir
+                      <button type="button" onClick={() => openModal(filter)}>
+                        Editar tags
                       </button>
-
-                      {/* Sugerencias de tags */}
-                      {suggestions.length > 0 && (
-                        <ul className={styles.suggestions}>
-                          {suggestions.map((tag, idx) => (
-                            <li
-                              key={idx}
-                              onClick={() => addTagToFilter(filter._id, tag)}
-                            >
-                              {tag}
-                            </li>
-                          ))}
-                        </ul>
-                      )}
+                      <ul>
+                        {selectedFilters[filter._id].map((tag) => (
+                          <li key={tag}>{tag}</li>
+                        ))}
+                      </ul>
                     </div>
                   )}
                 </div>
@@ -292,8 +210,44 @@ const AddPerson = () => {
           ))}
         </div>
 
-        <button type="submit">Añadir Persona</button>
+        <button type="submit">Guardar Persona</button>
       </form>
+
+      {/* Modal de filtro */}
+      {showModal && currentFilter && (
+        <div className={styles.modal}>
+          <div className={styles.modalContent}>
+            <h2>{currentFilter.name}</h2>
+            <div className={styles.tagList}>
+              {currentFilter.tags.map((tag) => (
+                <button
+                  key={tag}
+                  type="button"
+                  onClick={() => addTagToFilter(tag)}
+                  className={styles.tagButton}
+                >
+                  {tag}
+                </button>
+              ))}
+            </div>
+
+            {/* Input para tags personalizados */}
+            <div>
+              <input
+                type="text"
+                value={customTag}
+                onChange={(e) => setCustomTag(e.target.value)}
+                placeholder="Añadir un tag personalizado"
+              />
+              <button type="button" onClick={handleAddCustomTag}>
+                Añadir Tag
+              </button>
+            </div>
+
+            <button onClick={closeModal}>Cerrar</button>
+          </div>
+        </div>
+      )}
     </div>
   );
 };

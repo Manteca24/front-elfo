@@ -3,19 +3,23 @@ import axios from "axios";
 import "./SelectPerson.css";
 import { UserContext } from "../../contexts/UserContext";
 import AddPerson from "../../components/AddPerson";
+import GiveAPresent from "../../components/GiveAPresent";
 
 const SelectPerson = () => {
-  const [savedPeople, setSavedPeople] = useState([]); 
-  const [isModalOpen, setIsModalOpen] = useState(false); 
-  const [selectedPerson, setSelectedPerson] = useState(null); 
-  const { user } = useContext(UserContext); 
+  const [savedPeople, setSavedPeople] = useState([]);
+  const [isModalOpen, setIsModalOpen] = useState(false);
+  const [selectedPerson, setSelectedPerson] = useState(null);
+  const { user } = useContext(UserContext);
+  const [showModal, setShowModal] = useState(false);
 
   // Fetch inicial para cargar las personas guardadas
   useEffect(() => {
     const fetchSavedPeople = async () => {
       try {
         const response = await axios.get(`/users/saved-people/`, {
-          headers: { Authorization: `Bearer ${localStorage.getItem('authToken')}` },
+          headers: {
+            Authorization: `Bearer ${localStorage.getItem("authToken")}`,
+          },
         });
         setSavedPeople(response.data);
       } catch (err) {
@@ -47,9 +51,15 @@ const SelectPerson = () => {
         // Actualizar en el backend
         await axios.put(
           `/users/saved-people/${personId}/filters/${filterId}/tags`,
-          { tags: [...selectedPerson.filters.find(f => f.filterId._id === filterId).tags, newTag] }
+          {
+            tags: [
+              ...selectedPerson.filters.find((f) => f.filterId._id === filterId)
+                .tags,
+              newTag,
+            ],
+          }
         );
-  
+
         // Actualizar estado local
         setSavedPeople((prevPeople) =>
           prevPeople.map((person) =>
@@ -78,9 +88,13 @@ const SelectPerson = () => {
       // Actualizar en el backend
       await axios.put(
         `/users/saved-people/${personId}/filters/${filterId}/tags`,
-        { tags: selectedPerson.filters.find(f => f.filterId._id === filterId).tags.filter(tag => tag !== tagToRemove) }
+        {
+          tags: selectedPerson.filters
+            .find((f) => f.filterId._id === filterId)
+            .tags.filter((tag) => tag !== tagToRemove),
+        }
       );
-  
+
       // Actualizar estado local
       setSavedPeople((prevPeople) =>
         prevPeople.map((person) =>
@@ -89,7 +103,10 @@ const SelectPerson = () => {
                 ...person,
                 filters: person.filters.map((filter) =>
                   filter.filterId._id === filterId
-                    ? { ...filter, tags: filter.tags.filter((tag) => tag !== tagToRemove) }
+                    ? {
+                        ...filter,
+                        tags: filter.tags.filter((tag) => tag !== tagToRemove),
+                      }
                     : filter
                 ),
               }
@@ -101,39 +118,45 @@ const SelectPerson = () => {
     }
   };
 
-  const handleRegalar = async (personId) => {
-    try {
-      const response = await axios.get(`/search/person/${personId}`);
-      const products = response.data;
-      console.log('Productos encontrados:', products);
-      // Aquí puedes hacer lo que quieras con los productos, como mostrarlos en la UI.
-    } catch (error) {
-      console.error('Error al buscar productos:', error);
-    }
-  };
-
   return (
     <div>
       <h1>Gestionar personas guardadas y sus tags</h1>
 
       {/* Mostrar las personas guardadas */}
       <div className="saved-people-container">
-        {console.log('savedPeople', savedPeople)}
+        {console.log("savedPeople", savedPeople)}
         {savedPeople.map((person) => (
           <div key={person._id} className="saved-person-container">
             <h3>{person.name}</h3>
-            <p>Relación: {person.relation}</p> 
+            <p>Relación: {person.relation}</p>
             <p>
-                Tags:{" "}
-                {person.filters
-                  .map(
-                    (filter) =>
-                      `${filter.filterId.name}: ${filter.tags.join(", ")}`
-                  )
-                  .join("; ")}
+              Tags: {console.log(person)}
+              {person.filters
+                .map(
+                  (filter) =>
+                    `${filter.filterId.name}: ${filter.tags.join(", ")}`
+                )
+                .join("; ")}
             </p>
-            <button onClick={() => handleOpenTagsModal(person)}>Gestionar tags</button>
-            <button onClick={() => handleRegalar(person._id)}>Regalar</button>
+            <button
+              onClick={() => {
+                setSelectedPerson(person);
+                setShowModal(true);
+              }}
+            >
+              Regalar
+            </button>
+            {showModal && selectedPerson?._id === person._id && (
+              <div className="modal">
+                <GiveAPresent
+                  person={selectedPerson}
+                  onClose={() => {
+                    setShowModal(false);
+                    setSelectedPerson(null); // Limpiar la persona seleccionada
+                  }}
+                />
+              </div>
+            )}
           </div>
         ))}
       </div>
@@ -151,14 +174,26 @@ const SelectPerson = () => {
                     {filter.tags.map((tag, index) => (
                       <li key={index}>
                         {tag}{" "}
-                        <button onClick={() => handleRemoveTag(selectedPerson._id, filter.filterId._id, tag)}>Eliminar</button>
+                        <button
+                          onClick={() =>
+                            handleRemoveTag(
+                              selectedPerson._id,
+                              filter.filterId._id,
+                              tag
+                            )
+                          }
+                        >
+                          Eliminar
+                        </button>
                       </li>
                     ))}
                   </ul>
                   <input
                     type="text"
                     placeholder="Añadir tag"
-                    onKeyDown={(e) => handleAddTag(e, selectedPerson._id, filter.filterId._id)}
+                    onKeyDown={(e) =>
+                      handleAddTag(e, selectedPerson._id, filter.filterId._id)
+                    }
                   />
                 </div>
               ))}
