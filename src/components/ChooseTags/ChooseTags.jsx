@@ -1,6 +1,7 @@
 import React from "react";
 import Styles from "./ChooseTags.module.css";
 import "../../styles/buttons.css";
+import "../../styles/buttons.css";
 
 const ChooseTags = ({
   categories,
@@ -19,6 +20,10 @@ const ChooseTags = ({
     <div className={Styles.filtersContainer}>
       <div className={Styles.filtersTitle}>
         <h4>Filtros disponibles:</h4>
+        <p className={Styles.paragraphBeforeFilters}>
+          ¡Selecciona todos los filtros que se te ocurran sobre la persona a la
+          que se lo regalaste!
+        </p>
       </div>
       {categories.map((category) => (
         <div className={Styles.filtersOfCategory} key={category._id}>

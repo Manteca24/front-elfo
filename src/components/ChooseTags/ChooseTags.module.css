@@ -1,3 +1,8 @@
+.paragraphBeforeFilters{
+    text-align: center;
+    margin: 10px;
+}
+
 .filtersTitle{
     margin: 10px 0px;
 }
@@ -30,12 +35,11 @@
     display: flex;
     gap: 5px;
     align-items: center;
+    margin: 10px;
   }
 
   .filter{
     cursor: pointer;
-    display: flex;
-    flex-wrap: wrap;
   }
 
   .listOfFilters{

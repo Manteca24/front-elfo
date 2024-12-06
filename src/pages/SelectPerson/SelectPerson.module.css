@@ -20,6 +20,13 @@
   transition: transform 0.3s ease, box-shadow 0.3s ease;
 }
 
+@media (max-width:600px){
+  .savedPersonContainer {
+    width: 60%;
+  }
+
+}
+
 .hiddenPart {
   display: none; /* Por defecto, ocultamos el contenido */
   transition: all 0.3s ease-in-out; /* Animación para suavizar el efecto */

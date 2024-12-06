@@ -10,6 +10,10 @@
 .title{
   margin-bottom: 20px;
 }
+.inputGroup{
+  display: flex;
+  flex-direction: column;
+}
 .inputGroup,
 .inputRelation {
   margin-bottom: 20px;
@@ -27,6 +31,8 @@ select {
   font-size: 16px;
   border: 1px solid #ccc;
   border-radius: 4px;
+  width: 90%;
+  margin: 10px 0px;
 }
 
 

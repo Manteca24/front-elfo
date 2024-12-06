@@ -83,6 +83,18 @@
     transition: transform 0.3s ease, box-shadow 0.3s ease;
   }
 
+  @media (max-width:600px){
+    .savedPersonContainer {
+      width: 60%;
+    }
+    .buttons{
+      margin: 20px;
+    }
+    .logOutButton{
+      margin: 0;
+    }
+  }
+
   .clickeableDiv{
     cursor: pointer;
   }

@@ -6,6 +6,7 @@ import { storage } from "../config/firebase";
 import { ref, uploadBytes, getDownloadURL } from "firebase/storage";
 import imageCompression from "browser-image-compression"; // librería para achicar la imagen
 import ChooseTags from "../components/ChooseTags/ChooseTags";
+import "../App.css";
 
 const UploadGift = () => {
   const { user, loading } = useContext(UserContext);
@@ -349,6 +350,7 @@ const UploadGift = () => {
         />
 
         {/*Tipo de regalo*/}
+        <label htmlFor="type">¿En qué categorías incluirías tu regalo?</label>
         <select
           className="input-type"
           name="type"
@@ -365,7 +367,9 @@ const UploadGift = () => {
 
         {/* Género */}
         <div>
-          <label>Género:</label>
+          <label htmlFor="gender">
+            Indica el género de la persona a la que se lo regalaste:
+          </label>
           <select
             className="select-gender"
             name="gender"
@@ -384,6 +388,9 @@ const UploadGift = () => {
         </div>
 
         {/* Rango de Edad */}
+        <label htmlFor="ageRange">
+          Indica el rango de edad de la persona a la que se lo regalaste:
+        </label>
         <select
           className="select-ageRange"
           name="ageRange"
@@ -391,7 +398,7 @@ const UploadGift = () => {
           onChange={handleInputChange}
           required
         >
-          <option value="">Seleccione un rango de edad</option>
+          <option value="">Seleccione una opción</option>
           <option value="bebé">Bebé</option>
           <option value="niño">Niño</option>
           <option value="adolescente">Adolescente</option>
@@ -400,6 +407,7 @@ const UploadGift = () => {
         </select>
 
         {/* Ubicación de compra */}
+        <label htmlFor="ubication">¿Dónde lo compraste?</label>
         <div className="purchase-location">
           <select
             type="string"
@@ -412,31 +420,33 @@ const UploadGift = () => {
             <option value="cadena">Cadena</option>
             <option value="local">Tienda Local</option>
           </select>
-          <label htmlFor="storeName">¿Dónde lo compraste?</label>
+          <br />
+          <label htmlFor="storeName">
+            (Opcional) Indica el nombre de la tienda, si procede{"  "}
+          </label>
           <input
             type="text"
             id="storeName"
             name="storeName"
             value={formData.purchaseLocation.storeName}
             onChange={handlePurchaseLocationChange}
-            placeholder="En Amazon / Lo hice yo"
+            placeholder="En Amazon / Lo hice yo     (opcional)"
           />
-
-          <label htmlFor="url">URL de la tienda:</label>
+          <br />
+          <label htmlFor="url">
+            (Opcional) Indica el URL de la tienda, si procede:
+          </label>{" "}
           <input
             type="url"
             id="url"
             name="url"
             value={formData.purchaseLocation.url}
             onChange={handlePurchaseLocationChange}
-            placeholder="URL de la tienda (opcional)"
+            placeholder="https://www.amazon.es/    (opcional)"
           />
         </div>
-
         {/* Subida de Imagen */}
-        <label htmlFor="imageUpload" className="label-image">
-          Subir imagen:
-        </label>
+        <label htmlFor="imageUpload">Sube una imagen de tu regalo:</label>
         <input
           className="input-image-file"
           type="file"
@@ -472,10 +482,14 @@ const UploadGift = () => {
         />
 
         {/* Tags */}
+        <label htmlFor="moreTags">
+          Si quieres, puedes añadir más tags sobre el producto o la persona:
+        </label>
         <input
           className="input-tags"
+          id="moreTags"
           type="text"
-          placeholder="Añade un tag y presiona Enter"
+          placeholder="Añade un tag y presiona Enter (opcional)"
           onKeyDown={handleAddTag}
         />
         <ul className="tags-list">
@@ -494,7 +508,7 @@ const UploadGift = () => {
         </ul>
 
         {/* Botón de envío */}
-        <button type="submit" className="submit-button">
+        <button type="submit" className="greenButton">
           Subir Producto
         </button>
       </form>

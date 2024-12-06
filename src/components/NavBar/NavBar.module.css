@@ -204,6 +204,7 @@
 @media (min-width: 769px) {
   .desktopOnly {
     display: flex;
+    gap: 5px;
   }
   .mobileOnly {
     display: none;

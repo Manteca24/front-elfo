@@ -170,6 +170,7 @@ a:hover {
   align-items: center;
   height: auto;
   padding: 30px;
+  
 }
 
 .login-left {
@@ -243,7 +244,6 @@ font-weight: bold;
   padding: 20px;
   max-width: 600px;
   margin: 0 auto;
-  font-family: Arial, sans-serif;
 }
 
 .upload-gift-title {
@@ -277,18 +277,6 @@ font-weight: bold;
   padding: 5px;
 }
 
-.tags-list {
-  list-style-type: none;
-  padding: 0;
-}
-
-.tag-item {
-  display: inline-block;
-  background-color: #efefef;
-  margin-right: 5px;
-  padding: 5px;
-  border-radius: 3px;
-}
 
 .categories-container {
   margin-top: 20px;
@@ -332,29 +320,19 @@ font-weight: bold;
 }
 
 .tags-list {
-  list-style-type: none;
   padding: 0;
+  display: flex;
+  flex-wrap: wrap;
 }
 
-.tag-item {
-  display: inline-block;
-  background-color: #e0e0e0;
-  border-radius: 12px;
-  padding: 5px 10px;
-  margin: 5px;
-  font-size: 14px;
-  color: #333;
-  position: relative; /* Para posicionar el botón de eliminar */
-}
 
 .tag-item {
-  background-color: #e0e0e0;
-  color: #333;
-  border-radius: 15px;
+  width: auto;
   margin-right: 8px;
   margin-top: 8px;
   padding: 6px 12px;
   font-size: 0.9rem;
+  position: relative;
 }
 
 .tag-item:hover {
