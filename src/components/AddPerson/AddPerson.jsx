@@ -3,7 +3,8 @@ import axios from "axios";
 import { UserContext } from "../../contexts/UserContext";
 import { auth } from "../../config/firebase";
 import Styles from "./AddPerson.module.css";
-import ChooseTags from "../ChooseTags";
+import ChooseTags from "../ChooseTags/ChooseTags";
+import "../../styles/buttons.css";
 
 const AddPerson = () => {
   const { user } = useContext(UserContext);
@@ -60,21 +61,24 @@ const AddPerson = () => {
   // Agregar tag al filtro seleccionado
   const addTagToFilter = (tag) => {
     setSelectedFilters((prev) => {
-      const currentTags = prev[currentFilter._id] || [];
+      const filterId = currentFilter._id; // ID del filtro actual
+      const currentTags = prev[filterId] || []; // Tags actuales del filtro
 
-      // Verifica si la etiqueta ya existe antes de agregarla
-      if (!currentTags.includes(tag)) {
+      // Si el tag ya existe, lo eliminamos
+      if (currentTags.includes(tag)) {
         return {
           ...prev,
-          [currentFilter._id]: [...currentTags, tag],
+          [filterId]: currentTags.filter((t) => t !== tag),
         };
       }
 
-      // Si la etiqueta ya existe, no hace nada
-      return prev;
+      // Si el tag no existe, lo añadimos
+      return {
+        ...prev,
+        [filterId]: [...currentTags, tag],
+      };
     });
   };
-
   // Manejar el envío de un tag personalizado
   const handleAddCustomTag = () => {
     if (!customTag.trim()) return; // No hacer nada si el campo está vacío
@@ -235,8 +239,11 @@ const AddPerson = () => {
           setCustomTag={setCustomTag}
           handleAddCustomTag={handleAddCustomTag}
         />
-
-        <button type="submit">Guardar Persona</button>
+        <div className={Styles.savePersonButton}>
+          <button className="greenButton" type="submit">
+            Guardar Persona
+          </button>
+        </div>
       </form>
     </div>
   );

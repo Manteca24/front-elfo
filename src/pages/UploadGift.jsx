@@ -5,7 +5,7 @@ import { UserContext } from "../contexts/UserContext";
 import { storage } from "../config/firebase";
 import { ref, uploadBytes, getDownloadURL } from "firebase/storage";
 import imageCompression from "browser-image-compression"; // librería para achicar la imagen
-import ChooseTags from "../components/ChooseTags";
+import ChooseTags from "../components/ChooseTags/ChooseTags";
 
 const UploadGift = () => {
   const { user, loading } = useContext(UserContext);

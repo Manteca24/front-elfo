@@ -1,0 +1,110 @@
+.filtersTitle{
+    margin: 10px 0px;
+}
+
+.filters {
+    margin: 5px;
+    width: 20%;
+  }
+.categoryName{
+    width: 100%;
+}
+  .filtersOfCategory{
+    display: flex;
+    flex-wrap: wrap;
+  }
+  
+  .selected {
+    color: #28a745;
+    font-weight: bold;
+    border-radius: 4px;
+    padding: 5px;
+    transition: background-color 0.3s, color 0.3s;
+  }
+
+  .selectedTag {
+    color: #28a745;
+    font-weight: bold;
+  }
+  .filterDiv{
+    display: flex;
+    gap: 5px;
+    align-items: center;
+  }
+
+  .filter{
+    cursor: pointer;
+    display: flex;
+    flex-wrap: wrap;
+  }
+
+  .listOfFilters{
+    display: flex;
+    flex-wrap: wrap;
+  }
+  
+  .lapiz img{
+    cursor: pointer;
+    width: 16px;
+  }
+
+  .lapiz ul{
+    border: 1px dashed black;
+    padding: px;
+  }
+
+
+  .modalContent {
+    background-color: white;
+    padding: 20px;
+    border-radius: 8px;
+    width: 400px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+  }
+  
+.modalContent p {
+    font-size: 15px;
+    font-weight: bold;
+    text-align: center;
+    margin: 10px;
+}
+  .tagList {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 10px;
+  }
+  
+  .tagButton {
+    padding: 5px 10px;
+    cursor: pointer;
+    border-radius: 5px;
+    transition: background-color 0.2s;
+  }
+  
+  .tagButton:hover {
+    color: #28a745;
+  }
+  
+  .addTagButton{
+    display: none
+  }
+ 
+  .inputAddTag{
+        display: flex;
+        gap: 5px;
+        margin: 10px;
+}
+  .inputTag{
+    width: 80%;
+  }
+  
+.addTagButton {
+      display: block;
+}
+  
+.closeModalButton{
+    display: flex;
+    justify-content: center;
+    margin: 20px;
+}
+  
