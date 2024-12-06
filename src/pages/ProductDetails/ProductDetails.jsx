@@ -93,8 +93,10 @@ const ProductDetails = () => {
         <p>"{product.description}"</p>
         <h4>Precio: </h4>
         <p>{product.price}€</p>
-        <h4>Género de la persona a la que se lo regaló: </h4>
+        <h4>Edad de la persona a la que se lo regaló: </h4>
         <p>{product.ageRange}</p>
+        <h4>Género de la persona a la que se lo regaló: </h4>
+        <p>{product.gender}</p>
         <h4>Lugar donde lo compró: </h4>
         <p>
           {product.purchaseLocation.ubication === "diy"
