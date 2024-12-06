@@ -1,5 +1,5 @@
 import React from "react";
-import styles from "./AddPerson.module.css";
+import styles from "./AddPerson/AddPerson.module.css";
 
 const ChooseTags = ({
   categories,
@@ -15,11 +15,11 @@ const ChooseTags = ({
   handleAddCustomTag,
 }) => {
   return (
-    <div className={styles.container}>
-      <h3>Filtros disponibles:</h3>
+    <div className={styles.filtersContainer}>
+      <h4>Filtros disponibles:</h4>
       {categories.map((category) => (
         <div key={category._id}>
-          <h4>{category.name}</h4>
+          <h5>{category.name}</h5>
           {category.filters.map((filter) => (
             <div key={filter._id}>
               <button type="button" onClick={() => toggleFilter(filter._id)}>

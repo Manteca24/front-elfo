@@ -1,9 +1,9 @@
 import React, { useState, useEffect, useContext } from "react";
 import axios from "axios";
-import { UserContext } from "../contexts/UserContext";
-import { auth } from "../config/firebase";
-import styles from "./AddPerson.module.css";
-import ChooseTags from "./ChooseTags";
+import { UserContext } from "../../contexts/UserContext";
+import { auth } from "../../config/firebase";
+import Styles from "./AddPerson.module.css";
+import ChooseTags from "../ChooseTags";
 
 const AddPerson = () => {
   const { user } = useContext(UserContext);
@@ -127,13 +127,16 @@ const AddPerson = () => {
   };
 
   return (
-    <div className={styles.container}>
-      <h1>Añadir Persona</h1>
+    <div className={Styles.container}>
+      <div className={Styles.title}>
+        <h2>Añadir Persona</h2>
+      </div>
       <form onSubmit={handleSubmit}>
         {/* Nombre */}
-        <div className={styles.inputGroup}>
-          <label>Nombre:</label>
+        <div className={Styles.inputGroup}>
+          <label>Nombre: </label>
           <input
+            className={Styles.nombre}
             type="text"
             value={name}
             onChange={handleNameChange}
@@ -142,8 +145,8 @@ const AddPerson = () => {
         </div>
 
         {/* Género */}
-        <div className={styles.inputGroup}>
-          <label>Género:</label>
+        <div className={Styles.inputGroup}>
+          <label>Género: </label>
           <select
             value={gender}
             onChange={(e) => setGender(e.target.value)}
@@ -157,8 +160,8 @@ const AddPerson = () => {
         </div>
 
         {/* Relación con el usuario */}
-        <div className={styles.inputRelation}>
-          <label>Relación contigo:</label>
+        <div className={Styles.inputRelation}>
+          <label>Relación contigo: </label>
           <select
             name="relation"
             value={relation}
@@ -203,8 +206,8 @@ const AddPerson = () => {
         </div>
 
         {/* Rango de edad */}
-        <div className={styles.inputGroup}>
-          <label>Rango de Edad:</label>
+        <div className={Styles.inputGroup}>
+          <label>Rango de Edad: </label>
           <select
             value={ageRange}
             onChange={(e) => setAgeRange(e.target.value)}

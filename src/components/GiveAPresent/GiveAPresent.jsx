@@ -33,7 +33,9 @@ const GiveAPresent = ({ person, onClose }) => {
   return (
     <div className="modal">
       <div className="modalContent">
-        <h2 className="title">Regalar a {person.name}</h2>
+        <h2 className="title">
+          Regalar a <span>{person.name}</span>
+        </h2>
         <h3 className="subtitles">Características de {person.name}</h3>
         <ul className="list">
           <li>

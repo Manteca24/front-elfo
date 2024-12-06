@@ -89,7 +89,7 @@ const Profile = () => {
               : person
           )
         );
-        e.target.value = ""; // Limpiar el input
+        e.target.value = "";
       } catch (err) {
         console.error("Error adding tag:", err);
       }
@@ -150,7 +150,7 @@ const Profile = () => {
         return prevSelectedPerson;
       });
     } catch (err) {
-      console.error("Error removing tag:", err);
+      console.error("Error removing tag:", message.error);
     }
   };
 
@@ -171,6 +171,44 @@ const Profile = () => {
       fetchComments();
     }
   }, [user]);
+
+  const handleRemoveFilter = async (personId, filterId) => {
+    try {
+      // Eliminar el filtro en el backend
+      await axios.delete(
+        `/users/saved-people/${personId}/filters/${filterId}`,
+        {
+          headers: {
+            Authorization: `Bearer ${localStorage.getItem("authToken")}`,
+          },
+        }
+      );
+
+      // Actualizar el estado local
+      setSavedPeople((prevPeople) =>
+        prevPeople.map((person) =>
+          person._id === personId
+            ? {
+                ...person,
+                filters: person.filters.filter(
+                  (filter) => filter.filterId._id !== filterId
+                ),
+              }
+            : person
+        )
+      );
+
+      // Actualizar el estado del modal para reflejar el cambio
+      setSelectedPerson((prevSelectedPerson) => ({
+        ...prevSelectedPerson,
+        filters: prevSelectedPerson.filters.filter(
+          (filter) => filter.filterId._id !== filterId
+        ),
+      }));
+    } catch (err) {
+      console.error("Error removing filter:", err);
+    }
+  };
 
   if (loading) {
     return <p>Cargando...</p>;
@@ -280,26 +318,36 @@ const Profile = () => {
                 {selectedPerson.filters.map((filter) => (
                   <ul className="filtersInModal" key={filter.filterId}>
                     <li className="eachFilter">
-                      <span>{filter.filterId.name}</span>
+                      <span
+                        onClick={() =>
+                          handleRemoveFilter(
+                            selectedPerson._id,
+                            filter.filterId._id
+                          )
+                        }
+                      >
+                        {filter.filterId.name} &times;
+                      </span>
+
                       <ul className="tags">
                         {filter.tags.map((tag, index) => (
-                          <li key={index} className="eachTag">
-                            {tag}
-                            <span
-                              onClick={() =>
-                                handleRemoveTag(
-                                  selectedPerson._id,
-                                  filter.filterId._id,
-                                  tag
-                                )
-                              }
-                            >
-                              &times;
-                            </span>
+                          <li
+                            key={index}
+                            className="eachTag"
+                            onClick={() =>
+                              handleRemoveTag(
+                                selectedPerson._id,
+                                filter.filterId._id,
+                                tag
+                              )
+                            }
+                          >
+                            {tag} &times;
                           </li>
                         ))}
                       </ul>
                       <input
+                        className="modalInput"
                         type="text"
                         placeholder="Añade un tag y pulsa Enter"
                         onKeyDown={(e) =>

@@ -1,9 +1,9 @@
 import React, { useState, useEffect, useContext } from "react";
 import axios from "axios";
-import "./SelectPerson.css";
 import { UserContext } from "../../contexts/UserContext";
-import AddPerson from "../../components/AddPerson";
+import AddPerson from "../../components/AddPerson/AddPerson";
 import GiveAPresent from "../../components/GiveAPresent/GiveAPresent";
+import Styles from "./SelectPerson.module.css";
 
 const SelectPerson = () => {
   const [savedPeople, setSavedPeople] = useState([]);
@@ -11,6 +11,7 @@ const SelectPerson = () => {
   const [selectedPerson, setSelectedPerson] = useState(null);
   const { user } = useContext(UserContext);
   const [showModal, setShowModal] = useState(false);
+  const [visiblePersonId, setVisiblePersonId] = useState(null);
 
   // Fetch inicial para cargar las personas guardadas
   useEffect(() => {
@@ -30,6 +31,10 @@ const SelectPerson = () => {
       fetchSavedPeople();
     }
   }, [user]);
+
+  const toggleVisibility = (personId) => {
+    setVisiblePersonId((prevId) => (prevId === personId ? null : personId));
+  };
 
   // Abrir el modal para gestionar tags de una persona
   const handleOpenTagsModal = (person) => {
@@ -147,35 +152,64 @@ const SelectPerson = () => {
 
   return (
     <div>
-      <h1>Gestionar personas guardadas y sus tags</h1>
+      <h2>¿A quién le quieres regalar?</h2>
 
       {/* Mostrar las personas guardadas */}
-      <div className="saved-people-container">
+      <div className={Styles.savedPeopleContainer}>
         {console.log("savedPeople", savedPeople)}
         {savedPeople.map((person) => (
-          <div key={person._id} className="saved-person-container">
-            <h3>{person.name}</h3>
-            <p>Relación: {person.relation}</p>
-            <p>
-              Tags: {console.log(person)}
-              {person.filters
-                .map(
-                  (filter) =>
-                    `${filter.filterId.name}: ${filter.tags.join(", ")}`
-                )
-                .join("; ")}
-            </p>
-            <button onClick={() => handleOpenTagsModal(person)}>
-              Gestionar tags
-            </button>
-            <button
-              onClick={() => {
-                setSelectedPerson(person);
-                setShowModal(true);
-              }}
+          <div key={person._id} className={Styles.savedPersonContainer}>
+            <div
+              className={Styles.clickeableDiv}
+              onClick={() => toggleVisibility(person._id)}
             >
-              Regalar
-            </button>
+              <h4>{person.name}</h4>
+              <img
+                className={`${Styles.savedPersonImg} ${
+                  visiblePersonId === person._id ? "down" : "up"
+                }`}
+                src="/savedPerson.png"
+                alt="Toggle"
+              />
+            </div>
+            <div
+              className={`${Styles.hiddenPart} ${
+                visiblePersonId === person._id ? Styles.visible : ""
+              }`}
+            >
+              <p>
+                <span>Relación: </span>
+                {person.relation}
+              </p>
+              <p>
+                <span>Palabras clave:</span>
+                {person.filters.map((filter, index) => (
+                  <div key={index}>
+                    <p>
+                      <span>· {filter.filterId.name}</span>
+                    </p>
+                    <p>{filter.tags.join(", ")}</p>
+                  </div>
+                ))}
+              </p>
+              <button
+                className="smallButtons"
+                onClick={() => handleOpenTagsModal(person)}
+              >
+                Editar
+              </button>
+            </div>
+            <div className={Styles.cardsButtons}>
+              <button
+                onClick={() => {
+                  setSelectedPerson(person);
+                  setShowModal(true);
+                }}
+                className="smallGoodButtons"
+              >
+                Regalar
+              </button>
+            </div>
             {showModal && selectedPerson?._id === person._id && (
               <GiveAPresent
                 person={selectedPerson}
@@ -192,17 +226,30 @@ const SelectPerson = () => {
       {/* Modal para gestionar tags */}
       {isModalOpen && selectedPerson && (
         <div className="modal">
-          <div className="modal-content">
-            <h2>Editar tags para {selectedPerson.name}</h2>
-            <div>
+          <div className="modalContent">
+            <div className="title">
+              <h2>Editar tags para {selectedPerson.name}</h2>
+            </div>
+            <div className="filtersGroup">
               {selectedPerson.filters.map((filter) => (
-                <div key={filter.filterId}>
-                  <h3>{filter.filterId.name}</h3>
-                  <ul>
-                    {filter.tags.map((tag, index) => (
-                      <li key={index}>
-                        {tag}{" "}
-                        <button
+                <ul className="filtersInModal" key={filter.filterId}>
+                  <li className="eachFilter">
+                    <span
+                      onClick={() =>
+                        handleRemoveFilter(
+                          selectedPerson._id,
+                          filter.filterId._id
+                        )
+                      }
+                    >
+                      {filter.filterId.name} &times;
+                    </span>
+
+                    <ul className="tags">
+                      {filter.tags.map((tag, index) => (
+                        <li
+                          key={index}
+                          className="eachTag"
                           onClick={() =>
                             handleRemoveTag(
                               selectedPerson._id,
@@ -211,22 +258,27 @@ const SelectPerson = () => {
                             )
                           }
                         >
-                          Eliminar
-                        </button>
-                      </li>
-                    ))}
-                  </ul>
-                  <input
-                    type="text"
-                    placeholder="Añadir tag"
-                    onKeyDown={(e) =>
-                      handleAddTag(e, selectedPerson._id, filter.filterId._id)
-                    }
-                  />
-                </div>
+                          {tag} &times;
+                        </li>
+                      ))}
+                    </ul>
+                    <input
+                      className="modalInput"
+                      type="text"
+                      placeholder="Añade un tag y pulsa Enter"
+                      onKeyDown={(e) =>
+                        handleAddTag(e, selectedPerson._id, filter.filterId._id)
+                      }
+                    />
+                  </li>
+                </ul>
               ))}
             </div>
-            <button onClick={handleCloseModal}>Cerrar</button>
+            <div className="modalCloseButton">
+              <button className="button" onClick={handleCloseModal}>
+                Cerrar
+              </button>
+            </div>
           </div>
         </div>
       )}

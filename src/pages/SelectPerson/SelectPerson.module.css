@@ -1,0 +1,76 @@
+
+.savedPeopleContainer {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: 20px; 
+  padding: 10px;
+  margin: 20px;
+}
+
+.savedPersonContainer {
+  width: 20%;
+  background-color: #fff;
+  border-radius: 10px;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+  padding: 15px;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+
+.hiddenPart {
+  display: none; /* Por defecto, ocultamos el contenido */
+  transition: all 0.3s ease-in-out; /* Animación para suavizar el efecto */
+}
+
+.hiddenPart.visible {
+  display: block; /* Mostramos el contenido cuando se despliega */
+}
+
+.clickeableDiv {
+  display: flex;
+  align-items: center;
+  cursor: pointer; /* Para indicar que es interactivo */
+}
+
+
+/* Efecto de hover para las tarjetas DA PROBLEMAS AL MODAL*/
+/* .savedPersonContainer:hover {
+  transform: translateY(-5px); 
+  box-shadow: 0 8px 16px rgba(0, 0, 0, 0.2);
+}
+ */
+
+.savedPersonContainer p {
+  font-size: 0.9rem;
+  color: #555;
+  margin: 5px 0;
+}
+
+.savedPersonContainer p span {
+  font-weight: bold;
+}
+
+.savedPersonContainer h4 {
+  text-align: center;
+}
+
+.savedPersonImg{
+  width: 80%;
+}
+
+@media (max-width: 930px) {
+  .clickeableDiv{
+    flex-direction: column;
+  }
+}
+
+.cardsButtons{
+  margin-top: auto;
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-end;
+  gap: 5px;
+}

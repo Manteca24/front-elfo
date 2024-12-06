@@ -25,6 +25,10 @@
     margin: 20px;
 }
 
+.title span{
+    color: #28a745;
+}
+
 /*GiveAPresent*/
 .subtitles{
     margin: 20px 0px;
@@ -86,34 +90,28 @@
     margin-right: 10px;
 }
 
+
 .eachFilter span{
+    cursor: pointer;
     font-weight: bold;
     color: rgb(171, 24, 24);
 }
+
+.eachFilter span:hover{
+    color: #ff5722; 
+}
+
   
-.eachTag span {
+.eachTag {
     cursor: pointer;
     color: black;
     margin-left: 10px;
-    font-weight: bold;
 }
   
-.eachTag span:hover {
+.eachTag:hover {
     color: #ff5722; 
 }
   
-
-.filtersInModal input[type="text"] {
-    height: 0px;
-    border: 1px solid #ddd;
-    font-size: 1rem;
-    width: 55%;
-    margin-top: 5px;
-}
-
-.filtersInModal input[type="text"]::placeholder{
-    font-size: 12px;
-}
 
   
 .modalCloseButton {
@@ -121,6 +119,24 @@
     justify-content: center;
     margin: 20px;
 } 
+
+.modalInput {
+    width: 80%;
+    height: 20px;
+    padding: 10px;
+    border-radius: 5px;
+    border: 1px solid #ddd;
+    margin-top: 5px;
+    font-size: 1rem;
+  }
+  
+  .modalInput:focus {
+    border-color: #2196f3;
+  }
+
+  .modalInput::placeholder{
+    font-size: 0.8rem;
+  }
 
 
 
