@@ -390,17 +390,6 @@ font-weight: bold;
 
 
 
-
-/******************página ProductDetails*/
-
-.productImage {
-  width: 300px;
-}
-
-/***********************pagina elegir persona*/
-
-
-
 /*MEDIA QUERIES*/
 
 @media (max-width: 768px) {

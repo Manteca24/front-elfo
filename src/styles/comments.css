@@ -1,17 +1,5 @@
 /*sección comentarios*/
 
-.product-details {
-    padding: 20px;
-    max-width: 900px;
-    margin: 0 auto;
-  }
-  
-  .product-image {
-    width: 100%;
-    max-width: 500px;
-    margin: 20px 0;
-  }
-  
   .comments-section {
     margin-top: 40px;
     border-top: 2px solid #ccc;

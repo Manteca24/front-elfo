@@ -10,7 +10,7 @@ import ProtectedRoute from "./components/ProtectedRoute";
 import Dashboard from "./pages/Dashboard";
 import Profile from "./pages/Profile/Profile";
 // import LogoutButton from "./components/LogOutButton";
-import ProductDetails from "./pages/ProductDetails";
+import ProductDetails from "./pages/ProductDetails/ProductDetails";
 import UploadGift from "./pages/UploadGift";
 import CategoryManager from "./components/CategoryManager/CategoryManager";
 import Admin from "./pages/Admin";

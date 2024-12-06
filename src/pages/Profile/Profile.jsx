@@ -243,9 +243,11 @@ const Profile = () => {
         <h3>Favoritos</h3>
         {user.user.favoriteProducts.length > 0 ? (
           <ul>
+            {console.log(user.user.favoriteProducts)}
             {user.user.favoriteProducts.map((fav, index) => (
               <li key={index}>
-                <strong>{fav.title}</strong> - {fav.description}
+                <strong>{fav.product.name}</strong>
+                <img src={fav.product.image} />
               </li>
             ))}
           </ul>

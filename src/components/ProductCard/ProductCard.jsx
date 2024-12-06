@@ -1,15 +1,38 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useState, useContext } from "react";
 import axios from "axios";
 import { Link } from "react-router-dom";
-import styles from "./ProductCard.module.css"; 
+import styles from "./ProductCard.module.css";
+import { UserContext } from "../../contexts/UserContext";
 
 const ProductCard = () => {
   const [products, setProducts] = useState([]);
-  const [isFavorited, setIsFavorited] = useState(false); 
-  const [creator, setCreator] = useState([]); // Cambiado a un array
+  const [isFavorited, setIsFavorited] = useState({}); // Cambiado a objeto para manejar el estado por producto
+  const [creator, setCreator] = useState([]);
+  const { user } = useContext(UserContext);
+  console.log(user);
 
-  const handleFavoriteClick = () => {
-    setIsFavorited((prevState) => !prevState);
+  const handleFavoriteClick = async (productId) => {
+    if (isFavorited[productId]) {
+      try {
+        // Eliminar de favoritos
+        await axios.delete(`/users/favorites/${productId}`, {
+          headers: {
+            Authorization: `Bearer ${localStorage.getItem("authToken")}`,
+          },
+        });
+        setIsFavorited((prev) => ({ ...prev, [productId]: false }));
+      } catch (err) {
+        console.error("Error al eliminar el favorito:", err);
+      }
+    } else {
+      try {
+        // Añadir a favoritos
+        await axios.post(`/users/favorites`, { productId });
+        setIsFavorited((prev) => ({ ...prev, [productId]: true }));
+      } catch (err) {
+        console.error("Error al añadir el favorito:", err);
+      }
+    }
   };
 
   useEffect(() => {
@@ -17,6 +40,22 @@ const ProductCard = () => {
       try {
         const response = await axios.get("/products");
         setProducts(response.data);
+        // Verificar los productos favoritos del usuario
+        const favoritesResponse = await axios.get(`/users/favorites`, {
+          headers: {
+            Authorization: `Bearer ${localStorage.getItem("authToken")}`,
+          },
+        }); // Reemplazar con el ID real
+        const favoriteProducts = favoritesResponse.data.map((fav) =>
+          fav.product.toString()
+        );
+        const favorites = {};
+        products.forEach((product) => {
+          favorites[product._id] = favoriteProducts.includes(
+            product._id.toString()
+          );
+        });
+        setIsFavorited(favorites);
       } catch (err) {
         console.error("Error al cargar los productos:", err);
       }
@@ -25,7 +64,7 @@ const ProductCard = () => {
   }, []);
 
   useEffect(() => {
-    if (products.length === 0) return; // Evita la llamada si no hay productos
+    if (products.length === 0) return;
     const fetchCreator = async () => {
       try {
         const creators = await Promise.all(
@@ -46,14 +85,21 @@ const ProductCard = () => {
     <div className={styles.cardContainer}>
       {products.map((product) => (
         <div key={product._id} className={styles.productCard}>
-          <img 
-            src={product.image} 
-            alt={product.name} 
-            className={styles.productImage} 
+          <img
+            src={product.image}
+            alt={product.name}
+            className={styles.productImage}
           />
           <div className={styles.favButtonContainer}>
-            <button onClick={handleFavoriteClick} className={styles.favButton}>
-              {isFavorited ? <img alt="filledHeart" src="./favorite.png" /> : <img alt="emptyHeart" src="./notFavorite.png" />}
+            <button
+              onClick={() => handleFavoriteClick(product._id)}
+              className={styles.favButton}
+            >
+              {isFavorited[product._id] ? (
+                <img alt="filledHeart" src="./favorite.png" />
+              ) : (
+                <img alt="emptyHeart" src="./notFavorite.png" />
+              )}
             </button>
           </div>
           <Link to={`/product/${product._id}`} className={styles.dotsButton}>
@@ -63,9 +109,10 @@ const ProductCard = () => {
                 <p>${product.price}</p>
               </div>
             </div>
-            {/* <Link to={'/perfildeUsuario'} // construir con fetch esta página (PENDIENTE) */}
             <div className={styles.owner}>
-              By {creator.find((c) => c._id === product.user)?.username || "Unknown"}
+              By{" "}
+              {creator.find((c) => c._id === product.user)?.username ||
+                "Unknown"}
             </div>
           </Link>
         </div>

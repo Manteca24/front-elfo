@@ -21,6 +21,7 @@ const UploadGift = () => {
     gender: "no relevante",
     ageRange: "",
     image: "",
+    relation: "",
     purchaseLocation: {
       ubication: "",
       storeName: "",
@@ -60,6 +61,12 @@ const UploadGift = () => {
     } else {
       setFormData({ ...formData, [name]: value });
     }
+  };
+
+  const handleInputRelation = (e) => {
+    console.log(formData.relation);
+    const { name, value } = e.target;
+    setFormData({ ...formData, [name]: value });
   };
 
   const handleFileChange = (e) => {
@@ -154,6 +161,7 @@ const UploadGift = () => {
       price,
       type,
       gender,
+      relation,
       ageRange,
       tags,
       image,
@@ -173,23 +181,30 @@ const UploadGift = () => {
       }
     }
 
-    // Suponiendo que tienes el estado `filters` que contiene todos los filtros disponibles
     const transformedCategories = () => {
-      const selectedFiltersForCategory = selectedFilters[category._id]; // Filtros seleccionados para esta categoría
-      const filters = selectedFiltersForCategory
-        .map((tag) => {
-          // Aquí buscas el filtro en el que el tag está incluido y obtienes su ObjectId
-          const filter = filtersState.find((f) => f.tags.includes(tag)); // `filtersState` es el array de filtros disponibles
-          return filter ? filter._id : null; // Solo agregas el ObjectId si se encuentra
-        })
-        .filter((id) => id); // Filtramos para asegurarnos de que no agreguemos valores null
+      return Object.entries(selectedFilters).map(
+        ([categoryId, selectedTags]) => {
+          const filters = selectedTags
+            .map((tag) => {
+              const category = categoriesWithFilters.find(
+                (cat) => cat._id === categoryId
+              );
+              const filter = category?.filters.find((f) =>
+                f.tags.includes(tag)
+              );
+              return filter ? filter._id : null;
+            })
+            .filter((id) => id);
 
-      return {
-        category: category._id, // El ObjectId de la categoría
-        filters, // Los ObjectId de los filtros seleccionados
-      };
+          return {
+            category: categoryId,
+            filters,
+          };
+        }
+      );
     };
 
+    console.log(transformedCategories());
     const payload = {
       name,
       description,
@@ -198,6 +213,7 @@ const UploadGift = () => {
       categories: transformedCategories(),
       gender,
       ageRange,
+      relation,
       tags,
       image: imageUrl,
       purchaseLocation,
@@ -404,6 +420,53 @@ const UploadGift = () => {
           <option value="adolescente">Adolescente</option>
           <option value="adulto">Adulto</option>
           <option value="anciano">Anciano</option>
+        </select>
+
+        {/* Relación */}
+        <label htmlFor="relation">
+          Indica tu relación con la persona a la que se lo regalaste:
+        </label>
+        <select
+          className="select-relation"
+          name="relation"
+          value={formData.relation}
+          onChange={handleInputRelation}
+          required
+        >
+          <option value="">Selecciona una relación</option>
+          <option value="madre">Madre</option>
+          <option value="padre">Padre</option>
+          <option value="hermana">Hermana</option>
+          <option value="hermano">Hermano</option>
+          <option value="hija">Hija</option>
+          <option value="hijo">Hijo</option>
+          <option value="abuela">Abuela</option>
+          <option value="abuelo">Abuelo</option>
+          <option value="tía">Tía</option>
+          <option value="tío">Tío</option>
+          <option value="prima">Prima</option>
+          <option value="primo">Primo</option>
+          <option value="amiga">Amiga</option>
+          <option value="amigo">Amigo</option>
+          <option value="sobrina">Sobrina</option>
+          <option value="sobrino">Sobrino</option>
+          <option value="pareja">Pareja</option>
+          <option value="novia">Novia</option>
+          <option value="novio">Novio</option>
+          <option value="esposo">Esposo</option>
+          <option value="esposa">Esposa</option>
+          <option value="compañero de trabajo">Compañero de trabajo</option>
+          <option value="compañera de trabajo">Compañera de trabajo</option>
+          <option value="jefe">Jefe</option>
+          <option value="jefa">Jefa</option>
+          <option value="vecino">Vecino</option>
+          <option value="profesor">Profesor</option>
+          <option value="alumno">Alumno</option>
+          <option value="alumna">Alumna</option>
+          <option value="profesora">Profesora</option>
+          <option value="vecina">Vecina</option>
+          <option value="cliente">Cliente</option>
+          <option value="mascota">Mascota</option>{" "}
         </select>
 
         {/* Ubicación de compra */}

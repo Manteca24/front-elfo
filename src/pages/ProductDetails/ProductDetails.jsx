@@ -1,10 +1,10 @@
 import React, { useEffect, useState, useContext } from "react";
 import { useParams } from "react-router-dom";
-import axios from "../utils/axiosConfig"; // Ahora usamos tu configuración de axios
-import { UserContext } from "../contexts/UserContext";
-import "../App.css";
-import "../styles/comments.css"
-import moment from 'moment'; // Para formatear la fecha
+import axios from "../../utils/axiosConfig"; // Ahora usamos tu configuración de axios
+import { UserContext } from "../../contexts/UserContext";
+import "../../styles/comments.css";
+import moment from "moment"; // Para formatear la fecha
+import Styles from "./ProductDetails.module.css";
 
 const ProductDetails = () => {
   const { id } = useParams();
@@ -60,10 +60,11 @@ const ProductDetails = () => {
     if (!newComment.trim()) return; // Evitar comentarios vacíos
 
     try {
-      const response = await axios.post(`/comments/${id}`, { comment: newComment, 
-        firebaseUid: user.user.firebaseUid, 
+      const response = await axios.post(`/comments/${id}`, {
+        comment: newComment,
+        firebaseUid: user.user.firebaseUid,
       });
-      
+
       setComments([...comments, response.data]); // Añadir el comentario al estado
       setNewComment(""); // Limpiar el formulario
     } catch (err) {
@@ -75,14 +76,21 @@ const ProductDetails = () => {
   if (!creator) return <p>Cargando elfo... </p>;
 
   return (
-    <div className="product-details">
+    <div className={Styles.productDetailsBody}>
       {console.log(comments)}
-      <h1>{product.name}</h1>
-      <img className="product-image" src={product.image} alt={product.name} />
-      <p>{product.description}</p>
-      <p>Precio: {product.price}</p>
-      <p>Elfo: {creator.username}</p>
-
+      <h2>{product.name}</h2>
+      <div className={Styles.productImage}>
+        {console.log(product)}
+        <img src={product.image} alt={product.name} />
+      </div>
+      <section className={Styles.productDetails}>
+        <h4>Elfo: </h4>
+        <p>{creator.username}</p>
+        <h4>Descripción: </h4>
+        <p>{product.description}</p>
+        <h4>Precio: </h4>
+        <p>{product.price}€</p>
+      </section>
       <section className="comments-section">
         <h2>Comentarios</h2>
         {loadingComments ? (
@@ -100,10 +108,14 @@ const ProductDetails = () => {
                   <div className="comment-info">
                     <div className="userInfo">
                       <p>{comment.userId.username}</p>
-                      {comment.userId.isAdmin ? <span className="isAdmin">(Admin)</span> : ''}
+                      {comment.userId.isAdmin ? (
+                        <span className="isAdmin">(Admin)</span>
+                      ) : (
+                        ""
+                      )}
                     </div>
                     <div className="comment-date">
-                      {moment(comment.createdAt).format('DD/MM/YYYY HH:mm')}
+                      {moment(comment.createdAt).format("DD/MM/YYYY HH:mm")}
                     </div>
                   </div>
                 </div>
@@ -124,7 +136,9 @@ const ProductDetails = () => {
               rows="4"
               className="comment-input"
             ></textarea>
-            <button type="submit" className="submit-button">Añadir comentario</button>
+            <button type="submit" className="submit-button">
+              Añadir comentario
+            </button>
           </form>
         ) : (
           <p>Inicia sesión para dejar un comentario.</p>
