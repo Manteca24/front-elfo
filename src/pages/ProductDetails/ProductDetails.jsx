@@ -85,7 +85,7 @@ const ProductDetails = () => {
       </div>
       <section className={Styles.productDetails}>
         <p>
-          Elfo <span>@{creator.username}</span> le regaló estas{" "}
+          Elfo <span>@{creator.username}</span> le regaló{" "}
           {/*idea: al pinchar usuario te lleva a tu perfil*/}
           <span>{product.name} </span>a su <span>{product.relation}</span>
         </p>
