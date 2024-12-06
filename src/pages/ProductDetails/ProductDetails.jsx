@@ -84,12 +84,23 @@ const ProductDetails = () => {
         <img src={product.image} alt={product.name} />
       </div>
       <section className={Styles.productDetails}>
-        <h4>Elfo: </h4>
-        <p>{creator.username}</p>
-        <h4>Descripción: </h4>
-        <p>{product.description}</p>
+        <p>
+          Elfo <span>@{creator.username}</span> le regaló estas{" "}
+          {/*idea: al pinchar usuario te lleva a tu perfil*/}
+          <span>{product.name} </span>a su <span>{product.relation}</span>
+        </p>
+        <h4>{creator.username} nos cuenta... </h4>
+        <p>"{product.description}"</p>
         <h4>Precio: </h4>
         <p>{product.price}€</p>
+        <h4>Género de la persona a la que se lo regaló: </h4>
+        <p>{product.ageRange}</p>
+        <h4>Lugar donde lo compró: </h4>
+        <p>
+          {product.purchaseLocation.ubication === "diy"
+            ? "¡Lo hizo con sus propias manos!"
+            : product.purchaseLocation.ubication}
+        </p>
       </section>
       <section className="comments-section">
         <h2>Comentarios</h2>

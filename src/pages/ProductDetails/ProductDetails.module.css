@@ -21,6 +21,10 @@ display: flex;
 justify-content: center;
   }
 
+  p span{
+    color: rgb(22, 123, 29);
+  }
+
   .productImage img{
     width: 100%;
     max-width: 500px;
