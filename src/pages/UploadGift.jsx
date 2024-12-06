@@ -2,10 +2,10 @@ import React, { useState, useEffect, useContext } from "react";
 import { useNavigate } from "react-router-dom";
 import axios from "axios";
 import { UserContext } from "../contexts/UserContext";
-import Select from "react-select";
 import { storage } from "../config/firebase";
 import { ref, uploadBytes, getDownloadURL } from "firebase/storage";
 import imageCompression from "browser-image-compression"; // librería para achicar la imagen
+import ChooseTags from "../components/ChooseTags";
 
 const UploadGift = () => {
   const { user, loading } = useContext(UserContext);
@@ -30,6 +30,11 @@ const UploadGift = () => {
   const [categoriesWithFilters, setCategoriesWithFilters] = useState([]);
   const [selectedFile, setSelectedFile] = useState(null);
   const navigate = useNavigate();
+  // componente ChooseTags
+  const [selectedFilters, setSelectedFilters] = useState({});
+  const [showModal, setShowModal] = useState(false);
+  const [currentFilter, setCurrentFilter] = useState(null);
+  const [customTag, setCustomTag] = useState("");
 
   useEffect(() => {
     const fetchCategoriesWithFilters = async () => {
@@ -138,6 +143,8 @@ const UploadGift = () => {
   };
 
   const handleSubmit = async (e) => {
+    console.log("selectedFilters antes de enviar al backend:", selectedFilters);
+    console.log("categorieswithfilters", categoriesWithFilters);
     e.preventDefault();
 
     const {
@@ -145,7 +152,6 @@ const UploadGift = () => {
       description,
       price,
       type,
-      categories,
       gender,
       ageRange,
       tags,
@@ -166,12 +172,29 @@ const UploadGift = () => {
       }
     }
 
+    // Suponiendo que tienes el estado `filters` que contiene todos los filtros disponibles
+    const transformedCategories = () => {
+      const selectedFiltersForCategory = selectedFilters[category._id]; // Filtros seleccionados para esta categoría
+      const filters = selectedFiltersForCategory
+        .map((tag) => {
+          // Aquí buscas el filtro en el que el tag está incluido y obtienes su ObjectId
+          const filter = filtersState.find((f) => f.tags.includes(tag)); // `filtersState` es el array de filtros disponibles
+          return filter ? filter._id : null; // Solo agregas el ObjectId si se encuentra
+        })
+        .filter((id) => id); // Filtramos para asegurarnos de que no agreguemos valores null
+
+      return {
+        category: category._id, // El ObjectId de la categoría
+        filters, // Los ObjectId de los filtros seleccionados
+      };
+    };
+
     const payload = {
       name,
       description,
       price,
       type,
-      categories,
+      categories: transformedCategories(),
       gender,
       ageRange,
       tags,
@@ -181,6 +204,7 @@ const UploadGift = () => {
     };
 
     try {
+      console.log(selectedFilters);
       const response = await axios.post("/products/", payload);
 
       if (response.status === 200 || response.status === 201) {
@@ -213,12 +237,12 @@ const UploadGift = () => {
     });
   };
 
-  const handleRemoveTag = (index) => {
-    const updatedTags = formData.tags.filter(
-      (_, tagIndex) => tagIndex !== index
-    );
-    setFormData({ ...formData, tags: updatedTags });
-  };
+  // const handleRemoveTag = (index) => {
+  //   const updatedTags = formData.tags.filter(
+  //     (_, tagIndex) => tagIndex !== index
+  //   );
+  //   setFormData({ ...formData, tags: updatedTags });
+  // };
 
   if (loading) {
     return <p>Cargando...</p>;
@@ -228,6 +252,67 @@ const UploadGift = () => {
     navigate("/login");
     return null;
   }
+
+  // componente ChooseTags
+
+  const toggleFilter = (filterId) => {
+    setSelectedFilters((prevFilters) => {
+      const updatedFilters = { ...prevFilters };
+      if (updatedFilters[filterId]) {
+        delete updatedFilters[filterId]; // Eliminar filtro
+      } else {
+        updatedFilters[filterId] = []; // Añadir filtro vacío
+      }
+      return updatedFilters;
+    });
+  };
+
+  const openModal = (filter) => {
+    setCurrentFilter(filter);
+    setShowModal(true);
+  };
+
+  const closeModal = () => {
+    setShowModal(false);
+    setCurrentFilter(null);
+  };
+
+  const addTagToFilter = (tag) => {
+    if (currentFilter) {
+      setSelectedFilters((prevFilters) => {
+        const updatedFilters = { ...prevFilters };
+
+        // Si ya existe el filtro, solo agregamos el tag si no está presente
+        if (updatedFilters[currentFilter._id]) {
+          if (!updatedFilters[currentFilter._id].includes(tag)) {
+            updatedFilters[currentFilter._id].push(tag);
+          }
+        } else {
+          // Si no existe el filtro, lo inicializamos con el tag
+          updatedFilters[currentFilter._id] = [tag];
+        }
+
+        return updatedFilters;
+      });
+    }
+  };
+
+  const handleAddCustomTag = () => {
+    if (customTag && currentFilter) {
+      addTagToFilter(customTag);
+      setCustomTag("");
+    }
+  };
+
+  const handleRemoveTag = (filterId, tag) => {
+    setSelectedFilters((prevFilters) => {
+      const updatedFilters = { ...prevFilters };
+      const filterTags = updatedFilters[filterId];
+      updatedFilters[filterId] = filterTags.filter((t) => t !== tag);
+      return updatedFilters;
+    });
+  };
+
   return (
     <div className="upload-gift-container">
       <h2 className="upload-gift-title">Subir Producto</h2>
@@ -371,42 +456,20 @@ const UploadGift = () => {
             />
           </div>
         )}
-
-        {/* Filtros de Categorías */}
-        <div className="categories-container">
-          {categoriesWithFilters.map((category) => (
-            <div key={category._id} className="category-container">
-              <h3 className="category-title">{category.name}</h3>
-              <Select
-                className="select-filters"
-                isMulti
-                name={`filters-${category._id}`}
-                options={category.filters.map((filter) => ({
-                  value: filter._id,
-                  label: filter.name,
-                }))}
-                onChange={(selectedFilters) => {
-                  const selectedFilterIds = selectedFilters.map(
-                    (filter) => filter.value
-                  );
-                  handleFilterChange(category._id, selectedFilterIds);
-                }}
-                value={category.filters
-                  .filter((filter) =>
-                    formData.categories.some(
-                      (cat) =>
-                        cat.category === category._id &&
-                        cat.filters.includes(filter._id)
-                    )
-                  )
-                  .map((filter) => ({
-                    value: filter._id,
-                    label: filter.name,
-                  }))}
-              />
-            </div>
-          ))}
-        </div>
+        {/*filtros y categorías*/}
+        <ChooseTags
+          categories={categoriesWithFilters}
+          selectedFilters={selectedFilters}
+          toggleFilter={toggleFilter}
+          openModal={openModal}
+          currentFilter={currentFilter}
+          showModal={showModal}
+          closeModal={closeModal}
+          addTagToFilter={addTagToFilter}
+          customTag={customTag}
+          setCustomTag={setCustomTag}
+          handleAddCustomTag={handleAddCustomTag}
+        />
 
         {/* Tags */}
         <input

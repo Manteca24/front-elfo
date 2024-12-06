@@ -1,7 +1,6 @@
-button {
+/* button {
   padding: 10px 20px;
   background-color: #4caf50; 
-  margin: 10px;
   color: white;
   border: none;
   border-radius: 5px;
@@ -12,6 +11,20 @@ button {
 
 button:hover {
   background-color: #45a049;
+} */
+.managerBody{
+  display: flex;
+  flex-direction: column;
+  margin-top: 30px;
+}
+
+.managerBody table{
+  margin-top: 10px;
+}
+
+.newCategoryButtonContainer{
+  display: flex;
+  justify-content: flex-start;
 }
 
 table {
@@ -81,7 +94,7 @@ input[type="text"]:focus {
   border-color: #2196f3;
 }
 
-button[type="submit"] {
+/* button[type="submit"] {
   margin-top: 20px;
   width: 100%;
   background-color: #4caf50; 
@@ -95,7 +108,7 @@ button[type="button"] {
 button[type="submit"]:hover,
 button[type="button"]:hover {
   background-color: #45a049; 
-}
+} */
 
 
 

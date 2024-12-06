@@ -1,8 +1,16 @@
-/* .profileBody{
-} */
+.profileBody{
+    margin: 0px 10px;
+} 
 
-h3 {
-    text-align: left;
+.buttons{
+    display: flex;
+    justify-content: flex-start;
+    flex-direction: row-reverse;
+}
+
+.profilePicContainer{
+    display: flex;
+    justify-content: center;
 }
 .profilePicElfo {
     width: 200px;
@@ -10,28 +18,39 @@ h3 {
     border-radius: 50%;
     margin-right: 15px;
 }
-
-/* .logOutButton {
+ 
+.logOutButton {
+    display: flex;
+    justify-content: flex-end;
+    margin-right: 30px;
 }
 
-.adminPanelLink {
+.admin {
+    display: flex;
+    justify-content: flex-end;    
+    margin-right: 30px;
+    margin-top: 5px;
 } 
 
 .myFavorites{
-
+    margin: 10px 0px;
 }
 
-.favoritePeople{
+/* .favoritePeople{
+}  */
 
-} 
+.myFavorites p {
+    margin: 10px 0px;
+}
 
+/*
 .commentContent{
 
 } 
 
 .commentText{
 
-} */
+}  */
 
 .fromProduct {
     display: flex;
@@ -43,3 +62,61 @@ h3 {
     color: inherit; 
     font-weight: normal; 
   }
+
+
+.savedPeopleContainer {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 20px; 
+    padding: 10px;
+  }
+  
+  .savedPersonContainer {
+    width: 20%;
+    background-color: #fff;
+    border-radius: 10px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    padding: 15px;
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+  }
+
+  .clickeableDiv{
+    cursor: pointer;
+  }
+  
+  /* Efecto de hover para las tarjetas DA PROBLEMAS AL MODAL*/
+  /* .savedPersonContainer:hover {
+    transform: translateY(-5px); 
+    box-shadow: 0 8px 16px rgba(0, 0, 0, 0.2);
+  }
+   */
+  
+  .savedPersonContainer p {
+    font-size: 0.9rem;
+    color: #555;
+    margin: 5px 0;
+  }
+
+  .savedPersonContainer p span {
+    font-weight: bold;
+  }
+
+  .savedPersonContainer h4 {
+    text-align: center;
+  }
+
+  .savedPersonImg{
+    width: 100%;
+  }
+
+  .cardsButtons{
+    margin-top: auto;
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-end;
+    gap: 5px;
+  }
+  

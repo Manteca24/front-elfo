@@ -1,16 +1,17 @@
 import React, { useState, useEffect } from "react";
 import axios from "axios";
-import Styles from './CategoryManager.module.css';
+import Styles from "./CategoryManager.module.css";
 import { Link } from "react-router-dom";
+import "../../styles/buttons.css";
 
 const CategoryManager = () => {
   const [categories, setCategories] = useState([]);
   const [loading, setLoading] = useState(true);
-  const [showModal, setShowModal] = useState(false); 
-  const [currentCategory, setCurrentCategory] = useState(null); 
-  const [newCategory, setNewCategory] = useState({ name: "", filters: [] }); 
+  const [showModal, setShowModal] = useState(false);
+  const [currentCategory, setCurrentCategory] = useState(null);
+  const [newCategory, setNewCategory] = useState({ name: "", filters: [] });
   const [successMessage, setSuccessMessage] = useState("");
-  const [newFilter, setNewFilter] = useState(""); 
+  const [newFilter, setNewFilter] = useState("");
 
   // Cargar categorías desde el backend
   const fetchCategories = async () => {
@@ -51,15 +52,15 @@ const CategoryManager = () => {
         const response = await axios.post("/categories", newCategory);
         setCategories((prev) => [...prev, response.data]);
       }
-  
+
       // Mostrar mensaje de éxito
       setSuccessMessage("Categoría actualizada correctamente");
-  
+
       // Cierra el modal y limpia los datos
       setShowModal(false);
       setNewCategory({ name: "", filters: [] });
       setCurrentCategory(null);
-  
+
       // Desaparecer el mensaje después de 3 segundos
       setTimeout(() => {
         setSuccessMessage("");
@@ -73,13 +74,19 @@ const CategoryManager = () => {
   const openEditModal = (category) => {
     // console.log(category)
     setCurrentCategory(category);
-    setNewCategory({ name: category.name, filters: category.filters.map(filter => filter.name)});
+    setNewCategory({
+      name: category.name,
+      filters: category.filters.map((filter) => filter.name),
+    });
     setShowModal(true);
   };
 
   // Añadir filtro
   const addFilter = () => {
-    if (newFilter.trim() && !newCategory.filters.map(filter => filter.name).includes(newFilter)) {
+    if (
+      newFilter.trim() &&
+      !newCategory.filters.map((filter) => filter.name).includes(newFilter)
+    ) {
       setNewCategory((prev) => ({
         ...prev,
         filters: [...prev.filters, newFilter],
@@ -101,17 +108,17 @@ const CategoryManager = () => {
   }, []);
 
   return (
-    <div>
-      <h1>Gestión de Categorías</h1>
-      <Link to="/admin">Volver a panel de admin</Link>
+    <div className={Styles.managerBody}>
+      <h2>Gestión de Categorías</h2>
       {/* Mensaje de éxito */}
       {successMessage && (
-        <div className={Styles.successMessage}>
-          {successMessage}
-        </div>
+        <div className={Styles.successMessage}>{successMessage}</div>
       )}
-
-      <button onClick={() => setShowModal(true)}>Añadir nueva categoría</button>
+      <div className={Styles.newCategoryButtonContainer}>
+        <button className="greenButton" onClick={() => setShowModal(true)}>
+          Añadir nueva categoría
+        </button>
+      </div>
 
       {loading ? (
         <p>Cargando categorías...</p>
@@ -129,10 +136,23 @@ const CategoryManager = () => {
             {categories.map((category) => (
               <tr key={category._id} className={Styles.categoryRow}>
                 <td className={Styles.categoryName}>{category.name}</td>
-                <td className={Styles.filtersList}>{category.filters.map(filter => filter.name).join(", ")}</td> {/* Mostrar filtros */}
+                <td className={Styles.filtersList}>
+                  {category.filters.map((filter) => filter.name).join(", ")}
+                </td>{" "}
+                {/* Mostrar filtros */}
                 <td className={Styles.acciones}>
-                  <button onClick={() => openEditModal(category)}>Editar</button>
-                  <button onClick={() => deleteCategory(category._id)}>Eliminar</button>
+                  <button
+                    className="smallButtons"
+                    onClick={() => openEditModal(category)}
+                  >
+                    Editar
+                  </button>
+                  <button
+                    className="smallBadButtons"
+                    onClick={() => deleteCategory(category._id)}
+                  >
+                    Eliminar
+                  </button>
                 </td>
               </tr>
             ))}
@@ -143,7 +163,9 @@ const CategoryManager = () => {
       {/* Modal para crear o editar categoría */}
       {showModal && (
         <div className={Styles.modal}>
-          <div className={Styles.modalContent}> {/*styles utiliza camelCase*/}
+          <div className={Styles.modalContent}>
+            {" "}
+            {/*styles utiliza camelCase*/}
             <h2>{currentCategory ? "Editar Categoría" : "Nueva Categoría"}</h2>
             <form
               onSubmit={(e) => {
@@ -170,10 +192,12 @@ const CategoryManager = () => {
                   {newCategory.filters.map((filter, index) => (
                     <li key={index}>
                       {filter}{" "}
-                      <span 
-                          onClick={() => removeFilter(filter)} 
-                          title="Eliminar filtro"
-                      > &times; {/*x*/}
+                      <span
+                        onClick={() => removeFilter(filter)}
+                        title="Eliminar filtro"
+                      >
+                        {" "}
+                        &times; {/*x*/}
                       </span>
                     </li>
                   ))}
@@ -185,8 +209,8 @@ const CategoryManager = () => {
                   placeholder="Añadir filtro"
                   onKeyDown={(e) => {
                     if (e.key === "Enter") {
-                      e.preventDefault(); 
-                      addFilter(); 
+                      e.preventDefault();
+                      addFilter();
                     }
                   }}
                 />

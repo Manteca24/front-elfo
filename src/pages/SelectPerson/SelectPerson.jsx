@@ -3,7 +3,7 @@ import axios from "axios";
 import "./SelectPerson.css";
 import { UserContext } from "../../contexts/UserContext";
 import AddPerson from "../../components/AddPerson";
-import GiveAPresent from "../../components/GiveAPresent";
+import GiveAPresent from "../../components/GiveAPresent/GiveAPresent";
 
 const SelectPerson = () => {
   const [savedPeople, setSavedPeople] = useState([]);
@@ -177,15 +177,13 @@ const SelectPerson = () => {
               Regalar
             </button>
             {showModal && selectedPerson?._id === person._id && (
-              <div className="modal">
-                <GiveAPresent
-                  person={selectedPerson}
-                  onClose={() => {
-                    setShowModal(false);
-                    setSelectedPerson(null); // Limpiar la persona seleccionada
-                  }}
-                />
-              </div>
+              <GiveAPresent
+                person={selectedPerson}
+                onClose={() => {
+                  setShowModal(false);
+                  setSelectedPerson(null); // Limpiar la persona seleccionada
+                }}
+              />
             )}
           </div>
         ))}

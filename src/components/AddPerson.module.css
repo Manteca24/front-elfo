@@ -1,4 +1,4 @@
-/* Contenedor principal */
+/* 
 .container {
   max-width: 800px;
   margin: 0 auto;
@@ -14,7 +14,6 @@ h1 {
   margin-bottom: 20px;
 }
 
-/* Estilos para los grupos de entradas */
 .inputGroup,
 .inputRelation {
   margin-bottom: 20px;
@@ -44,20 +43,7 @@ select {
   height: 40px;
 }
 
-button {
-  padding: 8px 16px;
-  background-color: #4CAF50;
-  color: white;
-  border: none;
-  border-radius: 4px;
-  cursor: pointer;
-}
 
-button:hover {
-  background-color: #45a049;
-}
-
-/* Filtros */
 .filters {
   margin-top: 30px;
 }
@@ -103,7 +89,6 @@ li button:hover {
   background-color: #c82333;
 }
 
-/* Modal */
 .modal {
   position: fixed;
   top: 0;
@@ -177,24 +162,6 @@ button[type="button"]:focus {
   outline: none;
 }
 
-/* Botón de enviar */
-button[type="submit"] {
-  width: 100%;
-  padding: 10px;
-  background-color: #28a745;
-  color: white;
-  border: none;
-  border-radius: 5px;
-  cursor: pointer;
-}
-
-button[type="submit"]:hover {
-  background-color: #218838;
-}
-
-button[type="submit"]:focus {
-  outline: none;
-}
 
 .tagList {
   display: flex;
@@ -215,3 +182,4 @@ button[type="submit"]:focus {
 .tagButton:hover {
   background-color: #0056b3;
 }
+ */

@@ -3,14 +3,14 @@ import axios from "axios";
 import Styles from "./FilterManager.module.css";
 import { Link } from "react-router-dom";
 import { formatTag } from "../../utils/formatTag";
-
+import "../../styles/buttons.css";
 
 const FilterManager = () => {
   const [groupedFilters, setGroupedFilters] = useState([]);
   const [loading, setLoading] = useState(true);
-  const [selectedFilter, setSelectedFilter] = useState(null); 
-  const [tags, setTags] = useState([]); 
-  const [newTag, setNewTag] = useState(""); 
+  const [selectedFilter, setSelectedFilter] = useState(null);
+  const [tags, setTags] = useState([]);
+  const [newTag, setNewTag] = useState("");
   const [successMessage, setSuccessMessage] = useState("");
 
   // Cargar datos agrupados por categoría
@@ -29,7 +29,7 @@ const FilterManager = () => {
   const openTagModal = async (filter) => {
     try {
       const response = await axios.get(`/filters/${filter._id}`);
-      console.log(filter._id)
+      console.log(filter._id);
       setSelectedFilter(filter);
       setTags(response.data.tags);
     } catch (error) {
@@ -37,24 +37,27 @@ const FilterManager = () => {
     }
   };
 
-// Añadir un tag
-const addTag = async () => {
-  const cleanTag = formatTag(newTag);
+  // Añadir un tag
+  const addTag = async () => {
+    const cleanTag = formatTag(newTag);
 
-  if (cleanTag && !tags.includes(cleanTag)) {
-    try {
-      const response = await axios.put(`/filters/${selectedFilter._id}/tags`, {
-        tags: [cleanTag],
-      });
-      setTags(response.data.tags); // Actualizar tags
-      setNewTag("");  // Limpiar el input
-      setSuccessMessage("Tag añadido correctamente");
-      setTimeout(() => setSuccessMessage(""), 3000);
-    } catch (error) {
-      console.error("Error añadiendo tag:", error);
+    if (cleanTag && !tags.includes(cleanTag)) {
+      try {
+        const response = await axios.put(
+          `/filters/${selectedFilter._id}/tags`,
+          {
+            tags: [cleanTag],
+          }
+        );
+        setTags(response.data.tags); // Actualizar tags
+        setNewTag(""); // Limpiar el input
+        setSuccessMessage("Tag añadido correctamente");
+        setTimeout(() => setSuccessMessage(""), 3000);
+      } catch (error) {
+        console.error("Error añadiendo tag:", error);
+      }
     }
-  }
-};
+  };
 
   // Eliminar un tag
   const removeTag = async (tag) => {
@@ -74,15 +77,14 @@ const addTag = async () => {
   }, []);
 
   return (
-    <div>
-      <h1>Gestión de Filtros</h1>
-      <Link to="/admin">Volver a panel de admin</Link>
+    <div className={Styles.managerBody}>
+      <h2>Gestión de Filtros</h2>
       {loading ? (
         <p>Cargando datos...</p>
       ) : (
         groupedFilters.map((category) => (
           <div key={category._id}>
-            <h2>{category.name}</h2>
+            <h3>{category.name}</h3>
             <table className={Styles.filterTable}>
               <thead>
                 <tr>
@@ -98,7 +100,12 @@ const addTag = async () => {
                     <td>{filter.name}</td>
                     <td>{filter.tags?.length || 0}</td>
                     <td>
-                      <button onClick={() => openTagModal(filter)}>Gestionar Tags</button>
+                      <button
+                        className="smallButtons"
+                        onClick={() => openTagModal(filter)}
+                      >
+                        Gestionar Tags de {filter.name}
+                      </button>
                     </td>
                   </tr>
                 ))}
@@ -113,7 +120,9 @@ const addTag = async () => {
         <div className={Styles.modal}>
           <div className={Styles.modalContent}>
             <h2>Gestionar Tags para {selectedFilter.name}</h2>
-            {successMessage && <p className={Styles.successMessage}>{successMessage}</p>}
+            {successMessage && (
+              <p className={Styles.successMessage}>{successMessage}</p>
+            )}
             <ul>
               {tags.map((tag, index) => (
                 <li key={index}>
