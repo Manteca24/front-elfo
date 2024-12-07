@@ -9,7 +9,8 @@
 
 .filters {
     margin: 5px;
-    width: 20%;
+    min-width: 120px; 
+    flex-grow: 1; 
   }
 .categoryName{
     width: 100%;
@@ -45,6 +46,8 @@
   .listOfFilters{
     display: flex;
     flex-wrap: wrap;
+    justify-content: flex-start;  
+  gap: 10px;  
   }
   
   .lapiz img{

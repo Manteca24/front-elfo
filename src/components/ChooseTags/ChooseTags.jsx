@@ -1,8 +1,8 @@
-import React from "react";
+import React, { useState } from "react";
 import Styles from "./ChooseTags.module.css";
 import "../../styles/buttons.css";
 import "../../styles/buttons.css";
-
+//AQUI
 const ChooseTags = ({
   categories,
   selectedFilters,
@@ -16,6 +16,17 @@ const ChooseTags = ({
   setCustomTag,
   handleAddCustomTag,
 }) => {
+  const [openedFilters, setOpenedFilters] = useState({});
+
+  const openModalIfFirstTime = (filter) => {
+    if (!openedFilters[filter._id]) {
+      setOpenedFilters((prev) => ({
+        ...prev,
+        [filter._id]: true,
+      }));
+      openModal(filter);
+    }
+  };
   return (
     <div className={Styles.filtersContainer}>
       <div className={Styles.filtersTitle}>
@@ -36,7 +47,10 @@ const ChooseTags = ({
                     className={`${Styles.filter} ${
                       selectedFilters[filter._id] ? Styles.selected : ""
                     }`}
-                    onClick={() => toggleFilter(filter._id)}
+                    onClick={() => {
+                      toggleFilter(filter._id);
+                      openModalIfFirstTime(filter);
+                    }}
                   >
                     {selectedFilters[filter._id]
                       ? String.fromCharCode(215)
