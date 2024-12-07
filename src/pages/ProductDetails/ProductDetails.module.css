@@ -31,4 +31,19 @@ justify-content: center;
     border-radius: 5%;
     margin: 20px 0;
   }
+
   
+  .urlToProduct{
+    font-size: 20px;
+    color: black;
+  }
+  
+  .urlToProduct span{
+    font-weight: bold;
+    color: rgb(22, 123, 29);
+  }
+
+  .tags{
+    display: flex;
+    gap: 5px;
+  }

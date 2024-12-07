@@ -376,6 +376,7 @@ const UploadGift = () => {
           onChange={handleTypeChange}
           required
         >
+          <option value="">Selecciona una opción</option>
           <option value="diy">DIY (hazlo tú mismo)</option>
           <option value="experiencia">Experiencia</option>
           <option value="material">Material</option>
@@ -433,7 +434,7 @@ const UploadGift = () => {
           onChange={handleInputRelation}
           required
         >
-          <option value="">Selecciona una relación</option>
+          <option value="">Selecciona una opción</option>
           <option value="madre">Madre</option>
           <option value="padre">Padre</option>
           <option value="hermana">Hermana</option>
@@ -478,6 +479,7 @@ const UploadGift = () => {
             value={formData.purchaseLocation.ubication}
             onChange={handlePurchaseLocationChange}
           >
+            <option value="">Selecciona una opción</option>
             <option value="diy">Lo hice yo</option>
             <option value="online">Online</option>
             <option value="cadena">Cadena</option>

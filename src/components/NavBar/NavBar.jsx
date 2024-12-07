@@ -4,15 +4,33 @@ import styles from "./NavBar.module.css";
 import { useContext, useState } from "react";
 import { UserContext } from "../../contexts/UserContext";
 import "../../App.css";
+import axios from "axios";
 
 const NavBar = () => {
   const { user, loading } = useContext(UserContext);
   const [menuOpen, setMenuOpen] = useState(false);
+  const [query, setQuery] = useState("");
+  const [results, setResults] = useState([]);
   if (loading) return <p>Loading...</p>;
 
   // Cierra el menú al hacer clic en un enlace
   const handleLinkClick = () => {
     setMenuOpen(false);
+  };
+
+  const handleSearch = async () => {
+    if (!query.trim()) return;
+
+    try {
+      const response = await axios.get(`/search/products`, {
+        params: { query },
+      });
+
+      setResults(response.data);
+      console.log(results);
+    } catch (err) {
+      console.error(err);
+    }
   };
 
   return (
@@ -28,12 +46,16 @@ const NavBar = () => {
       ></div>
       <div className={`${styles.navLinks} ${menuOpen ? styles.active : ""}`}>
         <div className={styles.exploreLinks}>
-        <Link to="/most-gifted" onClick={handleLinkClick} style={{color: "#cf0b05"}}>
-          LOS MÁS REGALADOS
-        </Link>
-        <Link to="/news" onClick={handleLinkClick}>
-          NOVEDADES
-        </Link>
+          <Link
+            to="/most-gifted"
+            onClick={handleLinkClick}
+            style={{ color: "#cf0b05" }}
+          >
+            LOS MÁS REGALADOS
+          </Link>
+          <Link to="/news" onClick={handleLinkClick}>
+            NOVEDADES
+          </Link>
         </div>
         {user ? (
           <div className={styles.mobileOnly}>
@@ -52,22 +74,38 @@ const NavBar = () => {
           </div>
         ) : (
           <div className={styles.mobileOnly}>
-            <Link to="/login" className={styles.button} onClick={handleLinkClick}>
+            <Link
+              to="/login"
+              className={styles.button}
+              onClick={handleLinkClick}
+            >
               Iniciar Sesión
             </Link>
-            <Link to="/register" className={styles.button} onClick={handleLinkClick}>
+            <Link
+              to="/register"
+              className={styles.button}
+              onClick={handleLinkClick}
+            >
               Registrarse
             </Link>
           </div>
         )}
       </div>
       <div className={styles.searchBar}>
-        <input type="text" placeholder="Quiero un regalo para..." />
+        <input
+          type="text"
+          placeholder="Quiero un regalo para..."
+          value={query}
+          onChange={(e) => setQuery(e.target.value)}
+          onKeyDown={(event) => {
+            if (event.key === "Enter") {
+              handleSearch();
+            }
+          }}
+        />
       </div>
       <div
-        className={`${styles.authButtons} ${
-          user ? styles.desktopOnly : ""
-        }`}
+        className={`${styles.authButtons} ${user ? styles.desktopOnly : ""}`}
       >
         {user ? (
           <div className={styles.profileContainer}>
@@ -82,7 +120,7 @@ const NavBar = () => {
           </div>
         ) : (
           <div className={styles.desktopOnly}>
-            <Link to="/login" className="button" >
+            <Link to="/login" className="button">
               Iniciar Sesión
             </Link>
             <Link to="/register" className="button">

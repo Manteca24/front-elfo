@@ -1,5 +1,5 @@
 import React, { useEffect, useState, useContext } from "react";
-import { useParams } from "react-router-dom";
+import { Link, useParams } from "react-router-dom";
 import axios from "../../utils/axiosConfig"; // Ahora usamos tu configuración de axios
 import { UserContext } from "../../contexts/UserContext";
 import "../../styles/comments.css";
@@ -101,7 +101,24 @@ const ProductDetails = () => {
         <p>
           {product.purchaseLocation.ubication === "diy"
             ? "¡Lo hizo con sus propias manos!"
-            : product.purchaseLocation.ubication}
+            : product.purchaseLocation.ubication}{" "}
+          - {product.purchaseLocation.storeName}
+        </p>
+        {product.purchaseLocation.url ? (
+          <Link
+            className={Styles.urlToProduct}
+            to={product.purchaseLocation.url}
+          >
+            Producto disponible en <span>este</span> enlace.
+          </Link>
+        ) : (
+          ""
+        )}
+
+        <p className={Styles.tags}>
+          {product.tags.map((tag, index) => (
+            <p key={index}>#{tag} </p>
+          ))}
         </p>
       </section>
       <section className="comments-section">
