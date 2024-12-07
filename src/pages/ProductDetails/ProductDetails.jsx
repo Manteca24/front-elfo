@@ -1,14 +1,14 @@
 import React, { useEffect, useState, useContext } from "react";
 import { Link, useParams } from "react-router-dom";
-import axios from "../../utils/axiosConfig"; // Ahora usamos tu configuración de axios
+import axios from "../../utils/axiosConfig";
 import { UserContext } from "../../contexts/UserContext";
 import "../../styles/comments.css";
-import moment from "moment"; // Para formatear la fecha
+import moment from "moment";
 import Styles from "./ProductDetails.module.css";
 
 const ProductDetails = () => {
   const { id } = useParams();
-  const { user } = useContext(UserContext); // Obtener el usuario conectado
+  const { user } = useContext(UserContext);
   const [product, setProduct] = useState(null);
   const [creator, setCreator] = useState("");
   const [comments, setComments] = useState([]);
@@ -57,7 +57,7 @@ const ProductDetails = () => {
 
   const handleAddComment = async (e) => {
     e.preventDefault();
-    if (!newComment.trim()) return; // Evitar comentarios vacíos
+    if (!newComment.trim()) return;
 
     try {
       const response = await axios.post(`/comments/${id}`, {
@@ -65,8 +65,8 @@ const ProductDetails = () => {
         firebaseUid: user.user.firebaseUid,
       });
 
-      setComments([...comments, response.data]); // Añadir el comentario al estado
-      setNewComment(""); // Limpiar el formulario
+      setComments([...comments, response.data]);
+      setNewComment("");
     } catch (err) {
       console.error("Error al añadir el comentario:", err);
     }

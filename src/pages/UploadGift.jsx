@@ -73,16 +73,15 @@ const UploadGift = () => {
     const file = e.target.files[0];
     if (file) {
       setSelectedFile(file);
-      const imageUrl = URL.createObjectURL(file); // Crea una URL para la vista previa
-      setPreviewImage(imageUrl); // Guarda la URL en el estado
+      const imageUrl = URL.createObjectURL(file);
+      setPreviewImage(imageUrl);
     }
   };
 
-  // Opcional: Limpia la URL anterior al desmontar el componente
   useEffect(() => {
     return () => {
       if (previewImage) {
-        URL.revokeObjectURL(previewImage); // Libera la memoria de la URL creada
+        URL.revokeObjectURL(previewImage);
       }
     };
   }, [previewImage]);
@@ -120,8 +119,8 @@ const UploadGift = () => {
 
   const compressImage = async (file) => {
     const options = {
-      maxSizeMB: 0.2, // Tamaño máximo en MB
-      maxWidthOrHeight: 800, // Redimensionar a un tamaño máximo de 800px
+      maxSizeMB: 0.2,
+      maxWidthOrHeight: 800,
       useWebWorker: true,
     };
     try {
@@ -241,7 +240,7 @@ const UploadGift = () => {
       ...formData,
       purchaseLocation: {
         ...formData.purchaseLocation,
-        [name]: value, // Actualiza la propiedad correspondiente (storeName, url, ubication)
+        [name]: value,
       },
     });
   };
@@ -250,7 +249,7 @@ const UploadGift = () => {
     const { value } = e.target;
     setFormData({
       ...formData,
-      type: value, // Actualiza 'type' directamente con el valor seleccionado
+      type: value,
     });
   };
 
@@ -276,9 +275,9 @@ const UploadGift = () => {
     setSelectedFilters((prevFilters) => {
       const updatedFilters = { ...prevFilters };
       if (updatedFilters[filterId]) {
-        delete updatedFilters[filterId]; // Eliminar filtro
+        delete updatedFilters[filterId];
       } else {
-        updatedFilters[filterId] = []; // Añadir filtro vacío
+        updatedFilters[filterId] = [];
       }
       return updatedFilters;
     });
@@ -299,13 +298,11 @@ const UploadGift = () => {
       setSelectedFilters((prevFilters) => {
         const updatedFilters = { ...prevFilters };
 
-        // Si ya existe el filtro, solo agregamos el tag si no está presente
         if (updatedFilters[currentFilter._id]) {
           if (!updatedFilters[currentFilter._id].includes(tag)) {
             updatedFilters[currentFilter._id].push(tag);
           }
         } else {
-          // Si no existe el filtro, lo inicializamos con el tag
           updatedFilters[currentFilter._id] = [tag];
         }
 

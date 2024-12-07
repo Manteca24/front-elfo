@@ -83,7 +83,7 @@
 .favButton img {
   width: 24px;
   filter: brightness(0) saturate(100%) invert(26%) sepia(74%) saturate(407%) hue-rotate(355deg) brightness(96%) contrast(95%);
-  /* Este filtro aplica el color rojo (#b6221d) */
+  /*(#b6221d) */
 }
 
 .favButton:hover img {

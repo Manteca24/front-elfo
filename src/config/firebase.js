@@ -1,6 +1,6 @@
 import { initializeApp } from "firebase/app";
 import { getAuth } from "firebase/auth";
-import { getStorage } from "firebase/storage";  // Asegúrate de importar esta función
+import { getStorage } from "firebase/storage";  
 
 const firebaseConfig = {
   apiKey: import.meta.env.VITE_FIREBASE_API_KEY,
@@ -13,8 +13,8 @@ const firebaseConfig = {
 
 const app = initializeApp(firebaseConfig);
 
-// Ahora obtenemos la instancia de Firebase Storage
+// obtenemos la instancia de Firebase Storage
 const storage = getStorage(app);
 
 export const auth = getAuth(app);
-export { storage };  // Exporta el storage para usarlo en otros componentes
+export { storage }; 

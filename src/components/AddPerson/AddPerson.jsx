@@ -11,14 +11,13 @@ const AddPerson = () => {
   const [name, setName] = useState("");
   const [categories, setCategories] = useState([]);
   const [selectedFilters, setSelectedFilters] = useState({});
-  const [showModal, setShowModal] = useState(false); // Para mostrar/ocultar modal
-  const [currentFilter, setCurrentFilter] = useState(null); // Filtro actual para el modal
+  const [showModal, setShowModal] = useState(false);
+  const [currentFilter, setCurrentFilter] = useState(null);
   const [gender, setGender] = useState("");
   const [ageRange, setAgeRange] = useState("");
   const [relation, setRelation] = useState("");
-  const [customTag, setCustomTag] = useState(""); // Nuevo estado para tags personalizados
+  const [customTag, setCustomTag] = useState("");
 
-  // Cargar categorías al principio
   useEffect(() => {
     const fetchCategories = async () => {
       try {
@@ -31,10 +30,8 @@ const AddPerson = () => {
     if (user) fetchCategories();
   }, [user]);
 
-  // Cambiar el nombre
   const handleNameChange = (e) => setName(e.target.value);
 
-  // Seleccionar/deseleccionar filtros
   const toggleFilter = (filterId) => {
     setSelectedFilters((prev) => {
       const updatedFilters = { ...prev };
@@ -47,24 +44,20 @@ const AddPerson = () => {
     });
   };
 
-  // Mostrar el modal para añadir tags
   const openModal = (filter) => {
     setCurrentFilter(filter);
     setShowModal(true);
   };
 
-  // Cerrar el modal
   const closeModal = () => {
     setShowModal(false);
   };
 
-  // Agregar tag al filtro seleccionado
   const addTagToFilter = (tag) => {
     setSelectedFilters((prev) => {
-      const filterId = currentFilter._id; // ID del filtro actual
-      const currentTags = prev[filterId] || []; // Tags actuales del filtro
+      const filterId = currentFilter._id;
+      const currentTags = prev[filterId] || [];
 
-      // Si el tag ya existe, lo eliminamos
       if (currentTags.includes(tag)) {
         return {
           ...prev,
@@ -72,24 +65,21 @@ const AddPerson = () => {
         };
       }
 
-      // Si el tag no existe, lo añadimos
       return {
         ...prev,
         [filterId]: [...currentTags, tag],
       };
     });
   };
-  // Manejar el envío de un tag personalizado
   const handleAddCustomTag = () => {
-    if (!customTag.trim()) return; // No hacer nada si el campo está vacío
+    if (!customTag.trim()) return;
     setSelectedFilters((prev) => ({
       ...prev,
       [currentFilter._id]: [...(prev[currentFilter._id] || []), customTag],
     }));
-    setCustomTag(""); // Limpiar el campo de entrada
+    setCustomTag("");
   };
 
-  // Enviar datos al backend
   const handleSubmit = async (e) => {
     e.preventDefault();
     if (

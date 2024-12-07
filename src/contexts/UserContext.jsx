@@ -9,20 +9,20 @@ const UserProvider = ({ children }) => {
   const [user, setUser] = useState(null);
   const [loading, setLoading] = useState(true);
 
-  useEffect(() => { 
+  useEffect(() => {
     const fetchUser = async () => {
       setLoading(true);
       const token = localStorage.getItem("authToken");
 
       if (token) {
         try {
-          const response = await axios.get('/users/user', {
+          const response = await axios.get("/users/user", {
             headers: { Authorization: `Bearer ${token}` },
           });
           setUser(response.data);
         } catch (error) {
           console.error("Error al obtener el usuario:", error);
-          setUser(null); // Asegura que `user` se establezca como null en caso de error
+          setUser(null);
         }
       } else {
         setUser(null); // Si no hay token, establece `user` en null
@@ -31,7 +31,7 @@ const UserProvider = ({ children }) => {
     };
 
     fetchUser();
-  }, []); 
+  }, []);
 
   return (
     <UserContext.Provider value={{ user, setUser, loading }}>
@@ -40,4 +40,4 @@ const UserProvider = ({ children }) => {
   );
 };
 
-export default UserProvider; 
+export default UserProvider;

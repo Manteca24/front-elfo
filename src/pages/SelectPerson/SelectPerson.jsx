@@ -13,7 +13,6 @@ const SelectPerson = () => {
   const [showModal, setShowModal] = useState(false);
   const [visiblePersonId, setVisiblePersonId] = useState(null);
 
-  // Fetch inicial para cargar las personas guardadas
   useEffect(() => {
     const fetchSavedPeople = async () => {
       try {
@@ -36,24 +35,20 @@ const SelectPerson = () => {
     setVisiblePersonId((prevId) => (prevId === personId ? null : personId));
   };
 
-  // Abrir el modal para gestionar tags de una persona
   const handleOpenTagsModal = (person) => {
     setSelectedPerson(person);
     setIsModalOpen(true);
   };
 
-  // Cerrar el modal
   const handleCloseModal = () => {
     setIsModalOpen(false);
     setSelectedPerson(null);
   };
 
-  // Añadir un nuevo tag a una persona guardada
   const handleAddTag = async (e, personId, filterId) => {
     if (e.key === "Enter" && e.target.value.trim() !== "") {
       const newTag = e.target.value.trim();
       try {
-        // Actualizar en el backend
         await axios.put(
           `/users/saved-people/${personId}/filters/${filterId}/tags`,
           {
@@ -70,7 +65,6 @@ const SelectPerson = () => {
           }
         );
 
-        // Actualizar estado local
         setSavedPeople((prevPeople) =>
           prevPeople.map((person) =>
             person._id === personId
@@ -85,17 +79,15 @@ const SelectPerson = () => {
               : person
           )
         );
-        e.target.value = ""; // Limpiar el input
+        e.target.value = "";
       } catch (err) {
         console.error("Error adding tag:", err);
       }
     }
   };
 
-  // Eliminar un tag de una persona guardada
   const handleRemoveTag = async (personId, filterId, tagToRemove) => {
     try {
-      // Actualizar en el backend
       await axios.put(
         `/users/saved-people/${personId}/filters/${filterId}/tags`,
         {
@@ -110,7 +102,6 @@ const SelectPerson = () => {
         }
       );
 
-      // Actualizar estado local
       setSavedPeople((prevPeople) =>
         prevPeople.map((person) =>
           person._id === personId
@@ -128,7 +119,6 @@ const SelectPerson = () => {
             : person
         )
       );
-      // Actualizar también selectedPerson para reflejar el cambio en el modal
       setSelectedPerson((prevSelectedPerson) => {
         if (prevSelectedPerson._id === personId) {
           return {
@@ -215,7 +205,7 @@ const SelectPerson = () => {
                 person={selectedPerson}
                 onClose={() => {
                   setShowModal(false);
-                  setSelectedPerson(null); // Limpiar la persona seleccionada
+                  setSelectedPerson(null);
                 }}
               />
             )}

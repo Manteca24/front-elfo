@@ -28,18 +28,18 @@
 }
 
 .hiddenPart {
-  display: none; /* Por defecto, ocultamos el contenido */
-  transition: all 0.3s ease-in-out; /* Animación para suavizar el efecto */
+  display: none; 
+  transition: all 0.3s ease-in-out;
 }
 
 .hiddenPart.visible {
-  display: block; /* Mostramos el contenido cuando se despliega */
+  display: block; 
 }
 
 .clickeableDiv {
   display: flex;
   align-items: center;
-  cursor: pointer; /* Para indicar que es interactivo */
+  cursor: pointer; 
 }
 
 

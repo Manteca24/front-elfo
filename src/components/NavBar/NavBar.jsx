@@ -14,10 +14,9 @@ const NavBar = () => {
   const [placeholder, setPlaceholder] = useState("Quiero un regalo para...");
   const [filters, setFilters] = useState([]);
 
-  // Función para obtener palabras aleatorias
   const fetchFilters = async () => {
     try {
-      const response = await axios.get("/filters"); // Asegúrate de que esta ruta apunte correctamente a tu backend
+      const response = await axios.get("/filters");
       const data = response.data;
 
       const filterNames = data.map((filter) => filter.name);

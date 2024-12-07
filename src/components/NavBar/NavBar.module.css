@@ -60,7 +60,7 @@
     background-color: #F4EBE3;
     transition: border-color 0.3s;
     /* lupa */
-    background-image: url('buscar.png'); /* Icono de lupa */
+    background-image: url('/buscar.png'); /* Icono de lupa */
     background-size: 16px 16px; 
     background-repeat: no-repeat;
     background-position: 10px center; 

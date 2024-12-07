@@ -13,7 +13,6 @@ const FilterManager = () => {
   const [newTag, setNewTag] = useState("");
   const [successMessage, setSuccessMessage] = useState("");
 
-  // Cargar datos agrupados por categoría
   const fetchGroupedFilters = async () => {
     try {
       const response = await axios.get("/filters/grouped");
@@ -25,7 +24,6 @@ const FilterManager = () => {
     }
   };
 
-  // Abrir modal y cargar tags del filtro seleccionado
   const openTagModal = async (filter) => {
     try {
       const response = await axios.get(`/filters/${filter._id}`);
@@ -37,7 +35,6 @@ const FilterManager = () => {
     }
   };
 
-  // Añadir un tag
   const addTag = async () => {
     const cleanTag = formatTag(newTag);
 
@@ -49,8 +46,8 @@ const FilterManager = () => {
             tags: [cleanTag],
           }
         );
-        setTags(response.data.tags); // Actualizar tags
-        setNewTag(""); // Limpiar el input
+        setTags(response.data.tags);
+        setNewTag("");
         setSuccessMessage("Tag añadido correctamente");
         setTimeout(() => setSuccessMessage(""), 3000);
       } catch (error) {
@@ -59,14 +56,13 @@ const FilterManager = () => {
     }
   };
 
-  // Eliminar un tag
   const removeTag = async (tag) => {
     try {
       const response = await axios.delete(
         `/filters/${selectedFilter._id}/tags`,
         { data: { tag } } // Enviar como string, no array
       );
-      setTags(response.data.filter.tags); // Actualizar tags con los datos del servidor
+      setTags(response.data.filter.tags);
     } catch (error) {
       console.error("Error eliminando tag:", error);
     }

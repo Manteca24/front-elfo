@@ -2,11 +2,11 @@ import { useState, useContext, useEffect } from "react";
 import { auth } from "../config/firebase";
 import { createUserWithEmailAndPassword } from "firebase/auth";
 import { ref, uploadBytes, getDownloadURL } from "firebase/storage";
-import { storage } from "../config/firebase"; // Asegúrate de importar correctamente el storage
+import { storage } from "../config/firebase";
 import axios from "../utils/axiosConfig";
 import { useNavigate } from "react-router-dom";
 import { UserContext } from "../contexts/UserContext";
-import imageCompression from "browser-image-compression"; // Asegúrate de tener este paquete instalado
+import imageCompression from "browser-image-compression";
 import "../App.css";
 
 const Register = () => {
@@ -18,7 +18,7 @@ const Register = () => {
     gender: "",
     birthday: "",
     bio: "",
-    profilePicture: null, // Cambiado a objeto para manejar archivos
+    profilePicture: null,
   });
   const [error, setError] = useState("");
   const [loading, setLoading] = useState(false);
@@ -85,9 +85,12 @@ const Register = () => {
 
     try {
       const { email, password, profilePicture, ...rest } = formData; //REST???
-      console.log(formData)
-      // Crear usuario en Firebase Auth
-      const userCredential = await createUserWithEmailAndPassword(auth, email, password);
+      console.log(formData);
+      const userCredential = await createUserWithEmailAndPassword(
+        auth,
+        email,
+        password
+      );
       const user = userCredential.user;
       const token = await user.getIdToken();
       localStorage.setItem("authToken", token);
@@ -98,16 +101,16 @@ const Register = () => {
         profilePictureUrl = await uploadImageToFirebase(profilePicture);
       }
 
-      // Crear objeto final para el backend
-      console.log(rest)
-      const userData = { ...formData, profilePicture: profilePictureUrl, firebaseUid: user.uid };
-console.log(userData)
-      // Enviar datos al backend
-      const response = await axios.post(
-        "/users/user",
-        userData,
-        { headers: { Authorization: `Bearer ${token}` } }
-      );
+      console.log(rest);
+      const userData = {
+        ...formData,
+        profilePicture: profilePictureUrl,
+        firebaseUid: user.uid,
+      };
+      console.log(userData);
+      const response = await axios.post("/users/user", userData, {
+        headers: { Authorization: `Bearer ${token}` },
+      });
 
       console.log("Usuario registrado en el backend:", response.data);
       setUser({ firebaseUid: user.uid, ...userData });
@@ -129,7 +132,11 @@ console.log(userData)
           Únete a nuestra comunidad para compartir y descubrir los mejores
           regalos personalizados.
         </p>
-        <img src="/elfos.png" alt="Elfo ilustración" className="register-illustration" />
+        <img
+          src="/elfos.png"
+          alt="Elfo ilustración"
+          className="register-illustration"
+        />
       </div>
 
       <div className="register-right">
@@ -137,23 +144,52 @@ console.log(userData)
         <form onSubmit={handleRegister} className="register-form">
           <div>
             <label>Nombre Completo:</label>
-            <input type="text" name="fullName" value={formData.fullName} onChange={handleInputChange} required />
+            <input
+              type="text"
+              name="fullName"
+              value={formData.fullName}
+              onChange={handleInputChange}
+              required
+            />
           </div>
           <div>
             <label>Nombre de Usuario:</label>
-            <input type="text" name="username" value={formData.username} onChange={handleInputChange} required />
+            <input
+              type="text"
+              name="username"
+              value={formData.username}
+              onChange={handleInputChange}
+              required
+            />
           </div>
           <div>
             <label>Email:</label>
-            <input type="email" name="email" value={formData.email} onChange={handleInputChange} required />
+            <input
+              type="email"
+              name="email"
+              value={formData.email}
+              onChange={handleInputChange}
+              required
+            />
           </div>
           <div>
             <label>Contraseña:</label>
-            <input type="password" name="password" value={formData.password} onChange={handleInputChange} required />
+            <input
+              type="password"
+              name="password"
+              value={formData.password}
+              onChange={handleInputChange}
+              required
+            />
           </div>
           <div>
             <label>Género:</label>
-            <select name="gender" value={formData.gender} onChange={handleInputChange} required>
+            <select
+              name="gender"
+              value={formData.gender}
+              onChange={handleInputChange}
+              required
+            >
               <option value="" disabled>
                 Selecciona una opción
               </option>
@@ -166,19 +202,38 @@ console.log(userData)
           </div>
           <div>
             <label>Fecha de Nacimiento:</label>
-            <input type="date" name="birthday" value={formData.birthday} onChange={handleInputChange} required />
+            <input
+              type="date"
+              name="birthday"
+              value={formData.birthday}
+              onChange={handleInputChange}
+              required
+            />
           </div>
           <div>
             <label>Biografía:</label>
-            <textarea name="bio" value={formData.bio} onChange={handleInputChange} required />
+            <textarea
+              name="bio"
+              value={formData.bio}
+              onChange={handleInputChange}
+              required
+            />
           </div>
           <div>
             <label>Subir imagen:</label>
-            <input type="file" accept="image/png, image/jpeg" onChange={handleFileChange} />
+            <input
+              type="file"
+              accept="image/png, image/jpeg"
+              onChange={handleFileChange}
+            />
           </div>
           {previewImage && (
             <div className="image-preview">
-              <img src={previewImage} alt="Vista previa" style={{ maxWidth: "40%", maxHeight: "200px" }} />
+              <img
+                src={previewImage}
+                alt="Vista previa"
+                style={{ maxWidth: "40%", maxHeight: "200px" }}
+              />
             </div>
           )}
           {error && <p className="register-error">{error}</p>}

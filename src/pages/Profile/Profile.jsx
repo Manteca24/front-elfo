@@ -3,8 +3,7 @@ import { UserContext } from "../../contexts/UserContext";
 import LogoutButton from "../../components/LogOutButton";
 import { Link } from "react-router-dom";
 import axios from "axios";
-import moment from "moment"; // Para formatear la fecha
-//styles
+import moment from "moment";
 import { useNavigate } from "react-router-dom";
 import Styles from "./Profile.module.css";
 import "../../styles/comments.css";
@@ -22,7 +21,6 @@ const Profile = () => {
   const [selectedPerson, setSelectedPerson] = useState(null);
   const [favoriteDetails, setFavoriteDetails] = useState([]);
 
-  // Fetch inicial para cargar las personas guardadas
   useEffect(() => {
     const fetchSavedPeople = async () => {
       try {
@@ -41,14 +39,12 @@ const Profile = () => {
     }
   }, [user]);
 
-  // favoriteDetails
   useEffect(() => {
     const fetchFavoriteDetails = async () => {
       try {
-        // Hacer llamadas para cada producto favorito y almacenar los detalles
         const promises = user.user.favoriteProducts.map(async (fav) => {
           const response = await axios.get(`/products/${fav.product}`);
-          return response.data; // Se asume que devuelve el nombre e imagen del producto
+          return response.data;
         });
 
         const favorites = await Promise.all(promises);
@@ -67,24 +63,20 @@ const Profile = () => {
     }
   }, [user]);
 
-  // Abrir el modal para gestionar tags de una persona
   const handleOpenTagsModal = (person) => {
     setSelectedPerson(person);
     setIsModalOpen(true);
   };
 
-  // Cerrar el modal
   const handleCloseModal = () => {
     setIsModalOpen(false);
     setSelectedPerson(null);
   };
 
-  // Añadir un nuevo tag a una persona guardada
   const handleAddTag = async (e, personId, filterId) => {
     if (e.key === "Enter" && e.target.value.trim() !== "") {
       const newTag = e.target.value.trim();
       try {
-        // Actualizar en el backend
         await axios.put(
           `/users/saved-people/${personId}/filters/${filterId}/tags`,
           {
@@ -101,7 +93,6 @@ const Profile = () => {
           }
         );
 
-        // Actualizar estado local
         setSavedPeople((prevPeople) =>
           prevPeople.map((person) =>
             person._id === personId
@@ -123,10 +114,8 @@ const Profile = () => {
     }
   };
 
-  // Eliminar un tag de una persona guardada
   const handleRemoveTag = async (personId, filterId, tagToRemove) => {
     try {
-      // Actualizar en el backend
       await axios.put(
         `/users/saved-people/${personId}/filters/${filterId}/tags`,
         {
@@ -141,7 +130,6 @@ const Profile = () => {
         }
       );
 
-      // Actualizar estado local
       setSavedPeople((prevPeople) =>
         prevPeople.map((person) =>
           person._id === personId
@@ -159,7 +147,6 @@ const Profile = () => {
             : person
         )
       );
-      // Actualizar también selectedPerson para reflejar el cambio en el modal
       setSelectedPerson((prevSelectedPerson) => {
         if (prevSelectedPerson._id === personId) {
           return {
@@ -201,7 +188,6 @@ const Profile = () => {
 
   const handleRemoveFilter = async (personId, filterId) => {
     try {
-      // Eliminar el filtro en el backend
       await axios.delete(
         `/users/saved-people/${personId}/filters/${filterId}`,
         {
@@ -211,7 +197,6 @@ const Profile = () => {
         }
       );
 
-      // Actualizar el estado local
       setSavedPeople((prevPeople) =>
         prevPeople.map((person) =>
           person._id === personId
@@ -225,7 +210,6 @@ const Profile = () => {
         )
       );
 
-      // Actualizar el estado del modal para reflejar el cambio
       setSelectedPerson((prevSelectedPerson) => ({
         ...prevSelectedPerson,
         filters: prevSelectedPerson.filters.filter(

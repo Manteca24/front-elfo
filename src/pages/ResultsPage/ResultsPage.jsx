@@ -14,7 +14,6 @@ const ResultsPage = () => {
   const handleFavoriteClick = async (productId) => {
     if (isFavorited[productId]) {
       try {
-        // Eliminar de favoritos
         await axios.delete(`/users/favorites/${productId}`, {
           headers: {
             Authorization: `Bearer ${localStorage.getItem("authToken")}`,
@@ -26,7 +25,6 @@ const ResultsPage = () => {
       }
     } else {
       try {
-        // Añadir a favoritos
         await axios.post(`/users/favorites`, { productId });
         setIsFavorited((prev) => ({ ...prev, [productId]: true }));
       } catch (err) {

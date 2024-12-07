@@ -13,7 +13,6 @@ const CategoryManager = () => {
   const [successMessage, setSuccessMessage] = useState("");
   const [newFilter, setNewFilter] = useState("");
 
-  // Cargar categorías desde el backend
   const fetchCategories = async () => {
     try {
       const response = await axios.get("/categories");
@@ -36,11 +35,9 @@ const CategoryManager = () => {
     }
   };
 
-  // Crear o actualizar una categoría
   const saveCategory = async () => {
     try {
       if (currentCategory) {
-        // Actualizar categoría existente
         await axios.put(`/categories/${currentCategory._id}`, newCategory);
         setCategories((prev) =>
           prev.map((cat) =>
@@ -48,20 +45,16 @@ const CategoryManager = () => {
           )
         );
       } else {
-        // Crear nueva categoría
         const response = await axios.post("/categories", newCategory);
         setCategories((prev) => [...prev, response.data]);
       }
 
-      // Mostrar mensaje de éxito
       setSuccessMessage("Categoría actualizada correctamente");
 
-      // Cierra el modal y limpia los datos
       setShowModal(false);
       setNewCategory({ name: "", filters: [] });
       setCurrentCategory(null);
 
-      // Desaparecer el mensaje después de 3 segundos
       setTimeout(() => {
         setSuccessMessage("");
       }, 3000);
@@ -70,7 +63,6 @@ const CategoryManager = () => {
     }
   };
 
-  // Abrir modal para editar
   const openEditModal = (category) => {
     // console.log(category)
     setCurrentCategory(category);
@@ -81,7 +73,6 @@ const CategoryManager = () => {
     setShowModal(true);
   };
 
-  // Añadir filtro
   const addFilter = () => {
     if (
       newFilter.trim() &&
@@ -95,7 +86,6 @@ const CategoryManager = () => {
     }
   };
 
-  // Eliminar filtro
   const removeFilter = (filter) => {
     setNewCategory((prev) => ({
       ...prev,

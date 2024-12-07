@@ -4,7 +4,7 @@ import { signInWithEmailAndPassword } from "firebase/auth";
 import axios from "../utils/axiosConfig";
 import { useNavigate } from "react-router-dom";
 import { UserContext } from "../contexts/UserContext";
-import '../App.css';
+import "../App.css";
 
 const LogIn = () => {
   const [email, setEmail] = useState("");
@@ -15,29 +15,29 @@ const LogIn = () => {
   const { setUser } = useContext(UserContext);
 
   const handleLogin = async (e) => {
-    e.preventDefault(); 
+    e.preventDefault();
     setLoading(true);
     setError("");
 
     try {
-      const userCredential = await signInWithEmailAndPassword(auth, email, password);
+      const userCredential = await signInWithEmailAndPassword(
+        auth,
+        email,
+        password
+      );
       const user = userCredential.user;
-
 
       const token = await user.getIdToken();
 
-      // Guarda el token en el localStorage y actualiza axios
-      localStorage.setItem('authToken', token);
+      localStorage.setItem("authToken", token);
       axios.defaults.headers.common["Authorization"] = `Bearer ${token}`;
 
-      // Obtén los datos del usuario desde el backend
-      const response = await axios.get('/users/user',
-      {headers: { Authorization: `Bearer ${token}` },
+      const response = await axios.get("/users/user", {
+        headers: { Authorization: `Bearer ${token}` },
       });
-      setUser(response.data); // Actualiza el contexto de usuario
+      setUser(response.data);
 
       navigate("/dashboard");
-
     } catch (err) {
       console.error("Error al iniciar sesión:", error);
       setError("Error al iniciar sesión. Revisa tus credenciales.");
@@ -58,15 +58,19 @@ const LogIn = () => {
   //     console.error('Error al obtener el token:', error);
   //   }
   // };
-  
+
   // getToken();
 
-  return  (
+  return (
     <div className="login-container">
       <div className="login-left">
         <h1>¡Hola, elfo!</h1>
         <p>Dime quién eres y ¡empezamos!</p>
-        <img src="/elfo.png" alt="Elfo ilustración" className="login-illustration" />
+        <img
+          src="/elfo.png"
+          alt="Elfo ilustración"
+          className="login-illustration"
+        />
       </div>
 
       <div className="login-right">

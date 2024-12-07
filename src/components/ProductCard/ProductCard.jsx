@@ -6,7 +6,7 @@ import { UserContext } from "../../contexts/UserContext";
 
 const ProductCard = () => {
   const [products, setProducts] = useState([]);
-  const [isFavorited, setIsFavorited] = useState({}); // Cambiado a objeto para manejar el estado por producto
+  const [isFavorited, setIsFavorited] = useState({});
   const [creator, setCreator] = useState([]);
   const { user } = useContext(UserContext);
   console.log(user);
@@ -14,7 +14,6 @@ const ProductCard = () => {
   const handleFavoriteClick = async (productId) => {
     if (isFavorited[productId]) {
       try {
-        // Eliminar de favoritos
         await axios.delete(`/users/favorites/${productId}`, {
           headers: {
             Authorization: `Bearer ${localStorage.getItem("authToken")}`,
@@ -26,7 +25,6 @@ const ProductCard = () => {
       }
     } else {
       try {
-        // Añadir a favoritos
         await axios.post(`/users/favorites`, { productId });
         setIsFavorited((prev) => ({ ...prev, [productId]: true }));
       } catch (err) {
@@ -40,12 +38,11 @@ const ProductCard = () => {
       try {
         const response = await axios.get("/products");
         setProducts(response.data);
-        // Verificar los productos favoritos del usuario
         const favoritesResponse = await axios.get(`/users/favorites`, {
           headers: {
             Authorization: `Bearer ${localStorage.getItem("authToken")}`,
           },
-        }); // Reemplazar con el ID real
+        });
         const favoriteProducts = favoritesResponse.data.map((fav) =>
           fav.product.toString()
         );

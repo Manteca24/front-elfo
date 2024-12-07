@@ -115,7 +115,7 @@ const ChooseTags = ({
                 onChange={(e) => setCustomTag(e.target.value)}
                 onKeyDown={(e) => {
                   if (e.key === "Enter") {
-                    e.preventDefault(); // Evita que el formulario se envíe
+                    e.preventDefault();
                     handleAddCustomTag();
                   }
                 }}
