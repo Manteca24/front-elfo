@@ -20,6 +20,7 @@ const Profile = () => {
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [showModal, setShowModal] = useState(false);
   const [selectedPerson, setSelectedPerson] = useState(null);
+  const [favoriteDetails, setFavoriteDetails] = useState([]);
 
   // Fetch inicial para cargar las personas guardadas
   useEffect(() => {
@@ -37,6 +38,32 @@ const Profile = () => {
     };
     if (user) {
       fetchSavedPeople();
+    }
+  }, [user]);
+
+  // favoriteDetails
+  useEffect(() => {
+    const fetchFavoriteDetails = async () => {
+      try {
+        // Hacer llamadas para cada producto favorito y almacenar los detalles
+        const promises = user.user.favoriteProducts.map(async (fav) => {
+          const response = await axios.get(`/products/${fav.product}`);
+          return response.data; // Se asume que devuelve el nombre e imagen del producto
+        });
+
+        const favorites = await Promise.all(promises);
+
+        setFavoriteDetails(favorites);
+      } catch (err) {
+        console.error(
+          "Error al cargar los detalles de los productos favoritos:",
+          err
+        );
+      }
+    };
+
+    if (user?.user?.favoriteProducts?.length > 0) {
+      fetchFavoriteDetails();
     }
   }, [user]);
 
@@ -241,13 +268,17 @@ const Profile = () => {
       </div>
       <section className={Styles.myFavorites}>
         <h3>Favoritos</h3>
-        {user.user.favoriteProducts.length > 0 ? (
-          <ul>
-            {console.log(user.user.favoriteProducts)}
-            {user.user.favoriteProducts.map((fav, index) => (
-              <li key={index}>
-                <strong>{fav.product.name}</strong>
-                <img src={fav.product.image} />
+        {favoriteDetails.length > 0 ? (
+          <ul className={Styles.favoriteList}>
+            {favoriteDetails.map((fav, index) => (
+              <li className={Styles.favoriteItem} key={index}>
+                <Link
+                  to={`/product/${fav._id}`}
+                  className={Styles.favoriteLink}
+                >
+                  <img src={fav.image} alt={fav.name} />
+                  <strong>{fav.name}</strong>
+                </Link>
               </li>
             ))}
           </ul>

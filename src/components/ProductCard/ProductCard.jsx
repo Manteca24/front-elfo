@@ -92,7 +92,11 @@ const ProductCard = () => {
           />
           <div className={styles.favButtonContainer}>
             <button
-              onClick={() => handleFavoriteClick(product._id)}
+              onClick={() => {
+                if (!user)
+                  return alert("Debes iniciar sesión para esta funcionalidad.");
+                handleFavoriteClick(product._id);
+              }}
               className={styles.favButton}
             >
               {isFavorited[product._id] ? (
