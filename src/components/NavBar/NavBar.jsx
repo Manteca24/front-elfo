@@ -64,6 +64,12 @@ const NavBar = () => {
     }
   };
 
+  useEffect(() => {
+    if (results.length > 0) {
+      navigate("/results", { state: { results } });
+    }
+  }, [results, navigate]);
+
   return (
     <nav className={styles.navbar}>
       {loading ? (
@@ -141,7 +147,6 @@ const NavBar = () => {
               onKeyUp={(event) => {
                 if (event.key === "Enter") {
                   handleSearch();
-                  navigate("/results", { state: { results } });
                 }
               }}
             />
