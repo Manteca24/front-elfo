@@ -17,7 +17,7 @@ import Admin from "./pages/Admin";
 import FilterManager from "./components/FilterManager/FilterManager";
 import SelectPerson from "./pages/SelectPerson/SelectPerson";
 import ResultsPage from "./pages/ResultsPage/ResultsPage";
-import NoResultsPage from "./pages/ResultsPage/NoResultsPage";
+import UnderConstructionPage from "./components/UnderConstructionPage/UnderConstructionPage";
 
 const App = () => {
   const [data, setData] = useState([]);
@@ -105,21 +105,14 @@ const App = () => {
               </ProtectedRoute>
             }
           />
+          <Route path="/results" element={<ResultsPage />} />
           <Route
-            path="/results"
-            element={
-              <ProtectedRoute>
-                <ResultsPage />
-              </ProtectedRoute>
-            }
+            path="/most-gifted"
+            element={<UnderConstructionPage pageName="Más regalados" />}
           />
           <Route
-            path="/no-results"
-            element={
-              <ProtectedRoute>
-                <NoResultsPage />
-              </ProtectedRoute>
-            }
+            path="/news"
+            element={<UnderConstructionPage pageName="Novedades" />}
           />
         </Routes>
       </Router>

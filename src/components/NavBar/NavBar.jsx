@@ -48,29 +48,20 @@ const NavBar = () => {
     if (!query.trim()) return;
 
     try {
-      const response = await axios.get(`/search/products`, {
+      const response = await axios.get(`/search/products?search=${query}`, {
         params: { query },
       });
 
       setResults(response.data);
       console.log(results);
-      setQuery("");
     } catch (err) {
-      if (err.response && err.response.status === 404) {
-        console.log("No se encontraron productos.");
-        setResults([]);
-      } else {
-        console.error(err);
-      }
+      console.error(err);
     }
   };
 
   useEffect(() => {
-    if (results && results.length > 0) {
+    if (results.length > 0) {
       navigate("/results", { state: { results } });
-    } else if (results.length === 0) {
-      navigate("/no-results");
-      setQuery("");
     }
   }, [results]);
 
