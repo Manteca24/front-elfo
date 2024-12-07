@@ -25,6 +25,8 @@ La aplicacion esta desplegada en un entorno productivo de Netlify: https://elfo.
 ## Estructura del Proyecto
 
 La estructura del proyecto está organizada de la siguiente manera:
+
+```
 src/
 ├── assets/ # Archivos estáticos como imágenes, fuentes, etc.
 ├── config/ # inicializa la aplicación de Firebase con la configuración proporcionada y exporta las instancias de autenticación y almacenamiento de Firebase para su uso en otros componentes.
@@ -34,8 +36,9 @@ src/
 ├── styles/ # Archivos de estilos (CSS)
 ├── utils/ # Algunos templates
 └── App.jsx # Componente raíz de la aplicación
+```
 
-### Páginas
+## Páginas
 
 - **Home**: Página de inicio donde los usuarios pueden buscar productos utilizando filtros como precio, edad, aficiones, etc. .
 - **ProductDetails**: Página donde se visualiza la información detallada de un producto específico. Incluye la descripción, precio, categorías relacionadas, imagen además de mostrar los comentarios y valoraciones de otros usuarios.
@@ -50,7 +53,7 @@ src/
 - **SignUp**: Página donde los usuarios pueden registrarse creando una cuenta nueva, proporcionando datos como nombre, correo electrónico y una contraseña.
 - **UploadGift**: Página donde los usuarios pueden subir sus propios regalos para compartir ideas con otros. Aquí pueden incluir detalles como nombre del regalo, precio, imagen, descripción y las categorías a las que pertenece.
 
-### Componentes
+## Componentes
 
 - **SearchBar**: Barra de búsqueda con filtros dinámicos que permite a los usuarios buscar productos de manera eficiente mediante categorías, precios, y otros filtros personalizados.
 - **ProductCard**: Tarjeta que muestra información básica de un producto, incluyendo su nombre, imagen, precio y un enlace a la página de detalles del producto.
