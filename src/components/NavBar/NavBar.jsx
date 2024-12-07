@@ -1,11 +1,12 @@
 import React, { useContext, useState, useEffect } from "react";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import styles from "./NavBar.module.css";
 import { UserContext } from "../../contexts/UserContext";
 import "../../App.css";
 import axios from "axios";
 
 const NavBar = () => {
+  const navigate = useNavigate();
   const { user, loading } = useContext(UserContext);
   const [menuOpen, setMenuOpen] = useState(false);
   const [query, setQuery] = useState("");
@@ -37,7 +38,7 @@ const NavBar = () => {
     }, 3000); // cada 3 segundos
 
     return () => clearInterval(interval);
-  }, [filters]);
+  }, []);
 
   const handleLinkClick = () => {
     setMenuOpen(false);
@@ -47,14 +48,19 @@ const NavBar = () => {
     if (!query.trim()) return;
 
     try {
-      const response = await axios.get(`/search/products`, {
+      const response = await axios.get(`/search/products?search=${query}`, {
         params: { query },
       });
 
       setResults(response.data);
       console.log(results);
     } catch (err) {
-      console.error(err);
+      if (err.response && err.response.status === 404) {
+        console.log("No se encontraron productos.");
+        setResults([]);
+      } else {
+        console.error(err);
+      }
     }
   };
 
@@ -132,9 +138,10 @@ const NavBar = () => {
               placeholder={placeholder}
               value={query}
               onChange={(e) => setQuery(e.target.value)}
-              onKeyDown={(event) => {
+              onKeyUp={(event) => {
                 if (event.key === "Enter") {
                   handleSearch();
+                  navigate("/results", { state: { results } });
                 }
               }}
             />

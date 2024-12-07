@@ -16,7 +16,7 @@ import CategoryManager from "./components/CategoryManager/CategoryManager";
 import Admin from "./pages/Admin";
 import FilterManager from "./components/FilterManager/FilterManager";
 import SelectPerson from "./pages/SelectPerson/SelectPerson";
-import ResultsPage from "./pages/ResultsPage";
+import ResultsPage from "./pages/ResultsPage/ResultsPage";
 
 const App = () => {
   const [data, setData] = useState([]);
