@@ -239,15 +239,6 @@ const Profile = () => {
     return <p>Cargando...</p>;
   }
 
-  const handleFileChange = (e) => {
-    const file = e.target.files[0];
-    if (file) {
-      setFormData((prev) => ({ ...prev, profilePicture: file }));
-      const imageUrl = URL.createObjectURL(file);
-      setPreviewImage(imageUrl);
-    }
-  };
-
   useEffect(() => {
     return () => {
       if (previewImage) {
@@ -286,6 +277,16 @@ const Profile = () => {
     }
   };
 
+  const handleFileChange = (e) => {
+    const file = e.target.files[0];
+    if (file) {
+      setFormData((prev) => ({ ...prev, profilePicture: file }));
+      console.log(formData.profilePicture);
+      const imageUrl = URL.createObjectURL(file);
+      setPreviewImage(imageUrl);
+    }
+  };
+
   const handleInputChange = (e) => {
     const { name, value } = e.target;
     setFormData((prev) => ({ ...prev, [name]: value }));
@@ -295,9 +296,18 @@ const Profile = () => {
     e.preventDefault();
     setLoading(true);
 
+    let profilePictureUrl = previewImage;
+    if (formData.profilePicture) {
+      profilePictureUrl = await uploadImageToFirebase(formData.profilePicture);
+      if (!profilePictureUrl) {
+        setLoading(false);
+        setError("No se pudo subir la imagen.");
+        return;
+      }
+    }
     const updatedUserData = {
       bio: formData.bio,
-      profilePicture: formData.profilePicture,
+      profilePicture: profilePictureUrl,
       // Agrega más campos si es necesario
     };
 
@@ -320,7 +330,7 @@ const Profile = () => {
       // Si todo va bien, actualizar el estado y redirigir
       setLoading(false);
       setUser(response.data); // Actualiza el estado con los datos del usuario
-      history.push("/dashboard"); // Redirige al dashboard o a donde necesites
+      navigate("/profile"); // Redirige al dashboard o a donde necesites
     } catch (error) {
       setLoading(false);
       setError(error.message); // Muestra el error si algo falla
