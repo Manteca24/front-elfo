@@ -13,6 +13,7 @@ import { ref, uploadBytes, getDownloadURL } from "firebase/storage";
 import { storage } from "../../config/firebase";
 import imageCompression from "browser-image-compression";
 import "../../App.css";
+import { auth } from "../../config/firebase";
 
 const Profile = () => {
   const navigate = useNavigate();
@@ -297,21 +298,32 @@ const Profile = () => {
     const updatedUserData = {
       bio: formData.bio,
       profilePicture: formData.profilePicture,
+      // Agrega más campos si es necesario
     };
 
+    const user = auth.currentUser;
+    if (!user) {
+      setLoading(false);
+      setError("No se pudo obtener el usuario.");
+      return;
+    }
+
+    const token = await user.getIdToken();
+
     try {
-      // Aquí envías los datos al backend
-      const response = await axios.post("/users/user", updatedUserData, {
-        Authorization: `Bearer ${localStorage.getItem("authToken")}`,
+      const response = await axios.put("/users/user", updatedUserData, {
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
       });
 
       // Si todo va bien, actualizar el estado y redirigir
       setLoading(false);
-      setUser(response.data);
-      history.push("/dashboard");
+      setUser(response.data); // Actualiza el estado con los datos del usuario
+      history.push("/dashboard"); // Redirige al dashboard o a donde necesites
     } catch (error) {
       setLoading(false);
-      setError(error.message);
+      setError(error.message); // Muestra el error si algo falla
     }
   };
 
