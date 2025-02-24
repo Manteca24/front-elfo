@@ -10,8 +10,8 @@ const CategoryManager = () => {
   const [showModal, setShowModal] = useState(false);
   const [currentCategory, setCurrentCategory] = useState(null);
   const [newCategory, setNewCategory] = useState({ name: "", filters: [] });
-  const [successMessage, setSuccessMessage] = useState("");
   const [newFilter, setNewFilter] = useState("");
+  const [shouldReload, setShouldReload] = useState(false);
 
   const fetchCategories = async () => {
     try {
@@ -29,6 +29,7 @@ const CategoryManager = () => {
       try {
         await axios.delete(`/categories/${categoryId}`);
         setCategories((prev) => prev.filter((cat) => cat._id !== categoryId));
+        setShouldReload(true);
       } catch (error) {
         console.error("Error eliminando categoría:", error);
       }
@@ -49,15 +50,11 @@ const CategoryManager = () => {
         setCategories((prev) => [...prev, response.data]);
       }
 
-      setSuccessMessage("Categoría actualizada correctamente");
-
       setShowModal(false);
       setNewCategory({ name: "", filters: [] });
       setCurrentCategory(null);
 
-      setTimeout(() => {
-        setSuccessMessage("");
-      }, 3000);
+      setShouldReload(true);
     } catch (error) {
       console.error("Error guardando categoría:", error);
     }
@@ -97,13 +94,17 @@ const CategoryManager = () => {
     fetchCategories();
   }, []);
 
+  useEffect(() => {
+    // he eliminado el success message y he puesto una alert, más compatible con el reload
+    if (shouldReload) {
+      alert("Categoría modificada correctamente.");
+      window.location.reload();
+    }
+  }, [shouldReload]);
+
   return (
     <div className={Styles.managerBody}>
       <h2>Gestión de Categorías</h2>
-      {/* Mensaje de éxito */}
-      {successMessage && (
-        <div className={Styles.successMessage}>{successMessage}</div>
-      )}
       <div className={Styles.newCategoryButtonContainer}>
         <button className="greenButton" onClick={() => setShowModal(true)}>
           Añadir nueva categoría

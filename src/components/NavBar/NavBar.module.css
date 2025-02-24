@@ -9,8 +9,6 @@
     align-items: center;
     padding: 10px 20px;
     color: black; 
-    /* box-shadow: 0px 4px 6px rgba(0, 0, 0, 0.1); */
-    /* border-radius: 10px; */
 }
       
 .logoImage {
@@ -29,58 +27,60 @@
     font-size: 18px;
     transition: color 0.3s;
   }
-/* 
-  .navLinks a:first-child{
-    color: #cf0b05;
-  } */
   
   .navLinks a:hover {
     color: #b0a169; 
   }
 
+  .navLinks a:last-child {
+    justify-content: center; 
+  }
+
   .exploreLinks{
     display: flex;
   }
-
   .searchBar {
     flex: 1;
     margin: 15px;
     display: flex;
-    justify-content: center;
+    align-items: center;
+    gap: 5px;
+    position: relative;
   }
-
+  
   .searchBar input {
-    font-family: "Quicksand", serif; 
-    width: 100%;
-    /* max-width: 400px; */
+    flex: 1;
     padding: 8px 12px;
-    border: 1px solid black; 
+    border: 1px solid black;
     border-radius: 20px;
     color: black;
     background-color: #F4EBE3;
-    transition: border-color 0.3s;
-    /* lupa */
-    background-image: url('/buscar.png'); /* Icono de lupa */
-    background-size: 16px 16px; 
-    background-repeat: no-repeat;
-    background-position: 10px center; 
-    padding-left: 35px; 
     font-size: 16px;
-  }
-  
-  .searchBar input::placeholder{
-    font-family: "Quicksand", serif; 
+    transition: border-color 0.3s;
   }
   
   .searchBar input:focus {
-    border-color: #6F171F; 
+    border-color: #6F171F;
   }
   
-  /* .authButtons {
+  .searchButton {
+    all: unset; /*Resetear los estilos de botón*/
+    background-image: url('/buscar.png');
+    background-size: 16px 16px;
+    background-repeat: no-repeat;
+    background-position: center;
+    padding: 8px 12px;
+    cursor: pointer;
     display: flex;
-    gap: 10px;
+    align-items: center;
+    justify-content: center;
+    font-size: 16px;
+    height: 30px;
+    width: 30px;
+    transition: background-color 0.3s;
+    position: absolute;
+    right: 1px;
   }
-   */
 
   .profile {
     display: flex;
@@ -107,18 +107,18 @@
   }
   
 
-
-
 /* Media Queries */
-/* Media Queries para pantallas más pequeñas */
-@media (max-width: 768px) {
-  
+
+/* Móviles y Tablets */
+@media (max-width: 1024px) {
   .navbar {
+    display: flex;
     flex-wrap: wrap; 
     padding: 10px;
   }
-
-
+  .navBar div{
+    order: 0;
+  }
   .navLinks {
     display: none; 
     flex-direction: column;
@@ -129,48 +129,14 @@
     width: 100%;
     box-shadow: 0px 4px 6px rgba(0, 0, 0, 0.1);
   }
-
   .navLinks a {
     padding: 10px 20px;
     border-bottom: 1px solid #ddd;
     margin: 5px;
   }
-
-  /* .navLinks a:first-child {
-    color: black;
-  } */
-
   .navLinks a:last-child {
     border-bottom: none;
-    /* color: #cf0b05; */
   }
-
-  /* .searchBar {
-    display: none;
-  } */
-
-  /* .authButtons {
-    flex-direction: column;
-    gap: 5px;
-  } */
-
-}
-
-/* Mostrar el menú cuando se active */
-.menuButton {
-  display: none;
-}
-
-@media (max-width: 768px) {
-  .navBar{
-    display: flex;
-  }
-
-  .navBar div{
-    order: 0;
-  }
-
-
   .menuButton {
     display: flex;
     background: url('/menu.png');
@@ -182,37 +148,10 @@
     order: 2;
 
   }
-
   .menuButton.active + .navLinks {
     display: flex; 
   }
-}
 
-/* Visibilidad controlada */
-.desktopOnly {
-  display: none;
-}
-
-.mobileOnly {
-  display: none;
-}
-
-/*botones en menu hamburguesa*/
-
-
-/* Pantallas grandes */
-@media (min-width: 769px) {
-  .desktopOnly {
-    display: flex;
-    gap: 5px;
-  }
-  .mobileOnly {
-    display: none;
-  }
-}
-
-/* Pantallas pequeñas */
-@media (max-width: 768px) {
   .desktopOnly {
     display: none;
   }
@@ -229,5 +168,16 @@
     flex-direction: column;
   }
 
-
 }
+
+/* Desktop */
+@media (min-width: 1025px) {
+  .desktopOnly {
+    display: flex;
+    gap: 5px;
+  }
+  .mobileOnly {
+    display: none;
+  }
+}
+

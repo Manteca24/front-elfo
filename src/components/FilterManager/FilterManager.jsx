@@ -11,7 +11,7 @@ const FilterManager = () => {
   const [selectedFilter, setSelectedFilter] = useState(null);
   const [tags, setTags] = useState([]);
   const [newTag, setNewTag] = useState("");
-  const [successMessage, setSuccessMessage] = useState("");
+  const [shouldReload, setShouldReload] = useState(false);
 
   const fetchGroupedFilters = async () => {
     try {
@@ -48,8 +48,7 @@ const FilterManager = () => {
         );
         setTags(response.data.tags);
         setNewTag("");
-        setSuccessMessage("Tag añadido correctamente");
-        setTimeout(() => setSuccessMessage(""), 3000);
+        setShouldReload(true);
       } catch (error) {
         console.error("Error añadiendo tag:", error);
       }
@@ -63,6 +62,7 @@ const FilterManager = () => {
         { data: { tag } } // Enviar como string, no array
       );
       setTags(response.data.filter.tags);
+      setShouldReload(true);
     } catch (error) {
       console.error("Error eliminando tag:", error);
     }
@@ -71,6 +71,14 @@ const FilterManager = () => {
   useEffect(() => {
     fetchGroupedFilters();
   }, []);
+
+  // igual que en categories, al modificar reiniciar y mandar alerta
+  useEffect(() => {
+    if (shouldReload) {
+      alert("Tag modificado correctamente.");
+      window.location.reload();
+    }
+  }, [shouldReload]);
 
   return (
     <div className={Styles.managerBody}>
@@ -116,9 +124,6 @@ const FilterManager = () => {
         <div className={Styles.modal}>
           <div className={Styles.modalContent}>
             <h2>Gestionar Tags para {selectedFilter.name}</h2>
-            {successMessage && (
-              <p className={Styles.successMessage}>{successMessage}</p>
-            )}
             <ul>
               {tags.map((tag, index) => (
                 <li key={index}>

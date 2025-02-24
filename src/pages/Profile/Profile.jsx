@@ -9,17 +9,30 @@ import Styles from "./Profile.module.css";
 import "../../styles/comments.css";
 import "../../styles/buttons.css";
 import "../../styles/modalWindows.css";
-import GiveAPresent from "../../components/GiveAPresent/GiveAPresent";
+import { ref, uploadBytes, getDownloadURL } from "firebase/storage";
+import { storage } from "../../config/firebase";
+import imageCompression from "browser-image-compression";
+import "../../App.css";
 
 const Profile = () => {
   const navigate = useNavigate();
-  const { user, loading } = useContext(UserContext);
+  const { user, setUser } = useContext(UserContext);
   const [comments, setComments] = useState([]);
   const [savedPeople, setSavedPeople] = useState([]);
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [showModal, setShowModal] = useState(false);
   const [selectedPerson, setSelectedPerson] = useState(null);
   const [favoriteDetails, setFavoriteDetails] = useState([]);
+
+  const [formData, setFormData] = useState({
+    bio: user.user.bio || "",
+    profilePicture: null,
+  });
+  const [previewImage, setPreviewImage] = useState(
+    user.user.profilePicture || ""
+  );
+  const [error, setError] = useState("");
+  const [loading, setLoading] = useState(false);
 
   useEffect(() => {
     const fetchSavedPeople = async () => {
@@ -225,10 +238,127 @@ const Profile = () => {
     return <p>Cargando...</p>;
   }
 
+  const handleFileChange = (e) => {
+    const file = e.target.files[0];
+    if (file) {
+      setFormData((prev) => ({ ...prev, profilePicture: file }));
+      const imageUrl = URL.createObjectURL(file);
+      setPreviewImage(imageUrl);
+    }
+  };
+
+  useEffect(() => {
+    return () => {
+      if (previewImage) {
+        URL.revokeObjectURL(previewImage);
+      }
+    };
+  }, [previewImage]);
+
+  const compressImage = async (file) => {
+    const options = {
+      maxSizeMB: 0.2,
+      maxWidthOrHeight: 800,
+      useWebWorker: true,
+    };
+    try {
+      return await imageCompression(file, options);
+    } catch (error) {
+      console.error("Error al comprimir la imagen:", error);
+      alert("No se pudo comprimir la imagen.");
+      return null;
+    }
+  };
+
+  const uploadImageToFirebase = async (file) => {
+    const compressedFile = await compressImage(file);
+    if (!compressedFile) return null;
+
+    const storageRef = ref(storage, `images/${compressedFile.name}`);
+    try {
+      const snapshot = await uploadBytes(storageRef, compressedFile);
+      return await getDownloadURL(snapshot.ref);
+    } catch (error) {
+      console.error("Error al subir la imagen a Firebase:", error);
+      alert("No se pudo subir la imagen.");
+      return null;
+    }
+  };
+
+  const handleInputChange = (e) => {
+    const { name, value } = e.target;
+    setFormData((prev) => ({ ...prev, [name]: value }));
+  };
+
+  const handleProfileUpdate = async (e) => {
+    e.preventDefault();
+    setLoading(true);
+
+    const updatedUserData = {
+      bio: formData.bio,
+      profilePicture: formData.profilePicture,
+    };
+
+    try {
+      // Aquí envías los datos al backend
+      const response = await axios.post("/users/user", updatedUserData, {
+        Authorization: `Bearer ${localStorage.getItem("authToken")}`,
+      });
+
+      // Si todo va bien, actualizar el estado y redirigir
+      setLoading(false);
+      setUser(response.data);
+      history.push("/dashboard");
+    } catch (error) {
+      setLoading(false);
+      setError(error.message);
+    }
+  };
+
   return (
     <div className={Styles.profileBody}>
       <h2>Perfil de {user.user.username}</h2>
       {console.log(user)}
+      <div className="profile-container">
+        <div className="profile-left">
+          <p>Actualiza tu información personal y foto de perfil</p>
+          {previewImage && (
+            <div className="image-preview">
+              <img
+                src={previewImage}
+                alt="Vista previa"
+                style={{ maxWidth: "40%", maxHeight: "200px" }}
+              />
+            </div>
+          )}
+        </div>
+
+        <div className="profile-right">
+          <h2>Actualizar Perfil</h2>
+          <form onSubmit={handleProfileUpdate} className="profile-form">
+            <div>
+              <label>Biografía:</label>
+              <textarea
+                name="bio"
+                value={formData.bio}
+                onChange={handleInputChange}
+              />
+            </div>
+            <div>
+              <label>Subir Nueva Imagen:</label>
+              <input
+                type="file"
+                accept="image/png, image/jpeg"
+                onChange={handleFileChange}
+              />
+            </div>
+            {error && <p className="profile-error">{error}</p>}
+            <button type="submit" disabled={loading} className="button">
+              {loading ? "Actualizando..." : "Actualizar Perfil"}
+            </button>
+          </form>
+        </div>
+      </div>
       <div className={Styles.buttons}>
         <div className={Styles.logOutButton}>
           <LogoutButton />

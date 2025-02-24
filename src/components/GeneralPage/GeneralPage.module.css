@@ -1,0 +1,43 @@
+.generalPage {
+    max-width: 900px;
+    margin: 0 auto;
+    padding: 20px;
+    font-family: Arial, sans-serif;
+    line-height: 1.6;
+    color: #333;
+    background-color: #fdfdfd;
+    border-radius: 10px;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+  }
+  
+  .generalPage h1 {
+    font-size: 2rem;
+    color: #6F171F;
+    margin-bottom: 20px;
+  }
+  
+  .generalPage h2 {
+    font-size: 1.5rem;
+    color: #6F171F;
+    margin-top: 20px;
+  }
+  
+  .generalPage p,
+  .generalPage li {
+    margin-bottom: 15px;
+  }
+  
+  .generalPage ul {
+    padding-left: 20px;
+    list-style-type: disc;
+  }
+  
+  .generalPage a {
+    color: #6F171F;
+    text-decoration: none;
+    font-weight: bold;
+  }
+  
+  .generalPage a:hover {
+    text-decoration: underline;
+  }

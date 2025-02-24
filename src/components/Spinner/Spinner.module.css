@@ -1,0 +1,28 @@
+.spinnerContainer {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100vw;
+    height: 100vh;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    background-color: rgba(0, 0, 0, 0.5); /* Fondo semitransparente */
+    z-index: 9999; /* Para que quede por encima de otros elementos */
+  }
+  
+  /* Estilos para el spinner */
+  .spinner {
+    border: 4px solid rgba(255, 255, 255, 0.3); /* Borde ligero */
+    border-top: 4px solid #fff; /* Color de la parte superior */
+    border-radius: 50%; /* Forma circular */
+    width: 50px;
+    height: 50px;
+    animation: spin 1s linear infinite; /* Animación de rotación */
+  }
+  
+  /* Animación de rotación */
+  @keyframes spin {
+    0% { transform: rotate(0deg); }
+    100% { transform: rotate(360deg); }
+  }

@@ -81,7 +81,10 @@ const NavBar = () => {
           </div>
           <div
             className={`${styles.menuButton} ${menuOpen ? styles.active : ""}`}
-            onClick={() => setMenuOpen(!menuOpen)}
+            onClick={() => {
+              setMenuOpen(!menuOpen);
+              console.log("menuOpen:", !menuOpen);
+            }}
           ></div>
           <div
             className={`${styles.navLinks} ${menuOpen ? styles.active : ""}`}
@@ -144,6 +147,11 @@ const NavBar = () => {
                 }
               }}
             />
+            <button
+              className={styles.searchButton}
+              onClick={handleSearch}
+              aria-label="Buscar"
+            ></button>
           </div>
           <div
             className={`${styles.authButtons} ${

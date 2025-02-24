@@ -5,6 +5,7 @@ import Home from "./pages/Home";
 import Register from "./pages/SignUp";
 import LogIn from "./pages/Login";
 import NavBar from "./components/NavBar/NavBar";
+import Footer from "./components/Footer/Footer";
 import UserProvider from "./contexts/UserContext";
 import ProtectedRoute from "./components/ProtectedRoute";
 import Dashboard from "./pages/Dashboard";
@@ -18,10 +19,15 @@ import FilterManager from "./components/FilterManager/FilterManager";
 import SelectPerson from "./pages/SelectPerson/SelectPerson";
 import ResultsPage from "./pages/ResultsPage/ResultsPage";
 import UnderConstructionPage from "./components/UnderConstructionPage/UnderConstructionPage";
+import AboutUs from "./pages/AboutUs";
+import Rules from "./pages/Rules";
+import PrivacyPolicy from "./pages/PrivacyPolicy";
+import Spinner from "./components/Spinner/Spinner"; // Asegúrate de tener un componente de Spinner
 
 const App = () => {
   const [data, setData] = useState([]);
   const [error, setError] = useState(null);
+  const [loading, setLoading] = useState(true); // Nuevo estado de carga
 
   const urlApi = import.meta.env.VITE_BACKEND_URL;
 
@@ -32,6 +38,8 @@ const App = () => {
     } catch (err) {
       console.error("Error al obtener los datos:", err);
       setError("No se pudo conectar con el backend");
+    } finally {
+      setLoading(false); // Cuando los datos se cargan, se cambia el estado de loading
     }
   };
 
@@ -43,78 +51,86 @@ const App = () => {
     <UserProvider>
       <Router>
         <NavBar />
-        <Routes>
-          <Route path="/" element={<Home data={data} error={error} />} />
-          <Route path="/register" element={<Register />} />
-          <Route path="/login" element={<LogIn />} />
-          <Route path="/product/:id" element={<ProductDetails />} />
-          <Route
-            path="/dashboard"
-            element={
-              <ProtectedRoute>
-                <Dashboard />
-              </ProtectedRoute>
-            }
-          />
-          <Route
-            path="/profile"
-            element={
-              <ProtectedRoute>
-                <Profile />
-              </ProtectedRoute>
-            }
-          />
-          <Route
-            path="/upload-gift"
-            element={
-              <ProtectedRoute>
-                <UploadGift />
-              </ProtectedRoute>
-            }
-          />
-          <Route
-            path="/admin"
-            element={
-              <ProtectedRoute>
-                <Admin />
-              </ProtectedRoute>
-            }
-          />
-          <Route
-            path="/admin/categories"
-            element={
-              <ProtectedRoute>
-                <CategoryManager />
-              </ProtectedRoute>
-            }
-          />
-          <Route
-            path="/admin/filters"
-            element={
-              <ProtectedRoute>
-                <FilterManager />
-              </ProtectedRoute>
-            }
-          />
-
-          <Route
-            path="/select-person"
-            element={
-              <ProtectedRoute>
-                <SelectPerson />
-              </ProtectedRoute>
-            }
-          />
-          <Route path="/results" element={<ResultsPage />} />
-          <Route
-            path="/most-gifted"
-            element={<UnderConstructionPage pageName="Más regalados" />}
-          />
-          <Route
-            path="/news"
-            element={<UnderConstructionPage pageName="Novedades" />}
-          />
-        </Routes>
+        {/* Si está cargando, mostramos el spinner */}
+        {loading ? (
+          <Spinner /> // Asegúrate de tener un componente Spinner que muestre la animación de carga
+        ) : (
+          <Routes>
+            <Route path="/" element={<Home data={data} error={error} />} />
+            <Route path="/register" element={<Register />} />
+            <Route path="/login" element={<LogIn />} />
+            <Route path="/product/:id" element={<ProductDetails />} />
+            <Route
+              path="/dashboard"
+              element={
+                <ProtectedRoute>
+                  <Dashboard />
+                </ProtectedRoute>
+              }
+            />
+            <Route
+              path="/profile"
+              element={
+                <ProtectedRoute>
+                  <Profile />
+                </ProtectedRoute>
+              }
+            />
+            <Route
+              path="/upload-gift"
+              element={
+                <ProtectedRoute>
+                  <UploadGift />
+                </ProtectedRoute>
+              }
+            />
+            <Route
+              path="/admin"
+              element={
+                <ProtectedRoute>
+                  <Admin />
+                </ProtectedRoute>
+              }
+            />
+            <Route
+              path="/admin/categories"
+              element={
+                <ProtectedRoute>
+                  <CategoryManager />
+                </ProtectedRoute>
+              }
+            />
+            <Route
+              path="/admin/filters"
+              element={
+                <ProtectedRoute>
+                  <FilterManager />
+                </ProtectedRoute>
+              }
+            />
+            <Route
+              path="/select-person"
+              element={
+                <ProtectedRoute>
+                  <SelectPerson />
+                </ProtectedRoute>
+              }
+            />
+            <Route path="/results" element={<ResultsPage />} />
+            <Route
+              path="/most-gifted"
+              element={<UnderConstructionPage pageName="Más regalados" />}
+            />
+            <Route
+              path="/news"
+              element={<UnderConstructionPage pageName="Novedades" />}
+            />
+            <Route path="/about-us" element={<AboutUs />} />
+            <Route path="/rules" element={<Rules />} />
+            <Route path="/privacy-policy" element={<PrivacyPolicy />} />
+          </Routes>
+        )}
+        <Footer />
       </Router>
     </UserProvider>
   );

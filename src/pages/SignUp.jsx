@@ -31,6 +31,7 @@ const Register = () => {
     setFormData((prev) => ({ ...prev, [name]: value }));
   };
 
+  // imagen (mover)
   const handleFileChange = (e) => {
     const file = e.target.files[0];
     if (file) {
@@ -85,7 +86,7 @@ const Register = () => {
 
     try {
       const { email, password, profilePicture, ...rest } = formData; //REST???
-      console.log(formData);
+      // console.log(formData);
       const userCredential = await createUserWithEmailAndPassword(
         auth,
         email,
@@ -101,21 +102,23 @@ const Register = () => {
         profilePictureUrl = await uploadImageToFirebase(profilePicture);
       }
 
-      console.log(rest);
+      // console.log(rest);
       const userData = {
         ...formData,
         profilePicture: profilePictureUrl,
         firebaseUid: user.uid,
       };
-      console.log(userData);
+      // console.log(userData);
       const response = await axios.post("/users/user", userData, {
         headers: { Authorization: `Bearer ${token}` },
       });
 
       console.log("Usuario registrado en el backend:", response.data);
       setUser({ firebaseUid: user.uid, ...userData });
-
-      navigate("/login");
+      setTimeout(() => {
+        navigate("/dashboard");
+        window.location.reload();
+      }, 100); // Pequeño delay para asegurar la actualización del contexto
     } catch (error) {
       console.error("Error al registrar:", error);
       setError(error.message);
@@ -195,9 +198,7 @@ const Register = () => {
               </option>
               <option value="femenino">Femenino</option>
               <option value="masculino">Masculino</option>
-              <option value="no-binario">No binario</option>
-              <option value="prefiero-no-decirlo">Prefiero no decirlo</option>
-              <option value="otro">Otro</option>
+              <option value="no-relevante">No relevante</option>
             </select>
           </div>
           <div>
@@ -219,7 +220,9 @@ const Register = () => {
               required
             />
           </div>
-          <div>
+          {/*Nota: no es seguro en producción subir imágenes a firebase sin estar autenticado, por lo que paso la parte de subir imagen
+          de perfil para luego, una vez el usuario tenga uid.*/}
+          {/* <div>                    
             <label>Subir imagen:</label>
             <input
               type="file"
@@ -235,7 +238,7 @@ const Register = () => {
                 style={{ maxWidth: "40%", maxHeight: "200px" }}
               />
             </div>
-          )}
+          )} */}
           {error && <p className="register-error">{error}</p>}
           <button type="submit" disabled={loading} className="button">
             {loading ? "Registrando..." : "Regístrate"}
