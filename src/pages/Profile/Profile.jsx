@@ -14,6 +14,7 @@ import { storage } from "../../config/firebase";
 import imageCompression from "browser-image-compression";
 import "../../App.css";
 import { auth } from "../../config/firebase";
+import Spinner from "../../components/Spinner/Spinner";
 
 const Profile = () => {
   const navigate = useNavigate();
@@ -24,6 +25,9 @@ const Profile = () => {
   const [showModal, setShowModal] = useState(false);
   const [selectedPerson, setSelectedPerson] = useState(null);
   const [favoriteDetails, setFavoriteDetails] = useState([]);
+  const [isBioEditable, setIsBioEditable] = useState(false);
+  const [favoritesToShow, setFavoritesToShow] = useState(5);
+  const [commentsToShow, setCommentsToShow] = useState(5);
 
   const [formData, setFormData] = useState({
     bio: user.user.bio || "",
@@ -34,6 +38,15 @@ const Profile = () => {
   );
   const [error, setError] = useState("");
   const [loading, setLoading] = useState(false);
+
+  const handleBioClick = () => {
+    setIsBioEditable(true); // Hacer que la bio sea editable
+  };
+
+  const handleBioChange = (e) => {
+    const { value } = e.target;
+    setFormData((prev) => ({ ...prev, bio: value }));
+  };
 
   useEffect(() => {
     const fetchSavedPeople = async () => {
@@ -236,7 +249,7 @@ const Profile = () => {
   };
 
   if (loading) {
-    return <p>Cargando...</p>;
+    return <Spinner />;
   }
 
   useEffect(() => {
@@ -287,13 +300,13 @@ const Profile = () => {
     }
   };
 
-  const handleInputChange = (e) => {
-    const { name, value } = e.target;
-    setFormData((prev) => ({ ...prev, [name]: value }));
-  };
+  // const handleInputChange = (e) => {
+  //   const { name, value } = e.target;
+  //   setFormData((prev) => ({ ...prev, [name]: value }));
+  // };
 
   const handleProfileUpdate = async (e) => {
-    e.preventDefault();
+    // e.preventDefault();
     setLoading(true);
 
     let profilePictureUrl = previewImage;
@@ -308,7 +321,7 @@ const Profile = () => {
     const updatedUserData = {
       bio: formData.bio,
       profilePicture: profilePictureUrl,
-      // Agrega más campos si es necesario
+      // agregar aquí más campos si lo veo necesario en el futuro
     };
 
     const user = auth.currentUser;
@@ -326,230 +339,236 @@ const Profile = () => {
           Authorization: `Bearer ${token}`,
         },
       });
-
-      // Si todo va bien, actualizar el estado y redirigir
       setLoading(false);
-      setUser(response.data); // Actualiza el estado con los datos del usuario
-      navigate("/profile"); // Redirige al dashboard o a donde necesites
+      setUser(response.data);
+      window.location.reload();
     } catch (error) {
       setLoading(false);
-      setError(error.message); // Muestra el error si algo falla
+      setError(error.message);
     }
   };
 
   return (
-    <div className={Styles.profileBody}>
-      <h2>Perfil de {user.user.username}</h2>
-      {console.log(user)}
-      <div className="profile-container">
-        <div className="profile-left">
-          <p>Actualiza tu información personal y foto de perfil</p>
-          {previewImage && (
-            <div className="image-preview">
-              <img
-                src={previewImage}
-                alt="Vista previa"
-                style={{ maxWidth: "40%", maxHeight: "200px" }}
-              />
+    <>
+      <div className={Styles.profileBody}>
+        <h2>Perfil de {user.user.username}</h2>
+        <div className={Styles.profileContainer}>
+          <div className={Styles.profileLeft}>
+            <div className={Styles.profilePicContainer}>
+              <div className={Styles.profilePicWrapper}>
+                <img
+                  className={Styles.profilePicElfo}
+                  src={previewImage || user.user.profilePicture} // para ver la previsualización
+                  alt="profileImage"
+                  onClick={() =>
+                    document.getElementById("profileImageInput").click()
+                  }
+                />
+                <input
+                  type="file"
+                  id="profileImageInput"
+                  accept="image/png, image/jpeg"
+                  onChange={handleFileChange}
+                  style={{ display: "none" }} // El input está oculto y solo se muestra al hacer clic en la imagen
+                />
+              </div>
+            </div>
+          </div>
+
+          <div className={Styles.profileRight}>
+            <form onSubmit={handleProfileUpdate} className={Styles.profileForm}>
+              <label>Biografía:</label>
+              {isBioEditable ? (
+                <textarea
+                  name="bio"
+                  value={formData.bio}
+                  onChange={handleBioChange}
+                  onBlur={() => setIsBioEditable(false)} // Guardar cambios cuando el usuario deje de editar
+                />
+              ) : (
+                <p className={Styles.bioText} onClick={handleBioClick}>
+                  {formData.bio || "Haz clic para editar tu biografía"}
+                </p>
+              )}
+              <button type="submit" disabled={loading} className="greenButton">
+                {loading ? "Guardando..." : "Guardar cambios"}
+              </button>
+            </form>
+          </div>
+          <div className={Styles.buttons}>
+            <div className={Styles.logOutButton}>
+              <LogoutButton />
+            </div>
+            {user.user.isAdmin ? (
+              <div className={Styles.admin}>
+                <button
+                  className="greenButton"
+                  onClick={() => navigate("/admin")}
+                >
+                  Panel de admin
+                </button>
+              </div>
+            ) : (
+              <div></div>
+            )}
+          </div>
+        </div>
+
+        <section className={Styles.myFavorites}>
+          <h3>Favoritos</h3>
+          {favoriteDetails.length > 0 ? (
+            <ul className={Styles.favoriteList}>
+              {favoriteDetails.slice(0, favoritesToShow).map((fav, index) => (
+                <li className={Styles.favoriteItem} key={index}>
+                  <Link
+                    to={`/product/${fav._id}`}
+                    className={Styles.favoriteLink}
+                  >
+                    <img src={fav.image} alt={fav.name} />
+                    <strong>{fav.name}</strong>
+                  </Link>
+                </li>
+              ))}
+            </ul>
+          ) : (
+            <p>No tienes favoritos guardados.</p>
+          )}
+          {favoriteDetails.length > favoritesToShow && (
+            <button
+              className="button-more"
+              onClick={() => setFavoritesToShow(favoritesToShow + 5)} // Cargar 5 más
+            >
+              Mostrar más
+            </button>
+          )}
+        </section>
+
+        <section className={Styles.favoritePeople}>
+          <h3>Personas Guardadas</h3>
+          {/* Mostrar las personas guardadas */}
+          <div className={Styles.savedPeopleContainer}>
+            {console.log("savedPeople", savedPeople)}
+            {savedPeople.map((person) => (
+              <div key={person._id} className={Styles.savedPersonContainer}>
+                <div
+                  className={Styles.clickeableDiv}
+                  onClick={() => handleOpenTagsModal(person)}
+                >
+                  <h4>{person.name}</h4>
+                  <img
+                    className={Styles.savedPersonImg}
+                    src="/savedPerson.png"
+                  />
+                </div>
+                <p>
+                  <span>Relación: </span>
+                  {person.relation}
+                </p>
+                <p>
+                  <span>Palabras clave:</span>
+                  {person.filters.map((filter, index) => (
+                    <div key={index}>
+                      <p>
+                        <span>· {filter.filterId.name}</span>
+                      </p>
+                      <p>{filter.tags.join(", ")}</p>
+                    </div>
+                  ))}
+                </p>
+                <div className={Styles.cardsButtons}>
+                  <button
+                    onClick={() => {
+                      setSelectedPerson(person);
+                      setShowModal(true);
+                    }}
+                    className="smallGoodButtons"
+                  >
+                    Regalar
+                  </button>
+                </div>
+                {showModal && selectedPerson?._id === person._id && (
+                  <GiveAPresent
+                    person={selectedPerson}
+                    onClose={() => {
+                      setShowModal(false);
+                      setSelectedPerson(null); // Limpiar la persona seleccionada
+                    }}
+                  />
+                )}
+              </div>
+            ))}
+          </div>
+
+          {/* Modal para gestionar tags */}
+          {isModalOpen && selectedPerson && (
+            <div className="modal">
+              <div className="modalContent">
+                <div className="title">
+                  <h2>Editar tags para {selectedPerson.name}</h2>
+                </div>
+                <div className="filtersGroup">
+                  {selectedPerson.filters.map((filter) => (
+                    <ul className="filtersInModal" key={filter.filterId}>
+                      <li className="eachFilter">
+                        <span
+                          onClick={() =>
+                            handleRemoveFilter(
+                              selectedPerson._id,
+                              filter.filterId._id
+                            )
+                          }
+                        >
+                          {filter.filterId.name} &times;
+                        </span>
+
+                        <ul className="tags">
+                          {filter.tags.map((tag, index) => (
+                            <li
+                              key={index}
+                              className="eachTag"
+                              onClick={() =>
+                                handleRemoveTag(
+                                  selectedPerson._id,
+                                  filter.filterId._id,
+                                  tag
+                                )
+                              }
+                            >
+                              {tag} &times;
+                            </li>
+                          ))}
+                        </ul>
+                        <input
+                          className="modalInput"
+                          type="text"
+                          placeholder="Añade un tag y pulsa Enter"
+                          onKeyDown={(e) =>
+                            handleAddTag(
+                              e,
+                              selectedPerson._id,
+                              filter.filterId._id
+                            )
+                          }
+                        />
+                      </li>
+                    </ul>
+                  ))}
+                </div>
+                <div className="modalCloseButton">
+                  <button className="button" onClick={handleCloseModal}>
+                    Cerrar
+                  </button>
+                </div>
+              </div>
             </div>
           )}
-        </div>
+        </section>
 
-        <div className="profile-right">
-          <h2>Actualizar Perfil</h2>
-          <form onSubmit={handleProfileUpdate} className="profile-form">
-            <div>
-              <label>Biografía:</label>
-              <textarea
-                name="bio"
-                value={formData.bio}
-                onChange={handleInputChange}
-              />
-            </div>
-            <div>
-              <label>Subir Nueva Imagen:</label>
-              <input
-                type="file"
-                accept="image/png, image/jpeg"
-                onChange={handleFileChange}
-              />
-            </div>
-            {error && <p className="profile-error">{error}</p>}
-            <button type="submit" disabled={loading} className="button">
-              {loading ? "Actualizando..." : "Actualizar Perfil"}
-            </button>
-          </form>
-        </div>
-      </div>
-      <div className={Styles.buttons}>
-        <div className={Styles.logOutButton}>
-          <LogoutButton />
-        </div>
-        {user.user.isAdmin ? (
-          <div className={Styles.admin}>
-            <button className="greenButton" onClick={() => navigate("/admin")}>
-              Panel de admin
-            </button>
-          </div>
-        ) : (
-          <div></div>
-        )}
-      </div>
-      <div className={Styles.profilePicContainer}>
-        <img
-          className={Styles.profilePicElfo}
-          src={user.user.profilePicture}
-          alt="profileImage"
-        />
-      </div>
-      <section className={Styles.myFavorites}>
-        <h3>Favoritos</h3>
-        {favoriteDetails.length > 0 ? (
-          <ul className={Styles.favoriteList}>
-            {favoriteDetails.map((fav, index) => (
-              <li className={Styles.favoriteItem} key={index}>
-                <Link
-                  to={`/product/${fav._id}`}
-                  className={Styles.favoriteLink}
-                >
-                  <img src={fav.image} alt={fav.name} />
-                  <strong>{fav.name}</strong>
-                </Link>
-              </li>
-            ))}
-          </ul>
-        ) : (
-          <p>No tienes favoritos guardados.</p>
-        )}
-      </section>
-
-      <section className={Styles.favoritePeople}>
-        <h3>Personas Guardadas</h3>
-        {/* Mostrar las personas guardadas */}
-        <div className={Styles.savedPeopleContainer}>
-          {console.log("savedPeople", savedPeople)}
-          {savedPeople.map((person) => (
-            <div key={person._id} className={Styles.savedPersonContainer}>
-              <div
-                className={Styles.clickeableDiv}
-                onClick={() => handleOpenTagsModal(person)}
-              >
-                <h4>{person.name}</h4>
-                <img className={Styles.savedPersonImg} src="/savedPerson.png" />
-              </div>
-              <p>
-                <span>Relación: </span>
-                {person.relation}
-              </p>
-              <p>
-                <span>Palabras clave:</span>
-                {person.filters.map((filter, index) => (
-                  <div key={index}>
-                    <p>
-                      <span>· {filter.filterId.name}</span>
-                    </p>
-                    <p>{filter.tags.join(", ")}</p>
-                  </div>
-                ))}
-              </p>
-              <div className={Styles.cardsButtons}>
-                <button
-                  onClick={() => {
-                    setSelectedPerson(person);
-                    setShowModal(true);
-                  }}
-                  className="smallGoodButtons"
-                >
-                  Regalar
-                </button>
-              </div>
-              {showModal && selectedPerson?._id === person._id && (
-                <GiveAPresent
-                  person={selectedPerson}
-                  onClose={() => {
-                    setShowModal(false);
-                    setSelectedPerson(null); // Limpiar la persona seleccionada
-                  }}
-                />
-              )}
-            </div>
-          ))}
-        </div>
-
-        {/* Modal para gestionar tags */}
-        {isModalOpen && selectedPerson && (
-          <div className="modal">
-            <div className="modalContent">
-              <div className="title">
-                <h2>Editar tags para {selectedPerson.name}</h2>
-              </div>
-              <div className="filtersGroup">
-                {selectedPerson.filters.map((filter) => (
-                  <ul className="filtersInModal" key={filter.filterId}>
-                    <li className="eachFilter">
-                      <span
-                        onClick={() =>
-                          handleRemoveFilter(
-                            selectedPerson._id,
-                            filter.filterId._id
-                          )
-                        }
-                      >
-                        {filter.filterId.name} &times;
-                      </span>
-
-                      <ul className="tags">
-                        {filter.tags.map((tag, index) => (
-                          <li
-                            key={index}
-                            className="eachTag"
-                            onClick={() =>
-                              handleRemoveTag(
-                                selectedPerson._id,
-                                filter.filterId._id,
-                                tag
-                              )
-                            }
-                          >
-                            {tag} &times;
-                          </li>
-                        ))}
-                      </ul>
-                      <input
-                        className="modalInput"
-                        type="text"
-                        placeholder="Añade un tag y pulsa Enter"
-                        onKeyDown={(e) =>
-                          handleAddTag(
-                            e,
-                            selectedPerson._id,
-                            filter.filterId._id
-                          )
-                        }
-                      />
-                    </li>
-                  </ul>
-                ))}
-              </div>
-              <div className="modalCloseButton">
-                <button className="button" onClick={handleCloseModal}>
-                  Cerrar
-                </button>
-              </div>
-            </div>
-          </div>
-        )}
-      </section>
-
-      <section className="comments-section">
-        {/* {console.log(comments)}  */}
-        <h3>Comentarios de {user.user.username}</h3>
-        {comments.length > 0 ? (
-          <ul className="comment-list">
-            {comments.map(
-              (
-                comment /**si algo da error poner en key {index} porque comment._id tmb es key del comentario en el producto*/
-              ) => (
+        <section className="comments-section">
+          <h3>Comentarios de {user.user.username}</h3>
+          {comments.length > 0 ? (
+            <ul className="comment-list">
+              {comments.slice(0, commentsToShow).map((comment) => (
                 <li className="comment-item" key={comment._id}>
                   <div className="comment-header">
                     <img
@@ -583,14 +602,22 @@ const Profile = () => {
                     </p>
                   </div>
                 </li>
-              )
-            )}
-          </ul>
-        ) : (
-          <p>No has dejado comentarios.</p>
-        )}
-      </section>
-    </div>
+              ))}
+            </ul>
+          ) : (
+            <p>No has dejado comentarios.</p>
+          )}
+          {comments.length > commentsToShow && (
+            <button
+              className="button-more"
+              onClick={() => setCommentsToShow(commentsToShow + 5)} // Cargar 5 más
+            >
+              Mostrar más
+            </button>
+          )}
+        </section>
+      </div>
+    </>
   );
 };
 

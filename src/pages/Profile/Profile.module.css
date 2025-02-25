@@ -1,22 +1,165 @@
 .profileBody{
     margin: 0px 10px;
+    display: flex;
+    flex-direction: column;
 } 
 
-.buttons{
-    display: flex;
-    justify-content: flex-start;
-    flex-direction: row-reverse;
+.profileContainer{
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  position: relative;
 }
+
+.profilePicWrapper {
+  position: relative;
+  display: inline-block;
+  cursor: pointer;
+}
+
+ .profileLeft{
+margin: 20px;
+
+} 
+
+.profileRight {
+  margin: 20px;
+  text-align: center;
+  background-color: #fafafa;
+  padding: 20px;
+  border-radius: 8px;
+  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+}
+
+.profileForm {
+  display: flex;
+  flex-direction: column;
+  gap: 15px;
+}
+
+.profileForm label {
+  font-size: 1.2rem;
+  font-weight: bold;
+  color: #333;
+}
+
+.profileForm textarea {
+  font-size: 1rem;
+  padding: 12px;
+  border-radius: 8px;
+  border: 1px solid #ccc;
+  background-color: #fff;
+  resize: vertical;
+  transition: border-color 0.3s ease;
+}
+
+.profileForm textarea:focus {
+  border-color: #4caf50; /* Highlight with green when focused */
+  outline: none;
+}
+
+.profileForm button {
+  padding: 10px 20px;
+  background-color: #4caf50;
+  color: white;
+  border: none;
+  border-radius: 8px;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+}
+
+.profileForm button:hover {
+  background-color: #45a049;
+}
+
+.bioText {
+  cursor: pointer;
+  position: relative;
+  display: inline-block;
+  font-size: 1.1rem;
+  color: #555;
+  transition: color 0.3s ease;
+}
+
+.bioText:hover {
+  color: #4caf50;
+}
+
+.bioText::after {
+  content: "Haz click para modificar la biografía";
+  position: absolute;
+  background-color: rgba(0, 0, 0, 0.75);
+  color: white;
+  padding: 5px 10px;
+  border-radius: 5px;
+  font-size: 0.9rem;
+  white-space: nowrap;
+  top: -30px;
+  left: 50%;
+  transform: translateX(-50%);
+  opacity: 0;
+  transition: opacity 0.3s ease-in-out;
+  pointer-events: none;
+}
+
+.bioText:hover::after {
+  opacity: 1;
+}
+
+
+.button-more {
+    display: block;
+    width: 200px;
+    margin: 20px auto;
+    padding: 10px;
+    background-color: #4caf50;
+    color: white;
+    text-align: center;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+  }
+  
+  .button-more:hover {
+    background-color: #45a049;
+  }
+  
 
 .profilePicContainer{
     display: flex;
     justify-content: center;
 }
 .profilePicElfo {
-    width: 200px;
-    height: 200px;
-    border-radius: 50%;
-    margin-right: 15px;
+  width: 200px;
+  height: 200px;
+  border-radius: 50%;
+  margin: 20px;
+  object-fit: cover;
+  object-position: center;
+  transition: border 0.3s ease;
+}
+
+
+/* Tooltip */
+.profilePicWrapper::after {
+  content: "Haz click para modificar la foto de perfil";
+  position: absolute;
+  background-color: rgba(0, 0, 0, 0.75);
+  color: white;
+  padding: 5px 10px;
+  border-radius: 5px;
+  font-size: 0.9rem;
+  white-space: nowrap;
+  top: 100%; /* Justo debajo de la imagen */
+  left: 50%;
+  transform: translateX(-50%);
+  opacity: 0;
+  transition: opacity 0.3s ease-in-out;
+  pointer-events: none;
+}
+
+.profilePicWrapper:hover::after {
+  opacity: 1;
 }
  
 .logOutButton {
@@ -161,7 +304,7 @@
     transition: transform 0.3s ease, box-shadow 0.3s ease;
   }
 
-  @media (max-width:600px){
+  @media (max-width:768px){
     .savedPersonContainer {
       width: 60%;
     }
@@ -171,8 +314,19 @@
     .logOutButton{
       margin: 0;
     }
-  }
+    
+    .profileContainer{
+      flex-direction: column;
+    }
 
+    .profileContainer>div:nth-child(3){ /*Cerrar sesión*/
+      order: -1;
+      display: flex;
+      gap: 10px;    
+}
+
+  }
+  
   .clickeableDiv{
     cursor: pointer;
   }
