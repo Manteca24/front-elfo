@@ -77,10 +77,10 @@ const ProductDetails = () => {
 
   return (
     <div className={Styles.productDetailsBody}>
-      {console.log(comments)}
+      {/* {console.log(comments)} */}
       <h2>{product.name}</h2>
       <div className={Styles.productImage}>
-        {console.log(product)}
+        {/* {console.log(product)} */}
         <img src={product.image} alt={product.name} />
       </div>
       <section className={Styles.productDetails}>

@@ -201,7 +201,7 @@ const Profile = () => {
         const { data } = await axios.get(
           `/comments/user/${user.user.firebaseUid}`
         );
-        console.log(data);
+        // console.log(data);
         setComments(data);
       } catch (error) {
         console.error("Error fetching user comments:", error);
@@ -294,7 +294,7 @@ const Profile = () => {
     const file = e.target.files[0];
     if (file) {
       setFormData((prev) => ({ ...prev, profilePicture: file }));
-      console.log(formData.profilePicture);
+      // console.log(formData.profilePicture);
       const imageUrl = URL.createObjectURL(file);
       setPreviewImage(imageUrl);
     }
@@ -447,7 +447,7 @@ const Profile = () => {
           <h3>Personas Guardadas</h3>
           {/* Mostrar las personas guardadas */}
           <div className={Styles.savedPeopleContainer}>
-            {console.log("savedPeople", savedPeople)}
+            {/* {console.log("savedPeople", savedPeople)} */}
             {savedPeople.map((person) => (
               <div key={person._id} className={Styles.savedPersonContainer}>
                 <div

@@ -9,7 +9,7 @@ const ProductCard = () => {
   const [isFavorited, setIsFavorited] = useState({});
   const [creator, setCreator] = useState([]);
   const { user } = useContext(UserContext);
-  console.log(user);
+  // console.log(user);
 
   const handleFavoriteClick = async (productId) => {
     if (isFavorited[productId]) {
@@ -107,7 +107,7 @@ const ProductCard = () => {
             <div className={styles.cardContent}>
               <h2 className={styles.productTitle}>{product.name}</h2>
               <div className={styles.priceBubble}>
-                <p>${product.price}</p>
+                <p>{product.price} €</p>
               </div>
             </div>
             <div className={styles.owner}>

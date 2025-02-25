@@ -52,7 +52,7 @@ const NavBar = () => {
       });
 
       setResults(response.data);
-      console.log(results);
+      // console.log(results);
     } catch (err) {
       console.error(err);
     }
@@ -83,7 +83,7 @@ const NavBar = () => {
             className={`${styles.menuButton} ${menuOpen ? styles.active : ""}`}
             onClick={() => {
               setMenuOpen(!menuOpen);
-              console.log("menuOpen:", !menuOpen);
+              // console.log("menuOpen:", !menuOpen);
             }}
           ></div>
           <div
@@ -138,6 +138,7 @@ const NavBar = () => {
           <div className={styles.searchBar}>
             <input
               type="text"
+              id="gift-search"
               placeholder={placeholder}
               value={query}
               onChange={(e) => setQuery(e.target.value)}

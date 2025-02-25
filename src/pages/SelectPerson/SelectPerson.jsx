@@ -146,7 +146,7 @@ const SelectPerson = () => {
 
       {/* Mostrar las personas guardadas */}
       <div className={Styles.savedPeopleContainer}>
-        {console.log("savedPeople", savedPeople)}
+        {/* {console.log("savedPeople", savedPeople)} */}
         {savedPeople.map((person) => (
           <div key={person._id} className={Styles.savedPersonContainer}>
             <div

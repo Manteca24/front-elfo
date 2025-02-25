@@ -37,11 +37,11 @@ const ResultsPage = () => {
     if (results.length === 0) return;
     const fetchCreator = async () => {
       try {
-        console.log(results);
+        // console.log(results);
         const creators = await Promise.all(
           results.map(async (product) => {
             const response = await axios.get(`users/user/${product.user}`);
-            console.log(response.data);
+            // console.log(response.data);
             return response.data;
           })
         );
