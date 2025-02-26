@@ -6,58 +6,54 @@ import { UserContext } from "../../contexts/UserContext";
 
 const ProductCard = () => {
   const [products, setProducts] = useState([]);
-  const [isFavorited, setIsFavorited] = useState({}); // Stores favorite status
+  const [isFavorited, setIsFavorited] = useState({});
   const [creator, setCreator] = useState([]);
   const { user } = useContext(UserContext);
 
-  // Fetch products first
+  // Fetch products and favorites in sequence
   useEffect(() => {
-    const fetchProducts = async () => {
+    const fetchProductsAndFavorites = async () => {
       try {
+        // Fetch products first
         const response = await axios.get("/products");
-        setProducts(response.data);
+        const productsData = response.data;
+        setProducts(productsData);
+
+        // Fetch favorites only if user exists
+        if (user) {
+          const favoritesResponse = await axios.get(`/users/favorites`, {
+            headers: {
+              Authorization: `Bearer ${localStorage.getItem("authToken")}`,
+            },
+          });
+
+          console.log("Fetched Favorites:", favoritesResponse.data);
+
+          const favoriteProducts = new Set(
+            favoritesResponse.data.map((fav) => fav.product._id.toString())
+          );
+
+          console.log("favorite products:", favoriteProducts);
+
+          // Ensure isFavorited is set only AFTER products are available
+          const updatedFavorites = {};
+          productsData.forEach((product) => {
+            updatedFavorites[product._id] = favoriteProducts.has(product._id);
+          });
+
+          setIsFavorited(updatedFavorites);
+        }
       } catch (err) {
-        console.error("Error loading products:", err);
+        console.error("Error loading data:", err);
       }
     };
 
-    fetchProducts();
-  }, []);
-
-  // Fetch favorites **AFTER** products are loaded
-  useEffect(() => {
-    if (!user || products.length === 0) return; // Wait for products to load
-
-    const fetchFavorites = async () => {
-      try {
-        const favoritesResponse = await axios.get(`/users/favorites`, {
-          headers: {
-            Authorization: `Bearer ${localStorage.getItem("authToken")}`,
-          },
-        });
-
-        const favoriteProducts = new Set(
-          favoritesResponse.data.map((fav) => fav.product.toString())
-        );
-
-        const favorites = {};
-        products.forEach((product) => {
-          favorites[product._id] = favoriteProducts.has(product._id);
-        });
-
-        setIsFavorited(favorites);
-      } catch (err) {
-        console.error("Error loading favorites:", err);
-      }
-    };
-
-    fetchFavorites();
-  }, [user, products]); // Now waits for products to be available
+    fetchProductsAndFavorites();
+  }, [user]); // Only re-run when the user changes
 
   // Toggle favorite status
   const handleFavoriteClick = async (productId) => {
     if (!user) return alert("Inicia sesión para marcar favoritos.");
-
     const newState = !isFavorited[productId]; // Optimistic UI update
     setIsFavorited((prev) => ({ ...prev, [productId]: newState }));
 
