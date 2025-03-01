@@ -19,6 +19,10 @@ const Profile = () => {
   const { user, setUser } = useContext(UserContext);
   const [isBioEditable, setIsBioEditable] = useState(false);
 
+  if (!user || !user.user) {
+    return <Spinner />;
+  }
+
   const [formData, setFormData] = useState({
     bio: user.user.bio || "",
     profilePicture: null,
@@ -203,14 +207,28 @@ const Profile = () => {
         </div>
 
         <div className={Styles.sectionLinks}>
-          <Link to="/my-favorites" className="greenButton">
-            Mis favoritos
+          <Link
+            to="/my-favorites"
+            className={`${Styles.SquareLink} ${Styles.toFavorites}`}
+          >
+            <div className={Styles.SquareImage}></div>
+            <p className={Styles.SquareText}>Mis favoritos</p>
           </Link>
-          <Link to="/my-people" className="greenButton">
-            Mis personas
+
+          <Link
+            to="/my-people"
+            className={`${Styles.SquareLink} ${Styles.toPeople}`}
+          >
+            <div className={Styles.SquareImage}></div>
+            <p className={Styles.SquareText}>Mis personas</p>
           </Link>
-          <Link to="/my-comments" className="greenButton">
-            Mis comentarios
+
+          <Link
+            to="/my-comments"
+            className={`${Styles.SquareLink} ${Styles.toComments}`}
+          >
+            <div className={Styles.SquareImage}></div>
+            <p className={Styles.SquareText}>Mis comentarios</p>
           </Link>
         </div>
 

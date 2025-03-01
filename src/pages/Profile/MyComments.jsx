@@ -13,6 +13,7 @@ const MyComments = () => {
   const { user } = useContext(UserContext);
   const [comments, setComments] = useState([]);
   const [commentsToShow, setCommentsToShow] = useState(5);
+  const [loading, setLoading] = useState(true);
 
   useEffect(() => {
     const fetchComments = async () => {
@@ -20,10 +21,11 @@ const MyComments = () => {
         const { data } = await axios.get(
           `/comments/user/${user.user.firebaseUid}`
         );
-        // console.log(data);
         setComments(data);
       } catch (error) {
         console.error("Error fetching user comments:", error);
+      } finally {
+        setLoading(false);
       }
     };
 
@@ -35,10 +37,16 @@ const MyComments = () => {
   return (
     <div className={Styles.commentsContainer}>
       <h2>Mis comentarios</h2>
-      <Link to="/profile" className="back-button">
-        Volver al perfil
+      <Link to="/profile" className={Styles.backButton}>
+        <svg className={Styles.arrowIcon} viewBox="0 0 24 24">
+          <polyline points="15 18 9 12 15 6" /> {/* Left arrow */}
+        </svg>
+        <h5>Volver al perfil</h5>
       </Link>
-      {comments.length > 0 ? (
+
+      {loading ? (
+        <p>Cargando comentarios...</p>
+      ) : comments.length > 0 ? (
         <ul className="comment-list">
           {comments.slice(0, commentsToShow).map((comment) => (
             <li className="comment-item" key={comment._id}>
@@ -79,12 +87,15 @@ const MyComments = () => {
       ) : (
         <p>No has dejado comentarios.</p>
       )}
+
       {comments.length > commentsToShow && (
         <button
-          className="button-more"
+          className={Styles.buttonMore}
           onClick={() => setCommentsToShow(commentsToShow + 5)} // Cargar 5 más
         >
-          Mostrar más
+          <svg className={Styles.arrowIcon} viewBox="0 0 24 24">
+            <polyline points="6 9 12 15 18 9" />
+          </svg>
         </button>
       )}
     </div>

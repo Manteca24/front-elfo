@@ -1,23 +1,35 @@
 /*sección comentarios*/
 
-  .comments-section {
+  .comment-section {
+    
     margin-top: 40px;
     border-top: 2px solid #ccc;
     padding-top: 20px;
   }
   
-  .comments-list {
+  .comment-list {
+    display: grid;
+    justify-content: center;
     list-style-type: none;
     padding: 0;
   }
   
   .comment-item {
     margin-bottom: 20px;
-    padding: 10px;
-    border-bottom: 1px solid #eee;
+    padding: 15px;
+    border: 1px solid #ddd; 
+    border-radius: 12px; 
     display: flex;
     flex-direction: column;
+    transition: all 0.3s ease;
   }
+  
+  .comment-item:hover {
+    border: 1px solid #ba1220;
+    box-shadow: 0 4px 10px #4CAF50; 
+    transform: translateY(-5px); 
+  }
+  
   
   .comment-header {
     display: flex;

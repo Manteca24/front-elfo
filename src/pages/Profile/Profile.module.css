@@ -30,8 +30,6 @@
 
  .profileLeft{
 margin: 20px;
-
-
 } 
 
 .profileRight {
@@ -55,7 +53,7 @@ margin: 20px;
   color: #333;
 }
 
-.profileForm textarea {
+/* .profileForm textarea {
   font-size: 1rem;
   padding: 12px;
   border-radius: 8px;
@@ -66,9 +64,9 @@ margin: 20px;
 }
 
 .profileForm textarea:focus {
-  border-color: #4caf50; /* Highlight with green when focused */
+  border-color: #4caf50;
   outline: none;
-}
+} */
 
 .profileForm button {
   padding: 10px 20px;
@@ -118,24 +116,65 @@ margin: 20px;
   opacity: 1;
 }
 
+/*Flecha "ver más"*/
+.buttonMore {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  width: 70px;
+  height: 70px;
+  margin: 20px auto;
+  background-color: transparent;
+  border: none;
+  /* border-radius: 50%; */
+  cursor: pointer;
+  transition: background-color 0.5s ease-in-out, transform 0.3s ease-in-out;
+}
 
-.button-more {
-    display: block;
-    width: 200px;
-    margin: 20px auto;
-    padding: 10px;
-    background-color: #4caf50;
-    color: white;
-    text-align: center;
-    border: none;
-    border-radius: 5px;
-    cursor: pointer;
-  }
+.arrowIcon {
+  width: 50px;
+  height: 50px;
+  stroke: #4CAF50;
+  stroke-width: 2;
+  fill: none;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+  /* transition: stroke 0.5s ease-in-out, transform 0.3s ease-in-out; */
+}
+
+.buttonMore:hover .arrowIcon {
+  stroke: #4CAF50; 
+  transform: translateY(5px); 
   
-  .button-more:hover {
-    background-color: #45a049;
-  }
-  
+}
+
+/*"volver al perfil" con flecha*/
+.backButton {
+  display: flex;
+  align-items: center;
+  justify-content:flex-start;
+  margin: 20px;
+  cursor: pointer;
+  text-decoration: none; 
+  color: black; 
+}
+
+
+.backButton h5 {
+  /* font-size: 16px; 
+  margin: 0;
+  font-weight: normal; */
+  color: #4CAF50; 
+}
+
+.backButton:hover .arrowIcon {
+  stroke: #ba1220; 
+}
+
+.backButton:hover h5 {
+  color: #ba1220; 
+}
+
 
 .profilePicContainer{
     display: flex;
@@ -195,9 +234,9 @@ margin: 20px;
     justify-content: flex-end;    
 }  */
 
-.myFavorites{
+/* .myFavorites{
     margin: 10px 0px;
-}
+} */
 
 /* Estilo para la lista de favoritos */
 .favoriteList {
@@ -210,7 +249,6 @@ margin: 20px;
   align-items: center;
 }
 
-/* Estilo general para la sección de favoritos */
 .myFavorites {
   padding: 20px;
   background-color: #f9f9f9;
@@ -223,14 +261,6 @@ margin: 20px;
   text-align: center;
 }
 
-/* Estilo para la lista de favoritos */
-.favoriteList {
-  display: flex;
-  flex-wrap: wrap;
-  gap: 20px;
-  list-style: none;
-  padding: 0;
-}
 
 .favoriteLink {
   text-decoration: none;
@@ -240,7 +270,6 @@ margin: 20px;
   height: 100%;
 }
 
-/* Estilo para cada tarjeta de producto */
 .favoriteItem {
   background-color: #fff;
   border: 1px solid #ddd;
@@ -272,6 +301,8 @@ margin: 20px;
   background-color: #f9f9f9;
   border-top: 1px solid #ddd;
 }
+
+/*mis personas*/
 
 .favoritePeople{
   text-align: center;
@@ -387,3 +418,110 @@ margin: 20px;
     gap: 5px;
   }
   
+  .sectionLinks {
+    display: flex;
+    justify-content: center;
+    gap: 100px;  /* Increase gap between squares */
+    margin: 50px;
+    flex-wrap: wrap;
+  }
+  
+  .SquareLink {
+    display: block;
+    max-width: 300px; 
+    text-align: center;
+    text-decoration: none;
+    margin: 30px; 
+    color: #333;
+  }
+  
+  .SquareImage {
+    box-shadow: 0 6px 12px rgba(0, 0, 0, 0.15);
+
+    width: 200px;
+    height: 200px;
+    background-size: cover;
+    background-position: center;
+    background-repeat: no-repeat;
+    border-radius: 15px; 
+  }
+  
+  .SquareText {
+    font-size: 24px; 
+    font-weight: bold;
+    color: #ba1220; 
+    margin-top: 15px; 
+    text-align: center;
+    text-transform: uppercase;  
+    letter-spacing: 2px;  
+    transition: transform 0.2s ease-in-out;  
+  }
+  
+  .SquareLink:hover .SquareText {
+    transform: scale(1.1);  
+  }
+  
+  .toFavorites .SquareImage {
+    background-image: url('/heart.svg');
+  }
+  
+  .toPeople .SquareImage {
+    background-image: url('/savedPerson.png');
+  }
+  
+  .toComments .SquareImage {
+    background-image: url('/comments.svg');
+  }
+  
+  .SquareLink:hover .SquareImage {
+    transform: scale(1.1);  
+    box-shadow: 0 6px 12px rgba(0, 0, 0, 0.15);
+  }
+  
+
+  /*skeleton*/
+
+  .skeletonLoader {
+    display: flex;
+    justify-content: center;
+    flex-wrap: wrap;
+    gap: 20px;
+    margin-top: 20px;
+  }
+  
+  .skeletonItem {
+    position: relative;
+    background-color: #e0e0e0;
+    border-radius: 10px;
+    height: 200px; 
+    width: 200px;
+    animation: skeletonLoading 1.5s infinite linear;
+    display: flex;
+justify-content: center;  }
+  
+  .skeletonItem::before {
+    content: "";
+    display: block;
+    background-color: #c5c5c5;
+    width: 80%;
+    height: 40px;
+    margin: 10px auto;
+    border-radius: 4px;
+    position: absolute;
+    bottom: 10px; /* Position it at the bottom of the item */
+    left: 50%;
+    transform: translateX(-50%); /* Center it horizontally */
+  }
+  
+  @keyframes skeletonLoading { /*efecto youtube guapísimo*/ 
+    0% {
+      background-color: #e0e0e0;
+    }
+    50% {
+      background-color: #d0d0d0;
+    }
+    100% {
+      background-color: #e0e0e0;
+    }
+  }
+

@@ -179,8 +179,11 @@ const MyPeople = () => {
   return (
     <div className={Styles.peopleContainer}>
       <h2>Mis personas</h2>
-      <Link to="/profile" className="back-button">
-        Volver al perfil
+      <Link to="/profile" className={Styles.backButton}>
+        <svg className={Styles.arrowIcon} viewBox="0 0 24 24">
+          <polyline points="15 18 9 12 15 6" /> {/* Left arrow */}
+        </svg>
+        <h5>Volver al perfil</h5>
       </Link>
       {/* Mostrar las personas guardadas */}
       <div className={Styles.savedPeopleContainer}>
