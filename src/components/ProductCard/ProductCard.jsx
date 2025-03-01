@@ -27,13 +27,13 @@ const ProductCard = () => {
             },
           });
 
-          console.log("Fetched Favorites:", favoritesResponse.data);
+          // console.log("Fetched Favorites:", favoritesResponse.data);
 
           const favoriteProducts = new Set(
             favoritesResponse.data.map((fav) => fav.product._id.toString())
           );
 
-          console.log("favorite products:", favoriteProducts);
+          // console.log("favorite products:", favoriteProducts);
 
           // Ensure isFavorited is set only AFTER products are available
           const updatedFavorites = {};

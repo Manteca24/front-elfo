@@ -6,9 +6,20 @@
 
 .profileContainer{
   display: flex;
+  flex-direction: column;
   justify-content: center;
   align-items: center;
   position: relative;
+
+}
+
+.buttons{
+  display: flex;
+  justify-content: flex-end;
+  gap: 10px;
+  position: absolute;
+  top: 110px;
+  right: 50px;
 }
 
 .profilePicWrapper {
@@ -19,6 +30,7 @@
 
  .profileLeft{
 margin: 20px;
+
 
 } 
 
@@ -127,8 +139,19 @@ margin: 20px;
 
 .profilePicContainer{
     display: flex;
+    flex-direction: column;
     justify-content: center;
+    align-items: center;
 }
+
+.profilePicContainer h3{
+  color: black;
+}
+
+.profilePicContainer h3::before{
+  content: "@";
+}
+
 .profilePicElfo {
   width: 200px;
   height: 200px;
@@ -162,18 +185,15 @@ margin: 20px;
   opacity: 1;
 }
  
-.logOutButton {
+/* .logOutButton {
     display: flex;
     justify-content: flex-end;
-    margin-right: 30px;
 }
 
 .admin {
     display: flex;
     justify-content: flex-end;    
-    margin-right: 30px;
-    margin-top: 5px;
-} 
+}  */
 
 .myFavorites{
     margin: 10px 0px;
@@ -308,15 +328,18 @@ margin: 20px;
     .savedPersonContainer {
       width: 60%;
     }
-    .buttons{
-      margin: 20px;
-    }
-    .logOutButton{
-      margin: 0;
-    }
     
     .profileContainer{
       flex-direction: column;
+    }
+    .buttons{
+      justify-content: center;
+      margin: 50px;
+    }
+
+
+    .profilePicElfo{
+      margin-top: 70px;
     }
 
     .profileContainer>div:nth-child(3){ /*Cerrar sesión*/

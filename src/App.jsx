@@ -18,11 +18,14 @@ import Admin from "./pages/Admin";
 import FilterManager from "./components/FilterManager/FilterManager";
 import SelectPerson from "./pages/SelectPerson/SelectPerson";
 import ResultsPage from "./pages/ResultsPage/ResultsPage";
-import UnderConstructionPage from "./components/UnderConstructionPage/UnderConstructionPage";
+import UnderConstructionPage from "./pages/UnderConstructionPage/UnderConstructionPage";
 import AboutUs from "./pages/AboutUs";
 import Rules from "./pages/Rules";
 import PrivacyPolicy from "./pages/PrivacyPolicy";
-import Spinner from "./components/Spinner/Spinner"; // Asegúrate de tener un componente de Spinner
+import Spinner from "./components/Spinner/Spinner";
+import MyFavorites from "./pages/Profile/MyFavorites";
+import MyComments from "./pages/Profile/MyComments";
+import MyPeople from "./pages/Profile/MyPeople";
 
 const App = () => {
   const [data, setData] = useState([]);
@@ -128,6 +131,10 @@ const App = () => {
             <Route path="/about-us" element={<AboutUs />} />
             <Route path="/rules" element={<Rules />} />
             <Route path="/privacy-policy" element={<PrivacyPolicy />} />
+            <Route path="/profile" element={<Profile />} />
+            <Route path="/my-favorites" element={<MyFavorites />} />
+            <Route path="/my-people" element={<MyPeople />} />
+            <Route path="/my-comments" element={<MyComments />} />
           </Routes>
         )}
         <Footer />
