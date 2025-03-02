@@ -27,17 +27,28 @@ const NavBar = () => {
   };
 
   useEffect(() => {
-    fetchFilters();
+    fetchFilters(); // Fetch filters when the component mounts
+  }, []);
 
-    const interval = setInterval(() => {
-      if (filters.length > 0) {
-        const randomIndex = Math.floor(Math.random() * filters.length);
-        setPlaceholder(`Quiero un regalo para ${filters[randomIndex]}...`);
-      }
-    }, 3000); // cada 3 segundos
+  useEffect(() => {
+    const updatePlaceholder = () => {
+      setFilters((prevFilters) => {
+        if (prevFilters.length > 0) {
+          const randomIndex = Math.floor(Math.random() * prevFilters.length);
+          setPlaceholder(
+            `Quiero un regalo para ${prevFilters[randomIndex]}...`
+          );
+        }
+        return prevFilters; // Ensure the same filters remain
+      });
+    };
+
+    updatePlaceholder(); // Run immediately to avoid delay
+
+    const interval = setInterval(updatePlaceholder, 3000);
 
     return () => clearInterval(interval);
-  }, []);
+  }, [filters]); // Reacts to filter changes
 
   const handleLinkClick = () => {
     setMenuOpen(false);
