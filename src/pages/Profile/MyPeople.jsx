@@ -185,33 +185,32 @@ const MyPeople = () => {
         </svg>
         <h5>Volver al perfil</h5>
       </Link>
+
       {/* Mostrar las personas guardadas */}
       <div className={Styles.savedPeopleContainer}>
         {/* {console.log("savedPeople", savedPeople)} */}
         {savedPeople.map((person) => (
-          <div key={person._id} className={Styles.savedPersonContainer}>
-            <div
-              className={Styles.clickeableDiv}
-              onClick={() => handleOpenTagsModal(person)}
-            >
-              <h4>{person.name}</h4>
-              <img className={Styles.savedPersonImg} src="/savedPerson.png" />
-            </div>
-            <p>
-              <span>Relación: </span>
-              {person.relation}
-            </p>
-            <p>
-              <span>Palabras clave:</span>
-              {person.filters.map((filter, index) => (
-                <div key={index}>
-                  <p>
-                    <span>· {filter.filterId.name}</span>
-                  </p>
-                  <p>{filter.tags.join(", ")}</p>
+          <div className={Styles.personCard}>
+            <div key={person._id} className={Styles.savedPersonContainer}>
+              <div className={Styles.savedPersonWho}>
+                <h4>{person.name}</h4>
+                <p>
+                  <span>Relación: </span>
+                  {person.relation}
+                </p>
+                <div
+                  className={Styles.editButtonContainer}
+                  onClick={() => handleOpenTagsModal(person)}
+                >
+                  <p>Modificar características de {person.name}</p>
+                  <button className={Styles.editButton} alt="editar"></button>
                 </div>
-              ))}
-            </p>
+              </div>
+              <div className={Styles.elfoImgContainer}>
+                <img className={Styles.savedPersonImg} src="/savedPerson.png" />
+              </div>
+            </div>
+
             <div className={Styles.cardsButtons}>
               <button
                 onClick={() => {
