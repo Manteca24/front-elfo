@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import Styles from "./GiveAPresent.module.css";
 import "../../styles/modalWindows.css";
@@ -10,6 +10,13 @@ const GiveAPresent = ({ person, onClose }) => {
   const [purchaseLocation, setPurchaseLocation] = useState("");
   const [price, setPrice] = useState("");
   const navigate = useNavigate();
+
+  const [clicked, setClicked] = useState(false);
+
+  const handleClick = () => {
+    setClicked(true);
+    setTimeout(() => setClicked(false), 2000);
+  };
 
   const handleSubmit = (e) => {
     e.preventDefault();
@@ -38,7 +45,7 @@ const GiveAPresent = ({ person, onClose }) => {
             Regalar a <span>{person.name}</span>
           </h2>
           <h4 className="subtitles">Características de {person.name}</h4>
-          <ul className="list">
+          <ul className="immutableCharacteristics">
             <li>
               <span>Género: </span>
               {person.gender}
@@ -51,16 +58,18 @@ const GiveAPresent = ({ person, onClose }) => {
               <span>Relación: </span>
               {person.relation}
             </li>
-            {console.log(person)}
-            <li>
-              <span>Filtros: </span>
-              {person.filters.map((filter) => (
-                <p key={filter.filterId._id}>
-                  · {filter.filterId.name} ({filter.tags.join(", ")}){" "}
-                  {/*error: tags son los que añade, pero en filters.filterId.tags están TODOS..*/}
-                </p>
-              ))}
-            </li>
+          </ul>
+          {/* {console.log(person)} */}
+          <ul
+            className={`mutableCharacteristics ${clicked ? "clicked" : ""}`}
+            onClick={handleClick}
+          >
+            <span>Filtros: </span>
+            {person.filters.map((filter) => (
+              <li key={filter.filterId._id}>
+                · {filter.filterId.name} ({filter.tags.join(", ")})
+              </li>
+            ))}
           </ul>
 
           <h4 className="subtitles">Preferencias del regalo</h4>

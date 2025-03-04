@@ -11,7 +11,7 @@
 }
 
 .modalContent {
-    padding: 10px;
+    padding: 0px;
     background-color: white;
     border-radius: 10px;
     width: 80%;
@@ -51,20 +51,94 @@
     margin: 20px;
 }
 
-
-.list li span{
-    font-weight: bold;
+.immutableCharacteristics, 
+.mutableCharacteristics {
+  list-style: none;
+  padding: 1rem;
+  border-radius: 8px;
+  margin: 2rem;
+  font-size: 1rem;
 }
+
+.immutableCharacteristics {
+  background: #f4f4f4;
+  border-left: 4px solid rgb(171, 24, 24); 
+}
+
+.immutableCharacteristics li {
+  display: flex;
+  justify-content: center;
+  gap: 5px;
+  padding: 5px 0;
+  color: #333;
+}
+
+.immutableCharacteristics span {
+  font-weight: bold;
+  color: #2c3e50;
+}
+
+/* Mutable characteristics - more dynamic with hover effects */
+.mutableCharacteristics {
+  background: #fff;
+  border-left: 4px solid #2ecc71; 
+  box-shadow: 0px 2px 5px rgba(0, 0, 0, 0.1);
+  position: relative;
+  cursor: pointer;
+}
+
+.mutableCharacteristics::after {
+  content: "No es posible modificar las características de la persona desde aquí.";
+  position: absolute;
+  color: red;
+  padding: 5px 10px;
+  border-radius: 5px;
+  font-size: 1rem;
+  top: 100%;
+  left: 50%;
+  transform: translateX(-50%);
+  opacity: 0;
+  transition: opacity 0.3s ease-in-out;
+  white-space: nowrap;
+  pointer-events: none;
+}
+
+.mutableCharacteristics:active::after {
+  opacity: 1;
+}
+
+.mutableCharacteristics.clicked::after {
+    opacity: 1;
+}
+
+
+.mutableCharacteristics span {
+  font-weight: bold;
+  color: #27ae60;
+  display: block;
+  margin-bottom: 5px;
+  
+}
+
+.mutableCharacteristics li {
+  padding: 5px 0;
+  transition: color 0.3s ease-in-out;
+  cursor: pointer;
+}
+
+.mutableCharacteristics li:hover {
+  color: #16a085;
+}
+
 
 /*editar persona*/
 .filtersGroup{
-    width: 100%;
-    display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(220px, 1fr)); 
-    grid-gap: 10px;
-    margin-top: 20px;
-}
+    display: flex;
+  flex-direction: column;
+  margin: 0px 100px;
+  gap: 20px;
 
+}
 
 
 .tags { 
@@ -76,7 +150,7 @@
 }
     
 .eachTag { 
-    font-size: 14px;
+    font-size: 20px;
 }
   
 .eachFilter { 
@@ -94,18 +168,19 @@
 .eachFilter span{
     cursor: pointer;
     font-weight: bold;
+    font-size: 20px;
     color: rgb(171, 24, 24);
 }
 
 .eachFilter span:hover{
     color: #ff5722; 
-}
+} 
 
   
 .eachTag {
     cursor: pointer;
     color: black;
-    margin-left: 10px;
+    margin: 10px;
 }
   
 .eachTag:hover {

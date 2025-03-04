@@ -240,7 +240,7 @@ const MyPeople = () => {
         <div className="modal">
           <div className="modalContent">
             <div className="title">
-              <h2>Editar tags para {selectedPerson.name}</h2>
+              <h2>Modificar características de {selectedPerson.name}</h2>
             </div>
             <div className="filtersGroup">
               {selectedPerson.filters.map((filter) => (

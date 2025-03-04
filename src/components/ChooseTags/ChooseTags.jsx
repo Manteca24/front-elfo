@@ -60,10 +60,7 @@ const ChooseTags = ({
                   {/* Mostrar solo los filtros seleccionados */}
                   {selectedFilters[filter._id] && (
                     <div className={Styles.lapiz}>
-                      <img
-                        src="./editar.png"
-                        onClick={() => openModal(filter)}
-                      />
+                      <img src="./edit.png" onClick={() => openModal(filter)} />
                       <ul>
                         {selectedFilters[filter._id].map((tag) => (
                           <li key={tag}>{tag}</li>

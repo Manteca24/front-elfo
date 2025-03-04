@@ -468,14 +468,14 @@ justify-content: center;  }
 }
 
 .editButton {
-  background-image: url("./edit.png"); /* Correct way to set the image */
-  background-size: contain; /* Make sure the image fits the button */
+  background-image: url("./edit.png");
+  background-size: contain;
   background-repeat: no-repeat;
   background-color: transparent;
   width: 2rem;
   height: 2rem;
-  border: none; /* Optional: Remove border for a clean look */
-  cursor: pointer; /* Change cursor to pointer */
+  border: none; 
+  cursor: pointer; 
 }
 
 
@@ -494,58 +494,5 @@ gap: 5px;
 
 .editButtonContainer p:hover {
   color: #ba1220; 
-}
-
-
-
-/*modal*/
-.modalContent {
-  position: fixed;
-  background-color: white;
-  border-radius: 12px;
-  box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
-  padding: 30px;
-  transition: transform 0.3s ease-in-out;
-}
-
-.filtersGroup {
-  display: flex;
-  flex-direction: column;
-  gap: 20px;
-}
-
-.eachTag {
-  display: inline-block;
-  background-color: #e0e0e0;
-  padding: 8px;
-  margin: 5px;
-  border-radius: 20px;
-  font-size: 0.9rem;
-  cursor: pointer;
-  transition: background-color 0.3s ease;
-}
-
-.eachTag:hover {
-  background-color: #4CAF50;
-  color: white;
-}
-
-.modalInput {
-  border: 1px solid #ddd;
-  padding: 10px;
-  border-radius: 8px;
-  width: 100%;
-  font-size: 1rem;
-}
-
-.modalInput:focus {
-  outline: none;
-  border-color: #4CAF50;
-}
-
-.modalCloseButton {
-  display: flex;
-  justify-content: center;
-  margin-top: 20px;
 }
 
