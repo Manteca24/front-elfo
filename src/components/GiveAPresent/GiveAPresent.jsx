@@ -3,6 +3,7 @@ import { useNavigate } from "react-router-dom";
 import Styles from "./GiveAPresent.module.css";
 import "../../styles/modalWindows.css";
 import "../../styles/buttons.css";
+import axios from "axios";
 
 const GiveAPresent = ({ person, onClose }) => {
   console.log(person);
@@ -18,7 +19,7 @@ const GiveAPresent = ({ person, onClose }) => {
     setTimeout(() => setClicked(false), 2000);
   };
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
 
     const giftPreferences = {
@@ -27,16 +28,26 @@ const GiveAPresent = ({ person, onClose }) => {
       price,
     };
 
-    // Combina las características de la persona con las del regalo
+    console.log("giftPreferences:", giftPreferences);
+
+    // Combine person's characteristics with gift preferences
     const searchParams = {
       ...person,
       ...giftPreferences,
     };
 
-    // Redirige a la página de resultados con los parámetros
-    navigate(`/results?${new URLSearchParams(searchParams).toString()}`);
-  };
+    console.log("searchParams:", searchParams);
 
+    try {
+      // Make a GET request with searchParams as query parameters
+      const response = await axios.get(`/search/`, { params: searchParams });
+
+      // Navigate to results page with retrieved results
+      navigate("/results", { state: { results: response.data } });
+    } catch (error) {
+      console.error("Error fetching search results:", error);
+    }
+  };
   return (
     <div className="modal">
       <div className="modalContent">
