@@ -115,6 +115,8 @@
     display: flex;
     flex-wrap: wrap; 
     padding: 10px;
+    z-index: 9999;
+
   }
   .navBar div{
     order: 0;
@@ -128,6 +130,7 @@
     right: 0;
     width: 100%;
     box-shadow: 0px 4px 6px rgba(0, 0, 0, 0.1);
+
   }
   .navLinks a {
     padding: 10px 20px;
@@ -161,11 +164,13 @@
     padding: 10px 20px;
     gap: 10px;
     text-align: center; 
+
   } 
 
   .exploreLinks{
     display: flex;
     flex-direction: column;
+
   }
 
 }

@@ -20,6 +20,7 @@ gap: 10px;
 position: absolute;
 top: 110px;
 right: 50px;
+min-width: 500px;
 }
 
 .profilePicWrapper { /*imagen de perfil*/
@@ -204,6 +205,7 @@ color: #ba1220;
 
 
 
+
 /*Secciones*/
 .sectionLinks {
   display: flex;
@@ -220,6 +222,14 @@ color: #ba1220;
   text-decoration: none;
   margin: 30px; 
   color: #333;
+}
+
+.toComments {
+  transform: translate(30px); /*para arreglar el descuadre*/
+}
+
+.toComments p{
+  transform: translate(-20px); /*para arreglar el descuadre*/
 }
 
 .SquareImage {
@@ -266,6 +276,22 @@ color: #ba1220;
 }
 
 
+@media (max-width: 1020px){
+  .buttons{ /*cerrar sesión y panel de admin*/
+    top: 150px;
+    right: 50%;
+    transform: translate(30%, 0%);
+    z-index: 9000; /*para evitar que se ponga algo por encima de los botones y pierdan la funcionalidad*/
+    }
+    .profileLeft{
+      margin-top: 70px;
+    }
+
+    .sectionLinks{
+      gap: 1px;
+      margin: 0px;
+    }
+}
 
 
 /*SECCIÓN FAVORITOS -----------------------------------------------*/
