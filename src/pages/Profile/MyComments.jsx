@@ -14,6 +14,8 @@ const MyComments = () => {
   const [comments, setComments] = useState([]);
   const [commentsToShow, setCommentsToShow] = useState(5);
   const [loading, setLoading] = useState(true);
+  const [editingComment, setEditingComment] = useState(null);
+  const [newCommentText, setNewCommentText] = useState("");
 
   useEffect(() => {
     const fetchComments = async () => {
@@ -34,12 +36,51 @@ const MyComments = () => {
     }
   }, [user]);
 
+  const handleDelete = async (commentId) => {
+    if (!window.confirm("Are you sure you want to delete this comment?"))
+      return;
+    try {
+      await axios.delete(`/comments/${commentId}`, {
+        headers: {
+          Authorization: `Bearer ${localStorage.getItem("authToken")}`,
+        },
+      });
+      setComments(comments.filter((comment) => comment._id !== commentId));
+    } catch (error) {
+      console.error("Error deleting comment:", error);
+    }
+  };
+
+  const handleEdit = async (commentId) => {
+    try {
+      await axios.put(
+        `/comments/${commentId}`,
+        { newComment: newCommentText },
+        {
+          headers: {
+            Authorization: `Bearer ${localStorage.getItem("authToken")}`,
+          },
+        }
+      );
+      setComments(
+        comments.map((comment) =>
+          comment._id === commentId
+            ? { ...comment, comment: newCommentText }
+            : comment
+        )
+      );
+      setEditingComment(null);
+    } catch (error) {
+      console.error("Error updating comment:", error);
+    }
+  };
+
   return (
     <div className={Styles.commentsContainer}>
       <h2>Mis comentarios</h2>
       <Link to="/profile" className={Styles.backButton}>
         <svg className={Styles.arrowIcon} viewBox="0 0 24 24">
-          <polyline points="15 18 9 12 15 6" /> {/* Left arrow */}
+          <polyline points="15 18 9 12 15 6" />
         </svg>
         <h5>Volver al perfil</h5>
       </Link>
@@ -59,10 +100,8 @@ const MyComments = () => {
                 <div className="comment-info">
                   <div className="userInfo">
                     <p>{user.user.username}</p>
-                    {user.user.isAdmin ? (
+                    {user.user.isAdmin && (
                       <span className="isAdmin">(Admin)</span>
-                    ) : (
-                      ""
                     )}
                   </div>
                   <div className="comment-date">
@@ -70,17 +109,55 @@ const MyComments = () => {
                   </div>
                 </div>
               </div>
+
               <div className={Styles.commentContent}>
-                <p className={Styles.commentText}>{comment.comment}</p>
-                <p className={Styles.fromProduct}>
-                  En:
-                  <span>
-                    <Link to={`/product/${comment.productId._id}`}>
-                      {comment.productId.name}
-                    </Link>
-                  </span>
-                </p>
+                {editingComment === comment._id ? (
+                  <>
+                    <textarea
+                      value={newCommentText}
+                      onChange={(e) => setNewCommentText(e.target.value)}
+                    />
+                    <button onClick={() => handleEdit(comment._id)}>
+                      Save
+                    </button>
+                    <button onClick={() => setEditingComment(null)}>
+                      Cancel
+                    </button>
+                  </>
+                ) : (
+                  <>
+                    <p className={Styles.commentText}>{comment.comment}</p>
+                    <p className={Styles.fromProduct}>
+                      En:
+                      <span>
+                        <Link to={`/product/${comment.productId._id}`}>
+                          {comment.productId.name}
+                        </Link>
+                      </span>
+                    </p>
+                  </>
+                )}
               </div>
+
+              {(comment.userId === user.user._id || user.user.isAdmin) && (
+                <div className={Styles.commentActions}>
+                  {comment.userId === user.user._id && (
+                    <button
+                      onClick={() => {
+                        setEditingComment(comment._id);
+                        setNewCommentText(comment.comment);
+                      }}
+                    >
+                      Edit
+                    </button>
+                  )}
+                  {user.user.isAdmin || comment.userId === user.user._id ? (
+                    <button onClick={() => handleDelete(comment._id)}>
+                      Delete
+                    </button>
+                  ) : null}
+                </div>
+              )}
             </li>
           ))}
         </ul>
@@ -91,7 +168,7 @@ const MyComments = () => {
       {comments.length > commentsToShow && (
         <button
           className={Styles.buttonMore}
-          onClick={() => setCommentsToShow(commentsToShow + 5)} // Cargar 5 más
+          onClick={() => setCommentsToShow(commentsToShow + 5)}
         >
           <svg className={Styles.arrowIcon} viewBox="0 0 24 24">
             <polyline points="6 9 12 15 18 9" />
