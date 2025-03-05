@@ -44,7 +44,7 @@ const MyPeople = () => {
 
   const handleAddTag = async (e, personId, filterId) => {
     if (e.key === "Enter" && e.target.value.trim() !== "") {
-      const newTag = e.target.value.trim();
+      const newTags = e.target.value.trim().split(/\s*,\s*/); // Split by comma or space
       try {
         await axios.put(
           `/users/saved-people/${personId}/filters/${filterId}/tags`,
@@ -52,7 +52,7 @@ const MyPeople = () => {
             tags: [
               ...selectedPerson.filters.find((f) => f.filterId._id === filterId)
                 .tags,
-              newTag,
+              ...newTags,
             ],
           },
           {
@@ -62,6 +62,7 @@ const MyPeople = () => {
           }
         );
 
+        // Optimistically update the local state
         setSavedPeople((prevPeople) =>
           prevPeople.map((person) =>
             person._id === personId
@@ -69,16 +70,35 @@ const MyPeople = () => {
                   ...person,
                   filters: person.filters.map((filter) =>
                     filter.filterId._id === filterId
-                      ? { ...filter, tags: [...filter.tags, newTag] }
+                      ? { ...filter, tags: [...filter.tags, ...newTags] }
                       : filter
                   ),
                 }
               : person
           )
         );
-        e.target.value = "";
+
+        // Update the selected person in the modal as well
+        setSelectedPerson((prevSelectedPerson) => {
+          if (prevSelectedPerson._id === personId) {
+            return {
+              ...prevSelectedPerson,
+              filters: prevSelectedPerson.filters.map((filter) =>
+                filter.filterId._id === filterId
+                  ? {
+                      ...filter,
+                      tags: [...filter.tags, ...newTags],
+                    }
+                  : filter
+              ),
+            };
+          }
+          return prevSelectedPerson;
+        });
+
+        e.target.value = ""; // Clear input field after adding tags
       } catch (err) {
-        console.error("Error adding tag:", err);
+        console.error("Error adding tags:", err);
       }
     }
   };
