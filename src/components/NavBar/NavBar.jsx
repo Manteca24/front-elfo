@@ -1,5 +1,5 @@
 import React, { useContext, useState, useEffect } from "react";
-import { Link, useNavigate } from "react-router-dom";
+import { Link, useNavigate, useLocation } from "react-router-dom";
 import styles from "./NavBar.module.css";
 import { UserContext } from "../../contexts/UserContext";
 import "../../App.css";
@@ -7,6 +7,7 @@ import axios from "axios";
 
 const NavBar = () => {
   const navigate = useNavigate();
+  const location = useLocation(); // Hook to track the location changes
   const { user, loading } = useContext(UserContext);
   const [menuOpen, setMenuOpen] = useState(false);
   const [query, setQuery] = useState("");
@@ -73,6 +74,15 @@ const NavBar = () => {
     }
   }, [results]);
 
+  const clearSearch = () => {
+    setQuery(""); // Reset the search query to empty
+  };
+
+  // Clear the search query whenever the location changes
+  useEffect(() => {
+    clearSearch();
+  }, [location]);
+
   return (
     <nav className={styles.navbar}>
       {loading ? (
@@ -92,7 +102,6 @@ const NavBar = () => {
             className={`${styles.menuButton} ${menuOpen ? styles.active : ""}`}
             onClick={() => {
               setMenuOpen(!menuOpen);
-              // console.log("menuOpen:", !menuOpen);
             }}
           ></div>
           <div
@@ -157,6 +166,15 @@ const NavBar = () => {
                 }
               }}
             />
+            {query && (
+              <button
+                className={styles.clearButton}
+                onClick={clearSearch}
+                aria-label="Clear search"
+              >
+                X
+              </button>
+            )}
             <button
               className={styles.searchButton}
               onClick={handleSearch}
