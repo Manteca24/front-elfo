@@ -35,9 +35,7 @@ const NavBar = () => {
       setFilters((prevFilters) => {
         if (prevFilters.length > 0) {
           const randomIndex = Math.floor(Math.random() * prevFilters.length);
-          setPlaceholder(
-            `Quiero un regalo para ${prevFilters[randomIndex]}...`
-          );
+          setPlaceholder(`Regalo para ${prevFilters[randomIndex]}...`);
         }
         return prevFilters; // Ensure the same filters remain
       });

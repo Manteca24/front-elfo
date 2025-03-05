@@ -13,32 +13,40 @@ const MyFavorites = () => {
   const [favoritesToShow, setFavoritesToShow] = useState(5);
   const [loading, setLoading] = useState(true);
 
+  // Function to fetch the favorite product details
+  const fetchFavoriteDetails = async () => {
+    try {
+      setLoading(true); // Set loading to true when refreshing
+      const promises = user.user.favoriteProducts.map(async (fav) => {
+        const response = await axios.get(`/products/${fav.product}`);
+        return response.data;
+      });
+
+      const favorites = await Promise.all(promises);
+      setFavoriteDetails(favorites);
+    } catch (err) {
+      console.error(
+        "Error al cargar los detalles de los productos favoritos:",
+        err
+      );
+    } finally {
+      setLoading(false); // Stop loading after fetching
+    }
+  };
+
+  // Fetch the favorites when the component mounts or when the user favorites change
   useEffect(() => {
-    const fetchFavoriteDetails = async () => {
-      try {
-        const promises = user.user.favoriteProducts.map(async (fav) => {
-          const response = await axios.get(`/products/${fav.product}`);
-          return response.data;
-        });
-
-        const favorites = await Promise.all(promises);
-        setFavoriteDetails(favorites);
-      } catch (err) {
-        console.error(
-          "Error al cargar los detalles de los productos favoritos:",
-          err
-        );
-      } finally {
-        setLoading(false); // comment to see skeleton
-      }
-    };
-
     if (user?.user?.favoriteProducts?.length > 0) {
       fetchFavoriteDetails();
     } else {
-      setLoading(false); // If there are no favorite products, stop loading immediately
+      setLoading(false); // If there are no favorites, stop loading immediately
     }
   }, [user]);
+
+  // Refresh the page by reloading
+  const handleRefresh = () => {
+    window.location.reload(); // Reload the page to fetch updated data
+  };
 
   return (
     <div className={Styles.myFavorites}>
@@ -49,6 +57,16 @@ const MyFavorites = () => {
         </svg>
         <h5>Volver al perfil</h5>
       </Link>
+
+      {/* Refresh button */}
+      <div className={Styles.refreshButton}>
+        <button
+          className="greenButton"
+          onClick={handleRefresh} // Trigger refresh when clicked
+        >
+          Actualizar favoritos
+        </button>
+      </div>
 
       {/* Show skeleton loaders while loading */}
       {loading ? (

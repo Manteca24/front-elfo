@@ -391,6 +391,8 @@ justify-content: center;  }
   transform: translateX(-50%); 
 }
 
+
+
 @keyframes skeletonLoading { /*efecto brillante como en youtube*/ 
   0% {
     background-color: #e0e0e0;
@@ -401,6 +403,12 @@ justify-content: center;  }
   100% {
     background-color: #e0e0e0;
   }
+}
+
+
+.refreshButton{
+  justify-self: center;
+  margin-bottom: 20px;
 }
 
 /*SECCIÓN MIS COMENTARIOS ----------------------------------------*/

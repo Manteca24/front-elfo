@@ -62,6 +62,12 @@
   .searchBar input:focus {
     border-color: #6F171F;
   }
+
+  @media (max-width: 768px) {
+    .searchBar input::placeholder {
+      content: "Regalo para...";
+    }
+  }
   
   .searchButton {
     all: unset; /*Resetear los estilos de botón*/
