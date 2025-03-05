@@ -62,13 +62,20 @@ const MyComments = () => {
           },
         }
       );
+
       setComments(
         comments.map((comment) =>
           comment._id === commentId
-            ? { ...comment, comment: newCommentText }
+            ? {
+                ...comment,
+                comment: newCommentText.includes("(editado)")
+                  ? newCommentText
+                  : `${newCommentText} (editado)`,
+              }
             : comment
         )
       );
+
       setEditingComment(null);
     } catch (error) {
       console.error("Error updating comment:", error);
@@ -126,7 +133,14 @@ const MyComments = () => {
                   </>
                 ) : (
                   <>
-                    <p className={Styles.commentText}>{comment.comment}</p>
+                    <p className={Styles.commentText}>
+                      {comment.comment}{" "}
+                      {comment.comment.includes("(editado)")
+                        ? ""
+                        : comment.edited
+                        ? "(editado)"
+                        : ""}
+                    </p>
                     <p className={Styles.fromProduct}>
                       En:
                       <span>
