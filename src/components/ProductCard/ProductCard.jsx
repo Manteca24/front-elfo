@@ -131,6 +131,10 @@ const ProductCard = () => {
                 <p>{product.price} €</p>
               </div>
             </div>
+          </Link>
+          <Link
+            to={`/user/${creator.find((c) => c._id === product.user)?._id}`}
+          >
             <div className={styles.owner}>
               By{" "}
               {creator.find((c) => c._id === product.user)?.username ||

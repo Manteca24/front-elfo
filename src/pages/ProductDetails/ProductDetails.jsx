@@ -10,10 +10,12 @@ const ProductDetails = () => {
   const { id } = useParams();
   const { user } = useContext(UserContext);
   const [product, setProduct] = useState(null);
-  const [creator, setCreator] = useState("");
+  const [creator, setCreator] = useState(null);
   const [comments, setComments] = useState([]);
   const [newComment, setNewComment] = useState("");
   const [loadingComments, setLoadingComments] = useState(true);
+  const [editingComment, setEditingComment] = useState(null);
+  const [newCommentText, setNewCommentText] = useState("");
 
   useEffect(() => {
     const fetchProductDetails = async () => {
@@ -72,24 +74,70 @@ const ProductDetails = () => {
     }
   };
 
+  const handleDelete = async (commentId) => {
+    if (!window.confirm("Are you sure you want to delete this comment?"))
+      return;
+    try {
+      await axios.delete(`/comments/${commentId}`, {
+        headers: {
+          Authorization: `Bearer ${localStorage.getItem("authToken")}`,
+        },
+      });
+      setComments(comments.filter((comment) => comment._id !== commentId));
+    } catch (error) {
+      console.error("Error deleting comment:", error);
+    }
+  };
+
+  const handleEdit = async (commentId) => {
+    try {
+      await axios.put(
+        `/comments/${commentId}`,
+        { newComment: newCommentText },
+        {
+          headers: {
+            Authorization: `Bearer ${localStorage.getItem("authToken")}`,
+          },
+        }
+      );
+
+      setComments(
+        comments.map((comment) =>
+          comment._id === commentId
+            ? {
+                ...comment,
+                comment: newCommentText.includes("(editado)")
+                  ? newCommentText
+                  : `${newCommentText} (editado)`,
+              }
+            : comment
+        )
+      );
+
+      setEditingComment(null);
+    } catch (error) {
+      console.error("Error updating comment:", error);
+    }
+  };
+
   if (!product) return <p>Cargando producto...</p>;
-  if (!creator) return <p>Cargando elfo... </p>;
+  if (!creator) return <p>Cargando elfo...</p>;
 
   return (
     <div className={Styles.productDetailsBody}>
-      {/* {console.log(comments)} */}
       <h2>{product.name}</h2>
       <div className={Styles.productImage}>
-        {/* {console.log(product)} */}
         <img src={product.image} alt={product.name} />
       </div>
       <section className={Styles.productDetails}>
         <p>
-          Elfo <span>@{creator.username}</span> le regaló{" "}
-          {/*idea: al pinchar usuario te lleva a tu perfil*/}
-          <span>{product.name} </span>a su <span>{product.relation}</span>
+          Elfo{" "}
+          <Link to={`/user/${creator._id}`}>
+            <span>@{creator.username}</span>
+          </Link>{" "}
+          le regaló {product.name} a su <span>{product.relation}</span>
         </p>
-        <h4>{creator.username} nos cuenta... </h4>
+        <h4>{creator.username} nos cuenta...</h4>
         <p>"{product.description}"</p>
         <h4>Precio: </h4>
         <p>{product.price}€</p>
@@ -104,23 +152,21 @@ const ProductDetails = () => {
             : product.purchaseLocation.ubication}{" "}
           - {product.purchaseLocation.storeName}
         </p>
-        {product.purchaseLocation.url ? (
+        {product.purchaseLocation.url && (
           <Link
             className={Styles.urlToProduct}
             to={product.purchaseLocation.url}
           >
             Producto disponible en <span>este</span> enlace.
           </Link>
-        ) : (
-          ""
         )}
-
         <p className={Styles.tags}>
           {product.tags.map((tag, index) => (
-            <p key={index}>#{tag} </p>
+            <p key={index}>#{tag}</p>
           ))}
         </p>
       </section>
+
       <section className="comments-section">
         <h2>Comentarios</h2>
         {loadingComments ? (
@@ -130,26 +176,62 @@ const ProductDetails = () => {
             {comments.map((comment) => (
               <li key={comment._id} className="comment-item">
                 <div className="comment-header">
-                  <img
-                    src={comment.userId.profilePicture}
-                    alt="Foto de perfil"
-                    className="profile-pic"
-                  />
+                  <Link to={`/user/${comment.userId._id}`}>
+                    <img
+                      src={comment.userId.profilePicture}
+                      alt="Foto de perfil"
+                      className="profile-pic"
+                    />
+                  </Link>
                   <div className="comment-info">
-                    <div className="userInfo">
-                      <p>{comment.userId.username}</p>
-                      {comment.userId.isAdmin ? (
-                        <span className="isAdmin">(Admin)</span>
-                      ) : (
-                        ""
-                      )}
-                    </div>
+                    <Link to={`/user/${comment.userId._id}`}>
+                      <div className="userInfo">
+                        <p>{comment.userId.username}</p>
+                        {comment.userId.isAdmin && (
+                          <span className="isAdmin">(Admin)</span>
+                        )}
+                      </div>
+                    </Link>
                     <div className="comment-date">
                       {moment(comment.createdAt).format("DD/MM/YYYY HH:mm")}
                     </div>
                   </div>
                 </div>
-                <p className="comment-text">{comment.comment}</p>
+
+                {editingComment === comment._id ? (
+                  <>
+                    <textarea
+                      value={newCommentText}
+                      onChange={(e) => setNewCommentText(e.target.value)}
+                    />
+                    <button onClick={() => handleEdit(comment._id)}>
+                      Save
+                    </button>
+                    <button onClick={() => setEditingComment(null)}>
+                      Cancel
+                    </button>
+                  </>
+                ) : (
+                  <>
+                    <p className="comment-text">{comment.comment}</p>
+                    {user.user._id === comment.userId._id ||
+                    user.user.isAdmin ? (
+                      <div className="comment-actions">
+                        <button
+                          onClick={() => {
+                            setEditingComment(comment._id);
+                            setNewCommentText(comment.comment);
+                          }}
+                        >
+                          Edit
+                        </button>
+                        <button onClick={() => handleDelete(comment._id)}>
+                          Delete
+                        </button>
+                      </div>
+                    ) : null}
+                  </>
+                )}
               </li>
             ))}
           </ul>

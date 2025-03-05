@@ -26,6 +26,7 @@ import Spinner from "./components/Spinner/Spinner";
 import MyFavorites from "./pages/Profile/MyFavorites";
 import MyComments from "./pages/Profile/MyComments";
 import MyPeople from "./pages/Profile/MyPeople";
+import User from "./pages/User/User";
 
 const App = () => {
   const [data, setData] = useState([]);
@@ -63,6 +64,7 @@ const App = () => {
             <Route path="/register" element={<Register />} />
             <Route path="/login" element={<LogIn />} />
             <Route path="/product/:id" element={<ProductDetails />} />
+            <Route path="/user/:userId" element={<User />} />
             <Route
               path="/dashboard"
               element={
