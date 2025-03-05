@@ -56,7 +56,7 @@ const ProductDetails = () => {
   }, [id]);
 
   const handleAddComment = async (e) => {
-    e.preventDefault();
+    // e.preventDefault();
     if (!newComment.trim()) return;
 
     try {
