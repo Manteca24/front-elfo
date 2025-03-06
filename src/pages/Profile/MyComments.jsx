@@ -100,18 +100,22 @@ const MyComments = () => {
             <li className="comment-item" key={comment._id}>
               <div className="comment-header">
                 {/* Bring profile picture and username from the context */}
-                <img
-                  src={user.user.profilePicture}
-                  alt="foto de perfil"
-                  className="profile-pic"
-                />
+                <Link to={`/user/${user.user._id}`}>
+                  <img
+                    src={user.user.profilePicture}
+                    alt="foto de perfil"
+                    className="profile-pic"
+                  />
+                </Link>
                 <div className="comment-info">
-                  <div className="userInfo">
-                    <p>{user.user.username}</p>
-                    {user.user.isAdmin && (
-                      <span className="isAdmin">(Admin)</span>
-                    )}
-                  </div>
+                  <Link to={`/user/${user.user._id}`}>
+                    <div className="userInfo">
+                      <p>{user.user.username}</p>
+                      {user.user.isAdmin && (
+                        <span className="isAdmin">(Admin)</span>
+                      )}
+                    </div>
+                  </Link>
                   <div className="comment-date">
                     {moment(comment.createdAt).format("DD/MM/YYYY HH:mm")}
                   </div>
