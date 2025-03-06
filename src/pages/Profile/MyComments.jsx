@@ -99,6 +99,7 @@ const MyComments = () => {
           {comments.slice(0, commentsToShow).map((comment) => (
             <li className="comment-item" key={comment._id}>
               <div className="comment-header">
+                {/* Bring profile picture and username from the context */}
                 <img
                   src={user.user.profilePicture}
                   alt="foto de perfil"
@@ -142,7 +143,7 @@ const MyComments = () => {
                         : ""}
                     </p>
                     <p className={Styles.fromProduct}>
-                      En:
+                      En:{" "}
                       <span>
                         <Link to={`/product/${comment.productId._id}`}>
                           {comment.productId.name}
@@ -165,11 +166,11 @@ const MyComments = () => {
                       Edit
                     </button>
                   )}
-                  {user.user.isAdmin || comment.userId === user.user._id ? (
+                  {(user.user.isAdmin || comment.userId === user.user._id) && (
                     <button onClick={() => handleDelete(comment._id)}>
                       Delete
                     </button>
-                  ) : null}
+                  )}
                 </div>
               )}
             </li>

@@ -5,6 +5,7 @@ import { UserContext } from "../../contexts/UserContext";
 import "../../styles/comments.css";
 import moment from "moment";
 import Styles from "./ProductDetails.module.css";
+import Comment from "../../components/Comment";
 
 const ProductDetails = () => {
   const { id } = useParams();
@@ -89,11 +90,11 @@ const ProductDetails = () => {
     }
   };
 
-  const handleEdit = async (commentId) => {
+  const handleEdit = async (commentId, updatedText) => {
     try {
       await axios.put(
         `/comments/${commentId}`,
-        { newComment: newCommentText },
+        { newComment: updatedText },
         {
           headers: {
             Authorization: `Bearer ${localStorage.getItem("authToken")}`,
@@ -106,15 +107,13 @@ const ProductDetails = () => {
           comment._id === commentId
             ? {
                 ...comment,
-                comment: newCommentText.includes("(editado)")
-                  ? newCommentText
-                  : `${newCommentText} (editado)`,
+                comment: updatedText.includes("(editado)")
+                  ? updatedText
+                  : `${updatedText} (editado)`,
               }
             : comment
         )
       );
-
-      setEditingComment(null);
     } catch (error) {
       console.error("Error updating comment:", error);
     }
@@ -174,66 +173,12 @@ const ProductDetails = () => {
         ) : comments.length > 0 ? (
           <ul className="comments-list">
             {comments.map((comment) => (
-              <li key={comment._id} className="comment-item">
-                <div className="comment-header">
-                  <Link to={`/user/${comment.userId._id}`}>
-                    <img
-                      src={comment.userId.profilePicture}
-                      alt="Foto de perfil"
-                      className="profile-pic"
-                    />
-                  </Link>
-                  <div className="comment-info">
-                    <Link to={`/user/${comment.userId._id}`}>
-                      <div className="userInfo">
-                        <p>{comment.userId.username}</p>
-                        {comment.userId.isAdmin && (
-                          <span className="isAdmin">(Admin)</span>
-                        )}
-                      </div>
-                    </Link>
-                    <div className="comment-date">
-                      {moment(comment.createdAt).format("DD/MM/YYYY HH:mm")}
-                    </div>
-                  </div>
-                </div>
-
-                {editingComment === comment._id ? (
-                  <>
-                    <textarea
-                      value={newCommentText}
-                      onChange={(e) => setNewCommentText(e.target.value)}
-                    />
-                    <button onClick={() => handleEdit(comment._id)}>
-                      Save
-                    </button>
-                    <button onClick={() => setEditingComment(null)}>
-                      Cancel
-                    </button>
-                  </>
-                ) : (
-                  <>
-                    <p className="comment-text">{comment.comment}</p>
-                    {user &&
-                      (user.user._id === comment.userId._id ||
-                        user.user.isAdmin) && (
-                        <div className="comment-actions">
-                          <button
-                            onClick={() => {
-                              setEditingComment(comment._id);
-                              setNewCommentText(comment.comment);
-                            }}
-                          >
-                            Edit
-                          </button>
-                          <button onClick={() => handleDelete(comment._id)}>
-                            Delete
-                          </button>
-                        </div>
-                      )}
-                  </>
-                )}
-              </li>
+              <Comment
+                key={comment._id}
+                comment={comment}
+                handleDelete={handleDelete}
+                handleEdit={handleEdit}
+              />
             ))}
           </ul>
         ) : (
