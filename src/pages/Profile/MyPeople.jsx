@@ -4,6 +4,7 @@ import axios from "axios";
 import Styles from "./Profile.module.css";
 import { Link } from "react-router-dom";
 import GiveAPresent from "../../components/GiveAPresent/GiveAPresent";
+import AddPerson from "../../components/AddPerson/AddPerson";
 
 const MyPeople = () => {
   const { user } = useContext(UserContext);
@@ -13,6 +14,7 @@ const MyPeople = () => {
   const [showModal, setShowModal] = useState(false);
   const [error, setError] = useState("");
   const [loading, setLoading] = useState(false);
+  const [showAddPerson, setShowAddPerson] = useState(false);
 
   useEffect(() => {
     const fetchSavedPeople = async () => {
@@ -205,7 +207,6 @@ const MyPeople = () => {
         </svg>
         <h5>Volver al perfil</h5>
       </Link>
-
       {/* Mostrar las personas guardadas */}
       <div className={Styles.savedPeopleContainer}>
         {/* {console.log("savedPeople", savedPeople)} */}
@@ -254,7 +255,6 @@ const MyPeople = () => {
           </div>
         ))}
       </div>
-
       {/* Modal para gestionar tags */}
       {isModalOpen && selectedPerson && (
         <div className="modal">
@@ -314,6 +314,16 @@ const MyPeople = () => {
           </div>
         </div>
       )}
+      {/*Añadir persona*/}
+      {/* Button to toggle AddPerson component */}
+      <button
+        className={Styles.addPersonButton}
+        onClick={() => setShowAddPerson(!showAddPerson)}
+      >
+        <span>+ </span>Añadir Persona
+      </button>
+      {/* Conditionally render AddPerson component */}
+      {showAddPerson && <AddPerson />}{" "}
     </div>
   );
 };
