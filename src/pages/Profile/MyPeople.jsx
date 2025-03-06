@@ -194,6 +194,34 @@ const MyPeople = () => {
     }
   };
 
+  const handleDeletePerson = async (personId) => {
+    // Show a confirmation dialog
+    const isConfirmed = window.confirm(
+      "¿Estás seguro de que quieres eliminar a esta persona para siempre?"
+    );
+    if (!isConfirmed) {
+      return; // If the user cancels, do nothing
+    }
+
+    try {
+      const response = await axios.delete(`/users/saved-people/${personId}`, {
+        headers: {
+          Authorization: `Bearer ${localStorage.getItem("authToken")}`,
+        },
+      });
+
+      // Optimistically remove the person from the savedPeople state
+      setSavedPeople((prevPeople) =>
+        prevPeople.filter((person) => person._id !== personId)
+      );
+
+      console.log("Persona eliminada:", response.data.message);
+    } catch (err) {
+      console.error("Error deleting person:", err);
+      setError("Error al eliminar la persona");
+    }
+  };
+
   if (loading) {
     return <Spinner />;
   }
@@ -208,53 +236,66 @@ const MyPeople = () => {
         <h5>Volver al perfil</h5>
       </Link>
       {/* Mostrar las personas guardadas */}
-      <div className={Styles.savedPeopleContainer}>
-        {/* {console.log("savedPeople", savedPeople)} */}
-        {savedPeople.map((person) => (
-          <div className={Styles.personCard}>
-            <div key={person._id} className={Styles.savedPersonContainer}>
-              <div className={Styles.savedPersonWho}>
-                <h4>{person.name}</h4>
-                <p>
-                  <span>Relación: </span>
-                  {person.relation}
-                </p>
-                <div
-                  className={Styles.editButtonContainer}
-                  onClick={() => handleOpenTagsModal(person)}
-                >
-                  <p>Modificar características de {person.name}</p>
-                  <button className={Styles.editButton} alt="editar"></button>
+      {savedPeople.length != 0 ? (
+        <div className={Styles.savedPeopleContainer}>
+          {/* {console.log("savedPeople", savedPeople)} */}
+          {savedPeople.map((person) => (
+            <div className={Styles.personCard}>
+              <div key={person._id} className={Styles.savedPersonContainer}>
+                <div className={Styles.savedPersonWho}>
+                  <h4>{person.name}</h4>
+                  <p>
+                    <span>Relación: </span>
+                    {person.relation}
+                  </p>
+                  <div
+                    className={Styles.editButtonContainer}
+                    onClick={() => handleOpenTagsModal(person)}
+                  >
+                    <p>Modificar características de {person.name}</p>
+                    <button className={Styles.editButton} alt="editar"></button>
+                  </div>
+                </div>
+                <div className={Styles.elfoImgContainer}>
+                  <img
+                    className={Styles.savedPersonImg}
+                    src="/savedPerson.png"
+                  />
                 </div>
               </div>
-              <div className={Styles.elfoImgContainer}>
-                <img className={Styles.savedPersonImg} src="/savedPerson.png" />
-              </div>
-            </div>
 
-            <div className={Styles.cardsButtons}>
-              <button
-                onClick={() => {
-                  setSelectedPerson(person);
-                  setShowModal(true);
-                }}
-                className="smallGoodButtons"
-              >
-                Regalar
-              </button>
+              <div className={Styles.cardsButtons}>
+                <button
+                  onClick={() => {
+                    setSelectedPerson(person);
+                    setShowModal(true);
+                  }}
+                  className="smallGoodButtons"
+                >
+                  Regalar
+                </button>
+                <button
+                  onClick={() => handleDeletePerson(person._id)}
+                  className="smallBadButtons"
+                >
+                  Eliminar
+                </button>
+              </div>
+              {showModal && selectedPerson?._id === person._id && (
+                <GiveAPresent
+                  person={selectedPerson}
+                  onClose={() => {
+                    setShowModal(false);
+                    setSelectedPerson(null); // Limpiar la persona seleccionada
+                  }}
+                />
+              )}
             </div>
-            {showModal && selectedPerson?._id === person._id && (
-              <GiveAPresent
-                person={selectedPerson}
-                onClose={() => {
-                  setShowModal(false);
-                  setSelectedPerson(null); // Limpiar la persona seleccionada
-                }}
-              />
-            )}
-          </div>
-        ))}
-      </div>
+          ))}
+        </div>
+      ) : (
+        <p className={Styles.noPerson}>No tienes personas guardadas.</p>
+      )}
       {/* Modal para gestionar tags */}
       {isModalOpen && selectedPerson && (
         <div className="modal">
@@ -316,12 +357,14 @@ const MyPeople = () => {
       )}
       {/*Añadir persona*/}
       {/* Button to toggle AddPerson component */}
-      <button
-        className={Styles.addPersonButton}
-        onClick={() => setShowAddPerson(!showAddPerson)}
-      >
-        <span>+ </span>Añadir Persona
-      </button>
+      <div className={Styles.addNewPersonDiv}>
+        <button
+          className={Styles.addPersonButton}
+          onClick={() => setShowAddPerson(!showAddPerson)}
+        >
+          <span>+ </span>Añadir Persona
+        </button>
+      </div>
       {/* Conditionally render AddPerson component */}
       {showAddPerson && <AddPerson />}{" "}
     </div>

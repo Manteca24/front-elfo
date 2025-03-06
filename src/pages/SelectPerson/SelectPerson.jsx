@@ -91,12 +91,14 @@ const SelectPerson = () => {
       </div>
       {/*Añadir persona*/}
       {/* Button to toggle AddPerson component */}
-      <button
-        className={Styles.addPersonButton}
-        onClick={() => setShowAddPerson(!showAddPerson)}
-      >
-        <span>+ </span>Añadir Persona
-      </button>
+      <div className={Styles.addNewPersonDiv}>
+        <button
+          className={Styles.addPersonButton}
+          onClick={() => setShowAddPerson(!showAddPerson)}
+        >
+          <span>+ </span>Añadir Persona
+        </button>
+      </div>
       {/* Conditionally render AddPerson component */}
       {showAddPerson && <AddPerson />}{" "}
     </div>

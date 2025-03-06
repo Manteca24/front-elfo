@@ -426,6 +426,12 @@ justify-content: center;  }
 
 /*SECCIÓN MIS PERSONAS --------------------------------------------*/
 
+
+.noPerson{
+  text-align: left;
+  margin: 20px;}
+
+
 .savedPeopleContainer{
   display: flex;
   justify-content: center;
@@ -461,6 +467,42 @@ justify-content: center;  }
   flex-direction: column;
   justify-content:space-around;
 
+}
+
+.addNewPersonDiv{
+  display: flex;
+  justify-content: center;
+  margin: 10px;
+}
+.addPersonButton {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  background-color: #4CAF50; /* Green */
+  color: white;
+  font-size: 16px;
+  font-weight: bold;
+  padding: 12px 20px;
+  border: none;
+  border-radius: 8px;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+}
+
+.addPersonButton span {
+  font-size: 20px;
+}
+
+.addPersonButton:hover {
+  background-color: #45a049;
+  transform: scale(1.05);
+}
+
+.addPersonButton:active {
+  background-color: #3d8b40;
+  transform: scale(0.98);
 }
 
 .elfoImgContainer{
