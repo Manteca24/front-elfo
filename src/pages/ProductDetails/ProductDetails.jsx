@@ -214,22 +214,23 @@ const ProductDetails = () => {
                 ) : (
                   <>
                     <p className="comment-text">{comment.comment}</p>
-                    {user.user._id === comment.userId._id ||
-                    user.user.isAdmin ? (
-                      <div className="comment-actions">
-                        <button
-                          onClick={() => {
-                            setEditingComment(comment._id);
-                            setNewCommentText(comment.comment);
-                          }}
-                        >
-                          Edit
-                        </button>
-                        <button onClick={() => handleDelete(comment._id)}>
-                          Delete
-                        </button>
-                      </div>
-                    ) : null}
+                    {user &&
+                      (user.user._id === comment.userId._id ||
+                        user.user.isAdmin) && (
+                        <div className="comment-actions">
+                          <button
+                            onClick={() => {
+                              setEditingComment(comment._id);
+                              setNewCommentText(comment.comment);
+                            }}
+                          >
+                            Edit
+                          </button>
+                          <button onClick={() => handleDelete(comment._id)}>
+                            Delete
+                          </button>
+                        </div>
+                      )}
                   </>
                 )}
               </li>
