@@ -14,7 +14,7 @@ const Comment = ({ comment, handleDelete, handleEdit }) => {
     setEditingComment(false);
   };
 
-  console.log("Comentario:", comment);
+  //   console.log("Comentario:", comment);
 
   return (
     <li className="comment-item">
@@ -56,10 +56,25 @@ const Comment = ({ comment, handleDelete, handleEdit }) => {
           {user &&
             (user.user._id === comment.userId._id || user.user.isAdmin) && (
               <div className="comment-actions">
-                <button onClick={() => setEditingComment(true)}>Edit</button>
-                <button onClick={() => handleDelete(comment._id)}>
-                  Delete
-                </button>
+                {/* Show Edit button if the comment is owned by the logged-in user */}
+                {comment.userId._id === user.user._id && (
+                  <button
+                    onClick={() => {
+                      setEditingComment(comment._id);
+                      setNewCommentText(comment.comment);
+                    }}
+                  >
+                    Edit
+                  </button>
+                )}
+
+                {/* Show Delete button for admins or if the comment is owned by the logged-in user */}
+                {(user.user.isAdmin ||
+                  comment.userId._id === user.user._id) && (
+                  <button onClick={() => handleDelete(comment._id)}>
+                    Delete
+                  </button>
+                )}
               </div>
             )}
         </>
