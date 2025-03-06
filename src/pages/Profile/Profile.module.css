@@ -446,6 +446,12 @@ justify-content: center;  }
 
 }
 
+.cardsButtons{
+  display: flex;
+  /* flex-direction: column; */
+  gap: 5px;
+}
+
 .personCard {
   max-width: 40%;
   min-width: 300px;

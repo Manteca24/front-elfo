@@ -81,7 +81,7 @@ const AddPerson = () => {
   };
 
   const handleSubmit = async (e) => {
-    e.preventDefault();
+    // e.preventDefault();
     if (
       !name.trim() ||
       !gender ||
@@ -149,7 +149,7 @@ const AddPerson = () => {
             <option value="">Seleccionar</option>
             <option value="masculino">Masculino</option>
             <option value="femenino">Femenino</option>
-            <option value="no relevante">No relevante</option>
+            <option value="no-relevante">No relevante</option>
           </select>
         </div>
 
@@ -184,6 +184,8 @@ const AddPerson = () => {
             <option value="novio">Novio</option>
             <option value="esposo">Esposo</option>
             <option value="esposa">Esposa</option>
+            <option value="cuñado">Cuñado</option>
+            <option value="cuñada">Cuñada</option>
             <option value="compañero de trabajo">Compañero de trabajo</option>
             <option value="compañera de trabajo">Compañera de trabajo</option>
             <option value="jefe">Jefe</option>
