@@ -1,0 +1,86 @@
+.userProfile {
+    max-width: 450px;
+    margin: 40px auto;
+    padding: 24px;
+    font-size: 20px;
+    background: linear-gradient(135deg, #1E293B, #354458); /* Dark navy gradient */
+    color: #F1F5F9; /* Light gray text */
+    border-radius: 12px;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
+    text-align: center;
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+  }
+  
+  .userProfile:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 6px 15px rgba(0, 0, 0, 0.3);
+  }
+  
+  .userProfile h2 {
+    font-size: 38px;
+    margin-bottom: 10px;
+    color: #FACC15; /* Gold for username */
+    font-weight: bold;
+  }
+  
+  .profilePic {
+    width: 140px;
+    height: 140px;
+    border-radius: 50%;
+    object-fit: cover;
+    border: 3px solid #94A3B8; /* Neutral gray-blue */
+    margin-bottom: 12px;
+  }
+  
+  p {
+    font-size: 16px;
+    margin: 6px 0;
+  }
+  
+  strong {
+    color: #CBD5E1; /* Subtle light gray for labels */
+  }
+  
+  /* Status Badge */
+  .status {
+    display: inline-block;
+    padding: 6px 12px;
+    border-radius: 8px;
+    font-weight: bold;
+    font-size: 14px;
+    margin-top: 5px;
+  }
+  
+  .status-active {
+    background-color: #22C55E; /* Green */
+    color: #fff;
+  }
+  
+  .status-inactive {
+    background-color: #EAB308; /* Gold */
+    color: #222;
+  }
+  
+  .status-banned {
+    background-color: #DC2626; /* Red */
+    color: #fff;
+  }
+  
+  /* Admin Badge */
+  .admin {
+    background: linear-gradient(135deg, #475569, #64748B); /* Subtle steel-blue gradient */
+    color: white;
+    padding: 6px 12px;
+    border-radius: 6px;
+    font-weight: bold;
+    font-size: 14px;
+    display: inline-block;
+    margin-top: 8px;
+  }
+  
+  @media (max-width: 500px) {
+    .userProfile {
+      max-width: 90%;
+    }
+  }
+  

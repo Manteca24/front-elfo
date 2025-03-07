@@ -189,6 +189,7 @@ const Profile = () => {
               {isBioEditable ? (
                 <textarea
                   name="bio"
+                  id="bio"
                   value={formData.bio}
                   onChange={handleBioChange}
                   onBlur={() => setIsBioEditable(false)} // Guardar cambios cuando el usuario deje de editar

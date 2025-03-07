@@ -24,21 +24,53 @@ const User = () => {
     fetchUser();
   }, [userId]);
 
-  if (loading) return <p>Cargando información de usuario...</p>;
+  if (loading) return <p>Loading user data...</p>;
   if (error) return <p>{error}</p>;
-  if (!user) return <p>Usuario no encontrado.</p>;
+  if (!user) return <p>User not found.</p>;
 
   return (
     <div className={Styles.userProfile}>
       <h2>{user.username}</h2>
       <img
-        src={user.profilePicture}
-        alt={`Perfil de ${user.username}`}
+        src={user.profilePicture || "/default-profile.png"}
+        alt={`Profile of ${user.username}`}
         className={Styles.profilePic}
       />
-      <p>Email: {user.email}</p>
-      <p>Miembro desde: {new Date(user.createdAt).toLocaleDateString()}</p>
-      <p>{user.bio ? `"${user.bio}"` : "Bio no disponible."}</p>
+      <p>
+        <strong>Member Since:</strong>{" "}
+        {new Date(user.createdAt).toLocaleDateString()}
+      </p>
+      <p>
+        <strong>Bio:</strong> {user.bio ? `"${user.bio}"` : "Not available"}
+      </p>
+      <p>
+        <strong>Birthday:</strong>{" "}
+        {user.birthday
+          ? new Date(user.birthday).toLocaleDateString()
+          : "Not specified"}
+      </p>
+      <p>
+        <strong>Account Status:</strong>{" "}
+        <span
+          className={
+            user.status === "active"
+              ? Styles.status + " " + Styles.statusActive
+              : user.status === "banned"
+              ? Styles.status + " " + Styles.statusBanned
+              : Styles.status + " " + Styles.statusInactive
+          }
+        >
+          {user.status === "active"
+            ? "🟢 Active"
+            : user.status === "banned"
+            ? "🔴 Banned"
+            : "🟡 Inactive"}
+        </span>
+      </p>
+      <p>
+        <strong>Role:</strong>{" "}
+        {user.isAdmin ? <span className={Styles.admin}>Admin 🛠️</span> : "User"}
+      </p>
     </div>
   );
 };

@@ -389,6 +389,7 @@ const UploadGift = () => {
           value={formData.name}
           onChange={handleInputChange}
           required
+          autoComplete="product-name"
         />
 
         {/* Descripción */}
@@ -398,6 +399,7 @@ const UploadGift = () => {
           placeholder="Descripción del producto"
           value={formData.description}
           onChange={handleInputChange}
+          autoComplete="off"
         />
 
         {/* Precio */}
@@ -409,6 +411,7 @@ const UploadGift = () => {
           value={formData.price}
           onChange={handleInputChange}
           required
+          autoComplete="off"
         />
 
         {/*Tipo de regalo*/}
@@ -416,11 +419,13 @@ const UploadGift = () => {
         <select
           className="input-type"
           name="type"
+          id="type"
           type="string"
           placeholder="Tipo de regalo"
           value={formData.type}
           onChange={handleTypeChange}
           required
+          autoComplete="on"
         >
           <option value="">Selecciona una opción</option>
           <option value="diy">DIY (hazlo tú mismo)</option>
@@ -439,6 +444,7 @@ const UploadGift = () => {
             id="gender"
             onChange={handleInputChange}
             required
+            autoComplete="on"
           >
             {/* {console.log(formData.gender)} */}
             <option value="">Selecciona una opción</option>
@@ -457,9 +463,11 @@ const UploadGift = () => {
         <select
           className="select-ageRange"
           name="ageRange"
+          id="ageRange"
           value={formData.ageRange}
           onChange={handleInputChange}
           required
+          autoComplete="on"
         >
           <option value="">Seleccione una opción</option>
           <option value="bebé">Bebé</option>
@@ -476,9 +484,11 @@ const UploadGift = () => {
         <select
           className="select-relation"
           name="relation"
+          id="relation"
           value={formData.relation}
           onChange={handleInputRelation}
           required
+          autoComplete="on"
         >
           <option value="">Selecciona una opción</option>
           <option value="madre">Madre</option>
@@ -522,8 +532,10 @@ const UploadGift = () => {
           <select
             type="string"
             name="ubication"
+            id="ubication"
             value={formData.purchaseLocation.ubication}
             onChange={handlePurchaseLocationChange}
+            autoComplete="on"
           >
             <option value="">Selecciona una opción</option>
             <option value="diy">Lo hice yo</option>
@@ -542,6 +554,7 @@ const UploadGift = () => {
             value={formData.purchaseLocation.storeName}
             onChange={handlePurchaseLocationChange}
             placeholder="En Amazon / Lo hice yo     (opcional)"
+            autoComplete="on"
           />
           <br />
           <label htmlFor="url">
@@ -554,6 +567,7 @@ const UploadGift = () => {
             value={formData.purchaseLocation.url}
             onChange={handlePurchaseLocationChange}
             placeholder="https://www.amazon.es/    (opcional)"
+            autoComplete="url"
           />
         </div>
         {/* Subida de Imagen */}
@@ -588,7 +602,6 @@ const UploadGift = () => {
           closeModal={closeModal}
           addTagToFilter={addTagToFilter}
           customTag={customTag}
-          setCustomTag={setCustomTag}
           handleAddCustomTag={handleAddCustomTag}
           handleRemoveFilterTag={handleRemoveFilterTag}
         />
@@ -603,6 +616,7 @@ const UploadGift = () => {
           type="text"
           placeholder="Añade un tag y presiona Enter (opcional)"
           onKeyDown={handleAddTag}
+          autoComplete="off"
         />
         <ul className="tags-list">
           {formData.tags.map((tag, index) => (

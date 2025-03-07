@@ -2,7 +2,7 @@ import { useState, useContext } from "react";
 import { auth } from "../config/firebase";
 import { signInWithEmailAndPassword } from "firebase/auth";
 import axios from "../utils/axiosConfig";
-import { useNavigate } from "react-router-dom";
+import { useLocation, useNavigate } from "react-router-dom";
 import { UserContext } from "../contexts/UserContext";
 import "../App.css";
 
@@ -13,6 +13,7 @@ const LogIn = () => {
   const [loading, setLoading] = useState(false);
   const navigate = useNavigate();
   const { setUser } = useContext(UserContext);
+  const from = location.state?.from?.pathname || "/dashboard";
 
   const handleLogin = async (e) => {
     e.preventDefault();
@@ -37,7 +38,7 @@ const LogIn = () => {
       });
       setUser(response.data);
 
-      navigate("/dashboard");
+      navigate(from, { replace: true });
     } catch (err) {
       console.error("Error al iniciar sesión:", error);
       setError("Error al iniciar sesión. Revisa tus credenciales.");
