@@ -84,7 +84,7 @@ const ResultsPage = () => {
                 <div className={Styles.cardContent}>
                   <h2 className={Styles.productTitle}>{product.name}</h2>
                   <div className={Styles.priceBubble}>
-                    <p>${product.price}</p>
+                    <p>{product.price}€</p>
                   </div>
                 </div>
                 <div className={Styles.owner}>

@@ -1,0 +1,110 @@
+.container {
+    width: 99%;
+    margin: 10px;
+  }
+  
+  .filterBar {
+    display: flex;
+    justify-content: space-between;  /* Space out the text and arrow */
+    align-items: center;
+    background-color: #f8f9fa;  /* Lighter background for subtle look */
+    color: #609867;  /* Blue color for the text */
+    padding: 10px 20px;  /* Adjust padding for a more refined look */
+    cursor: pointer;
+    border-radius: 5px;
+    font-size: 1rem;
+    transition: background-color 0.3s, color 0.3s;
+  }
+  
+  .filterBar:hover {
+    background-color: #e9ecef;  /* Slightly darker background on hover */
+    color: #163119;  /* Darker text color on hover */
+  }
+  
+  .filterBarText {
+    font-size: 1.1rem;  /* Slightly smaller text for balance */
+  }
+  
+  .arrow {
+    font-size: 1.3rem;
+    transition: transform 0.3s ease, color 0.3s;
+    color: inherit;  /* Inherit text color */
+  }
+  
+  .arrow.open {
+    transform: rotate(180deg); /* Rotate arrow when open */
+  }
+  
+  .form {
+    display: flex;
+    flex-direction: column;
+    margin-top: 10px;
+    padding: 20px;
+    background-color: #ffffff;  /* Subtle white background */
+    border-radius: 5px;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);  /* Light shadow for elevation */
+  }
+  
+  .searchBar {
+    margin-bottom: 15px;  /* Reduced margin for better spacing */
+  }
+  
+  .searchInput {
+    width: 100%;
+    padding: 12px;
+    font-size: 1rem;
+    border-radius: 5px;
+    border: 1px solid #ccc;
+    background-color: #f9f9f9;  /* Light background */
+    transition: border-color 0.3s ease;
+  }
+  
+  .searchInput:focus {
+    border-color: #007bff;  /* Blue border on focus */
+  }
+  
+  .filters {
+    margin-bottom: 20px;
+  }
+  
+  .filter {
+    margin-bottom: 15px;
+  }
+  
+  label {
+    font-size: 1rem;
+    margin-bottom: 5px;
+    color: #495057;  /* Slightly darker color for the labels */
+  }
+  
+  .select,
+  .input {
+    width: 100%;
+    padding: 12px;
+    font-size: 1rem;
+    border-radius: 5px;
+    border: 1px solid #ccc;
+    background-color: #f9f9f9;  /* Light background */
+    transition: border-color 0.3s ease;
+  }
+  
+  .select:focus,
+  .input:focus {
+    border-color: #007bff;  /* Blue border on focus */
+  }
+  
+  .searchButton {
+    padding: 12px 25px;
+    font-size: 1.1rem;
+    background-color: #007bff;
+    color: white;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    transition: background-color 0.3s;
+  }
+  
+  .searchButton:hover {
+    background-color: #0056b3;  /* Darker blue on hover */
+  }
+  

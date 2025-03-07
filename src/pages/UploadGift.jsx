@@ -31,6 +31,8 @@ const UploadGift = () => {
   });
   const [categoriesWithFilters, setCategoriesWithFilters] = useState([]);
   const [selectedFile, setSelectedFile] = useState(null);
+  const [isLoading, setIsLoading] = useState(false);
+  const [errors, setErrors] = useState({});
   const navigate = useNavigate();
   // componente ChooseTags
   const [selectedFilters, setSelectedFilters] = useState({});
@@ -63,12 +65,6 @@ const UploadGift = () => {
     }
   };
 
-  const handleInputRelation = (e) => {
-    console.log(formData.relation);
-    const { name, value } = e.target;
-    setFormData({ ...formData, [name]: value });
-  };
-
   const handleFileChange = (e) => {
     const file = e.target.files[0];
     if (file) {
@@ -95,6 +91,12 @@ const UploadGift = () => {
       });
       e.target.value = "";
     }
+  };
+
+  const handleInputRelation = (e) => {
+    console.log(formData.relation);
+    const { name, value } = e.target;
+    setFormData({ ...formData, [name]: value });
   };
 
   const handleFilterChange = (categoryId, selectedFilters) => {
@@ -153,6 +155,10 @@ const UploadGift = () => {
     console.log("selectedFilters antes de enviar al backend:", selectedFilters);
     console.log("categorieswithfilters", categoriesWithFilters);
     e.preventDefault();
+    setErrors({});
+    // console.log(errors);
+    if (!validateForm()) return;
+    setIsLoading(true);
 
     const {
       name,
@@ -176,6 +182,7 @@ const UploadGift = () => {
       } catch (error) {
         console.error("Error al subir la imagen:", error);
         alert("No se pudo subir la imagen. Intenta de nuevo.");
+        setIsLoading(false);
         return;
       }
     }
@@ -227,11 +234,17 @@ const UploadGift = () => {
         console.log("Producto creado:", response.data.product);
         navigate("/dashboard");
       } else {
+        setErrors({ general: "Error al crear el producto. Intenta de nuevo." });
         console.error("Error al crear el producto:", response.data.message);
       }
     } catch (err) {
-      console.error("Error de red:", err);
+      setErrors({
+        general:
+          err.response?.data?.message || "Error de red. Intenta de nuevo.",
+      });
+      console.error("Error de red:", err.response?.data?.message);
     }
+    setIsLoading(false);
   };
 
   const handlePurchaseLocationChange = (e) => {
@@ -325,6 +338,34 @@ const UploadGift = () => {
       updatedFilters[filterId] = filterTags.filter((t) => t !== tag);
       return updatedFilters;
     });
+  };
+
+  const validateForm = () => {
+    setErrors({}); // Reset errors before validation
+    const newErrors = {};
+    const requiredFields = {
+      name: "El nombre es obligatorio",
+      price: "El precio es obligatorio",
+      type: "El tipo es obligatorio",
+      gender: "El género es obligatorio",
+      ageRange: "El rango de edad es obligatorio",
+      relation: "La relación es obligatoria",
+    };
+
+    Object.entries(requiredFields).forEach(([field, message]) => {
+      if (!formData[field]) newErrors[field] = message;
+    });
+
+    if (!formData.purchaseLocation.ubication) {
+      newErrors.ubication = "Indica la ubicación de compra";
+    }
+
+    if (!previewImage) {
+      newErrors.image = "La imagen es obligatoria";
+    }
+
+    setErrors(newErrors);
+    return Object.keys(newErrors).length === 0;
   };
 
   return (
@@ -569,9 +610,15 @@ const UploadGift = () => {
           ))}
         </ul>
 
+        {Object.values(errors).map((error, index) => (
+          <p key={index} className="error">
+            {error}
+          </p>
+        ))}
+
         {/* Botón de envío */}
-        <button type="submit" className="greenButton">
-          Subir Producto
+        <button type="submit" disabled={isLoading} className="greenButton">
+          {isLoading ? "Subiendo producto..." : "Subir Producto"}
         </button>
       </form>
     </div>
