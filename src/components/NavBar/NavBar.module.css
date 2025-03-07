@@ -132,7 +132,7 @@
 /* Media Queries */
 
 /* Móviles y Tablets */
-@media (max-width: 1024px) {
+@media (max-width: 1025px) {
   .navbar {
     display: flex;
     flex-wrap: wrap; 

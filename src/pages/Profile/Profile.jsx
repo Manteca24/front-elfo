@@ -141,23 +141,22 @@ const Profile = () => {
   return (
     <>
       <div className={Styles.profileBody}>
-        <h2>Mi perfil</h2>
-        <div className={Styles.buttons}>
-          <div className={Styles.logOutButton}>
+        <div className={Styles.firstLine}>
+          <div></div>
+          <h2>Mi perfil</h2>
+          <div className={Styles.buttons}>
             <LogoutButton />
-          </div>
-          {user.user.isAdmin ? (
-            <div className={Styles.admin}>
+            {user.user.isAdmin ? (
               <button
                 className="greenButton"
                 onClick={() => navigate("/admin")}
               >
                 Panel de admin
               </button>
-            </div>
-          ) : (
-            <div></div>
-          )}
+            ) : (
+              <div></div>
+            )}
+          </div>
         </div>
 
         <div className={Styles.profileContainer}>
