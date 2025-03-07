@@ -1,8 +1,7 @@
 import React, { useState } from "react";
 import Styles from "./ChooseTags.module.css";
 import "../../styles/buttons.css";
-import "../../styles/buttons.css";
-//AQUI
+
 const ChooseTags = ({
   categories,
   selectedFilters,
@@ -15,6 +14,7 @@ const ChooseTags = ({
   customTag,
   setCustomTag,
   handleAddCustomTag,
+  handleRemoveFilterTag,
 }) => {
   const [openedFilters, setOpenedFilters] = useState({});
 
@@ -27,6 +27,7 @@ const ChooseTags = ({
       openModal(filter);
     }
   };
+
   return (
     <div className={Styles.filtersContainer}>
       <div className={Styles.filtersTitle}>
@@ -60,10 +61,24 @@ const ChooseTags = ({
                   {/* Mostrar solo los filtros seleccionados */}
                   {selectedFilters[filter._id] && (
                     <div className={Styles.lapiz}>
-                      <img src="./edit.png" onClick={() => openModal(filter)} />
+                      <img
+                        src="./edit.png"
+                        onClick={() => openModal(filter)}
+                        alt="Editar"
+                      />
                       <ul>
                         {selectedFilters[filter._id].map((tag) => (
-                          <li key={tag}>{tag}</li>
+                          <li key={tag}>
+                            {tag}
+                            <button
+                              type="button"
+                              onClick={() =>
+                                handleRemoveFilterTag(filter._id, tag)
+                              }
+                            >
+                              &times;
+                            </button>
+                          </li>
                         ))}
                       </ul>
                     </div>
@@ -84,23 +99,29 @@ const ChooseTags = ({
               Especifica un poco más para que podamos encontrar el regalo ideal.
             </p>
             <ul className={Styles.tagList}>
-              {currentFilter.tags.map((tag) => (
-                <li
-                  key={tag}
-                  type="button"
-                  onClick={() => addTagToFilter(tag)}
-                  className={`${Styles.tagButton} ${
-                    selectedFilters[currentFilter._id]?.includes(tag)
-                      ? Styles.selectedTag
-                      : ""
-                  }`}
-                >
-                  {selectedFilters[currentFilter._id]?.includes(tag)
-                    ? "- "
-                    : "+ "}
-                  {tag}
-                </li>
-              ))}
+              {currentFilter.tags.map((tag) => {
+                const isSelected =
+                  selectedFilters[currentFilter._id]?.includes(tag);
+                return (
+                  <li
+                    key={tag}
+                    type="button"
+                    onClick={() => {
+                      if (isSelected) {
+                        handleRemoveFilterTag(currentFilter._id, tag);
+                      } else {
+                        addTagToFilter(tag);
+                      }
+                    }}
+                    className={`${Styles.tagButton} ${
+                      isSelected ? Styles.selectedTag : ""
+                    }`}
+                  >
+                    {isSelected ? "- " : "+ "}
+                    {tag}
+                  </li>
+                );
+              })}
             </ul>
 
             {/* Input para tags personalizados */}

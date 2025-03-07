@@ -89,6 +89,7 @@ const UploadGift = () => {
         ...formData,
         tags: [...formData.tags, e.target.value],
       });
+      console.log(formData.tags);
       e.target.value = "";
     }
   };
@@ -99,25 +100,25 @@ const UploadGift = () => {
     setFormData({ ...formData, [name]: value });
   };
 
-  const handleFilterChange = (categoryId, selectedFilters) => {
-    setFormData((prevState) => {
-      const updatedCategories = [...prevState.categories];
-      const categoryIndex = updatedCategories.findIndex(
-        (cat) => cat.category === categoryId
-      );
+  // const handleFilterChange = (categoryId, selectedFilters) => {
+  //   setFormData((prevState) => {
+  //     const updatedCategories = [...prevState.categories];
+  //     const categoryIndex = updatedCategories.findIndex(
+  //       (cat) => cat.category === categoryId
+  //     );
 
-      if (categoryIndex === -1) {
-        updatedCategories.push({
-          category: categoryId,
-          filters: selectedFilters,
-        });
-      } else {
-        updatedCategories[categoryIndex].filters = selectedFilters;
-      }
+  //     if (categoryIndex === -1) {
+  //       updatedCategories.push({
+  //         category: categoryId,
+  //         filters: selectedFilters,
+  //       });
+  //     } else {
+  //       updatedCategories[categoryIndex].filters = selectedFilters;
+  //     }
 
-      return { ...prevState, categories: updatedCategories };
-    });
-  };
+  //     return { ...prevState, categories: updatedCategories };
+  //   });
+  // };
 
   const compressImage = async (file) => {
     const options = {
@@ -331,15 +332,6 @@ const UploadGift = () => {
     }
   };
 
-  const handleRemoveTag = (filterId, tag) => {
-    setSelectedFilters((prevFilters) => {
-      const updatedFilters = { ...prevFilters };
-      const filterTags = updatedFilters[filterId];
-      updatedFilters[filterId] = filterTags.filter((t) => t !== tag);
-      return updatedFilters;
-    });
-  };
-
   const validateForm = () => {
     setErrors({}); // Reset errors before validation
     const newErrors = {};
@@ -366,6 +358,22 @@ const UploadGift = () => {
 
     setErrors(newErrors);
     return Object.keys(newErrors).length === 0;
+  };
+
+  const handleRemoveTagFromForm = (index) => {
+    const updatedTags = formData.tags.filter((_, i) => i !== index);
+    setFormData({ ...formData, tags: updatedTags });
+  };
+  const handleRemoveFilterTag = (filterId, tag) => {
+    setSelectedFilters((prevFilters) => {
+      const updatedFilters = { ...prevFilters };
+      if (updatedFilters[filterId]) {
+        updatedFilters[filterId] = updatedFilters[filterId].filter(
+          (t) => t !== tag
+        );
+      }
+      return updatedFilters;
+    });
   };
 
   return (
@@ -582,6 +590,7 @@ const UploadGift = () => {
           customTag={customTag}
           setCustomTag={setCustomTag}
           handleAddCustomTag={handleAddCustomTag}
+          handleRemoveFilterTag={handleRemoveFilterTag}
         />
 
         {/* Tags */}
@@ -602,7 +611,7 @@ const UploadGift = () => {
               <button
                 type="button"
                 className="remove-tag-button"
-                onClick={() => handleRemoveTag(index)}
+                onClick={() => handleRemoveTagFromForm(index)}
               >
                 &times;
               </button>
