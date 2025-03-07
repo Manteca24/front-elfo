@@ -11,12 +11,18 @@
     transition: transform 0.3s ease, box-shadow 0.3s ease;
   }
   
-  .userProfile:hover {
+.userProfile:hover {
     transform: translateY(-5px);
     box-shadow: 0 6px 15px rgba(0, 0, 0, 0.3);
+}
+.userData{
+    display: flex;
+    flex-direction: column;
+    gap: 15px;
   }
-  
-  .userProfile h2 {
+
+
+.userProfile h2 {
     font-size: 38px;
     margin-bottom: 10px;
     color: #FACC15; /* Gold for username */
@@ -32,11 +38,7 @@
     margin-bottom: 12px;
   }
   
-  p {
-    font-size: 16px;
-    margin: 6px 0;
-  }
-  
+
   strong {
     color: #CBD5E1; /* Subtle light gray for labels */
   }
@@ -47,24 +49,10 @@
     padding: 6px 12px;
     border-radius: 8px;
     font-weight: bold;
-    font-size: 14px;
+    font-size: 20px;
     margin-top: 5px;
   }
   
-  .status-active {
-    background-color: #22C55E; /* Green */
-    color: #fff;
-  }
-  
-  .status-inactive {
-    background-color: #EAB308; /* Gold */
-    color: #222;
-  }
-  
-  .status-banned {
-    background-color: #DC2626; /* Red */
-    color: #fff;
-  }
   
   /* Admin Badge */
   .admin {
@@ -73,7 +61,7 @@
     padding: 6px 12px;
     border-radius: 6px;
     font-weight: bold;
-    font-size: 14px;
+    font-size: 18px;
     display: inline-block;
     margin-top: 8px;
   }

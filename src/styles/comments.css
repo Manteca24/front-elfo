@@ -1,19 +1,16 @@
 /*sección comentarios*/
 
-  .comment-section {
-    
+  .comments-section {
+
     margin-top: 40px;
     border-top: 2px solid #ccc;
     padding-top: 20px;
   }
-  
-  .comment-list {
-    display: grid;
-    justify-content: center;
-    list-style-type: none;
-    padding: 0;
+
+  .comments-section h2{
+    margin-bottom: 15px;
   }
-  
+
   .comment-item {
     margin-bottom: 20px;
     padding: 15px;

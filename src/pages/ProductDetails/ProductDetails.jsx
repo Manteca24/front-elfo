@@ -76,7 +76,7 @@ const ProductDetails = () => {
   };
 
   const handleDelete = async (commentId) => {
-    if (!window.confirm("Are you sure you want to delete this comment?"))
+    if (!window.confirm("¿Estás seguro que quieres borrar este comentario?"))
       return;
     try {
       await axios.delete(`/comments/${commentId}`, {

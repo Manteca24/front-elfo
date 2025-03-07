@@ -36,41 +36,47 @@ const User = () => {
         alt={`Profile of ${user.username}`}
         className={Styles.profilePic}
       />
-      <p>
-        <strong>Member Since:</strong>{" "}
-        {new Date(user.createdAt).toLocaleDateString()}
-      </p>
-      <p>
-        <strong>Bio:</strong> {user.bio ? `"${user.bio}"` : "Not available"}
-      </p>
-      <p>
-        <strong>Birthday:</strong>{" "}
-        {user.birthday
-          ? new Date(user.birthday).toLocaleDateString()
-          : "Not specified"}
-      </p>
-      <p>
-        <strong>Account Status:</strong>{" "}
-        <span
-          className={
-            user.status === "active"
-              ? Styles.status + " " + Styles.statusActive
+      <div className={Styles.userData}>
+        <p>
+          <strong>Member Since:</strong>{" "}
+          {new Date(user.createdAt).toLocaleDateString()}
+        </p>
+        <p>
+          <strong>Bio:</strong> {user.bio ? `"${user.bio}"` : "Not available"}
+        </p>
+        <p>
+          <strong>Birthday:</strong>{" "}
+          {user.birthday
+            ? new Date(user.birthday).toLocaleDateString()
+            : "Not specified"}
+        </p>
+        <p>
+          <strong>Account Status:</strong>{" "}
+          <span
+            className={
+              user.status === "active"
+                ? Styles.status + " " + Styles.statusActive
+                : user.status === "banned"
+                ? Styles.status + " " + Styles.statusBanned
+                : Styles.status + " " + Styles.statusInactive
+            }
+          >
+            {user.status === "active"
+              ? "🟢 Active"
               : user.status === "banned"
-              ? Styles.status + " " + Styles.statusBanned
-              : Styles.status + " " + Styles.statusInactive
-          }
-        >
-          {user.status === "active"
-            ? "🟢 Active"
-            : user.status === "banned"
-            ? "🔴 Banned"
-            : "🟡 Inactive"}
-        </span>
-      </p>
-      <p>
-        <strong>Role:</strong>{" "}
-        {user.isAdmin ? <span className={Styles.admin}>Admin 🛠️</span> : "User"}
-      </p>
+              ? "🔴 Banned"
+              : "🟡 Inactive"}
+          </span>
+        </p>
+        <p>
+          <strong>Role:</strong>{" "}
+          {user.isAdmin ? (
+            <span className={Styles.admin}>Admin 🛠️</span>
+          ) : (
+            "User"
+          )}
+        </p>
+      </div>
     </div>
   );
 };

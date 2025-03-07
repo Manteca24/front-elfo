@@ -1,49 +1,85 @@
+/* Styling for the body of the product details page */
+.productDetailsBody {
+  padding: 20px;
+  max-width: 900px;
+  margin: 0 auto;
+  background-color: #f9f9f9; /* Soft background color */
+  border-radius: 8px; /* Rounded corners for the page */
+}
 
-  .productDetailsBody {
-    padding: 20px;
-    max-width: 900px;
-    margin: 0 auto;
-  }
-  
-  .productDetails{
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    gap: 10px;
-  }
-  .productDetails p{
-    font-size: 20px;
-    font-weight: bold;
-  }
-  
-  .productImage {
-display: flex;
-justify-content: center;
-  }
+/* Styling for the product image container */
+.productImage {
+  display: flex;
+  justify-content: center;
+  margin: 20px 0;
+}
 
-  p span{
-    color: rgb(22, 123, 29);
-  }
+.productImage img {
+  width: 100%;
+  max-width: 300px;
+  border-radius: 8px; /* More rounded corners for the image */
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1); /* Soft shadow around the image */
+}
 
-  .productImage img{
-    width: 100%;
-    max-width: 500px;
-    border-radius: 5%;
-    margin: 20px 0;
-  }
+/* Styling for the product details section */
+.productDetails {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 15px;
+}
 
-  
-  .urlToProduct{
-    font-size: 20px;
-    color: black;
-  }
-  
-  .urlToProduct span{
-    font-weight: bold;
-    color: rgb(22, 123, 29);
-  }
+.productDetails p {
+  font-size: 18px;
+  line-height: 1.6;
+}
 
-  .tags{
-    display: flex;
-    gap: 5px;
-  }
+.productDetails h4 {
+  font-size: 20px;
+  margin-top: 10px;
+  font-weight: bold;
+}
+
+.productDetails a {
+  color: goldenrod; /* Color for links */
+  text-decoration: none;
+}
+
+.productDetails a:hover {
+  text-decoration: underline;
+}
+
+/* Tag section */
+.tags {
+  display: flex;
+  gap: 10px;
+  flex-wrap: wrap;
+  margin-top: 15px;
+}
+
+.tags p {
+  background-color: #e0e0e0;
+  padding: 5px 10px;
+  border-radius: 20px;
+  font-size: 14px;
+  color: #4caf50;
+  margin: 5px;
+}
+
+/* URL link styling */
+.urlToProduct {
+  font-size: 18px;
+  color: goldenrod;
+  margin-top: 20px;
+  display: inline-block;
+  text-decoration: none;
+}
+
+.urlToProduct span {
+  font-weight: bold;
+  color: goldenrod;
+}
+
+.urlToProduct:hover {
+  text-decoration: underline;
+}
