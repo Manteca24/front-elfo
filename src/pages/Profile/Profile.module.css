@@ -462,6 +462,9 @@ justify-content: center;  }
 
 /*SECCIÓN MIS PERSONAS --------------------------------------------*/
 
+.loadingMessage{
+  margin-left: 20px;
+}
 
 .noPerson{
   text-align: left;

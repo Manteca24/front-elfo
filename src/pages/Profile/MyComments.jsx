@@ -37,7 +37,7 @@ const MyComments = () => {
   }, [user]);
 
   const handleDelete = async (commentId) => {
-    if (!window.confirm("Are you sure you want to delete this comment?"))
+    if (!window.confirm("¿Estás seguro de que quieres borrar este comentario?"))
       return;
     try {
       await axios.delete(`/comments/${commentId}`, {
@@ -94,13 +94,12 @@ const MyComments = () => {
       </Link>
 
       {loading ? (
-        <p>Cargando comentarios...</p>
+        <p className={Styles.loadingMessage}>Cargando comentarios...</p>
       ) : comments.length > 0 ? (
         <ul className="comment-list">
           {comments.slice(0, commentsToShow).map((comment) => (
             <li className="comment-item" key={comment._id}>
               <div className="comment-header">
-                {/* Display the profile picture and username of the comment author */}
                 <Link to={`/user/${user.user._id}`}>
                   <img
                     src={user.user.profilePicture || "./elfoProfile.png"}
@@ -123,7 +122,6 @@ const MyComments = () => {
                 </div>
               </div>
 
-              {/* Display the product the comment was made for */}
               <p className={Styles.fromProduct}>
                 En:{" "}
                 <span>
@@ -133,7 +131,6 @@ const MyComments = () => {
                 </span>
               </p>
 
-              {/* Editing Mode */}
               {editingCommentId === comment._id ? (
                 <div className="editingComment">
                   <textarea
@@ -153,12 +150,14 @@ const MyComments = () => {
                 <p className="comment-text">{comment.comment}</p>
               )}
 
-              {/* Display the "Edit" and "Delete" buttons */}
-              {user &&
-                (user.user._id === comment.userId._id || user.user.isAdmin) && (
+              {user?.user &&
+                comment.userId &&
+                (user.user._id === comment.userId._id ||
+                  user.user._id === comment.userId ||
+                  user.user.isAdmin) && (
                   <div className="comment-actions">
-                    {/* Show Edit button if the comment is owned by the logged-in user */}
-                    {comment.userId === user.user._id && (
+                    {user.user._id ===
+                      (comment.userId._id || comment.userId) && (
                       <button
                         onClick={() => {
                           setEditingCommentId(comment._id);
@@ -169,9 +168,9 @@ const MyComments = () => {
                       </button>
                     )}
 
-                    {/* Show Delete button for admins or if the comment is owned by the logged-in user */}
                     {(user.user.isAdmin ||
-                      comment.userId._id === user.user._id) && (
+                      user.user._id ===
+                        (comment.userId._id || comment.userId)) && (
                       <button
                         className="delete-btn"
                         onClick={() => handleDelete(comment._id)}

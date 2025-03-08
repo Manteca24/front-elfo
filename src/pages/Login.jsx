@@ -43,6 +43,7 @@ const LogIn = () => {
     } catch (err) {
       console.error("Error al iniciar sesión:", err);
       setError("Error al iniciar sesión. Revisa tus credenciales.");
+      setLoading(false);
     }
   };
 

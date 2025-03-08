@@ -18,6 +18,7 @@ const MyPeople = () => {
 
   useEffect(() => {
     const fetchSavedPeople = async () => {
+      setLoading(true); // ✅ Set loading to true before fetching data
       try {
         const response = await axios.get(`/users/saved-people/`, {
           headers: {
@@ -27,8 +28,11 @@ const MyPeople = () => {
         setSavedPeople(response.data);
       } catch (err) {
         console.error("Error fetching saved people:", err);
+      } finally {
+        setLoading(false);
       }
     };
+
     if (user) {
       fetchSavedPeople();
     }
@@ -195,12 +199,11 @@ const MyPeople = () => {
   };
 
   const handleDeletePerson = async (personId) => {
-    // Show a confirmation dialog
     const isConfirmed = window.confirm(
       "¿Estás seguro de que quieres eliminar a esta persona para siempre?"
     );
     if (!isConfirmed) {
-      return; // If the user cancels, do nothing
+      return;
     }
 
     try {
@@ -222,10 +225,6 @@ const MyPeople = () => {
     }
   };
 
-  if (loading) {
-    return <Spinner />;
-  }
-
   return (
     <div className={Styles.peopleContainer}>
       <h2>Mis personas</h2>
@@ -236,7 +235,9 @@ const MyPeople = () => {
         <h5>Volver al perfil</h5>
       </Link>
       {/* Mostrar las personas guardadas */}
-      {savedPeople.length != 0 ? (
+      {loading ? (
+        <p className={Styles.loadingMessage}>Cargando personas...</p>
+      ) : savedPeople.length !== 0 ? (
         <div className={Styles.savedPeopleContainer}>
           {/* {console.log("savedPeople", savedPeople)} */}
           {savedPeople.map((person) => (

@@ -12,6 +12,47 @@
     min-width: 120px; 
     flex-grow: 1; 
   }
+
+  .listOfFilters {
+    list-style: none;
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px;
+    padding: 0;
+    padding: 10px;
+  }
+  
+  .listOfFilters li {
+    background-color: #f4f4f4;
+    color: #333;
+    padding: 6px 12px;
+    border-radius: 20px;
+    font-size: 14px;
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    box-shadow: 2px 2px 6px rgba(0, 0, 0, 0.1);
+    transition: all 0.2s ease-in-out;
+  }
+  
+  .listOfFilters li:hover {
+    background-color: #e0e0e0;
+  }
+  
+  .deleteFilter {
+    color: red;
+    font-size: 18px;
+    font-weight: bold;
+    border: none;
+    background: none;
+    cursor: pointer;
+    transition: transform 0.2s ease;
+  }
+  
+  .deleteFilter:hover {
+    transform: scale(1.2);
+  }
+  
 .categoryName{
     width: 100%;
 }
@@ -26,6 +67,10 @@
     border-radius: 4px;
     padding: 5px;
     transition: background-color 0.3s, color 0.3s;
+  }
+
+  .selected:hover{
+    color:red;
   }
 
   .selectedTag {
@@ -48,19 +93,38 @@
     flex-wrap: wrap;
     justify-content: flex-start;  
   gap: 10px;  
+  position:relative;
   }
   
   .lapiz img{
     cursor: pointer;
     width: 16px;
-  }
+}
 
-  .lapiz ul{
+  /* .lapiz ul{
     border: 1px dashed black;
     padding: px;
+  } */ /*línea de puntos (al final la he quitado)*/
+
+  .lapiz .tooltip {
+    visibility: hidden;
+    width: 120px;
+    background-color: #555;
+    color: #fff;
+    text-align: center;
+    border-radius: 6px;
+    padding: 5px 0;
+    position: absolute;
+    z-index: 1;
+    opacity: 0;
+    transition: opacity 0.3s;
   }
-
-
+  
+  .lapiz:hover .tooltip {
+    visibility: visible;
+    opacity: 1;
+  }
+  
   .modalContent {
     background-color: white;
     padding: 20px;

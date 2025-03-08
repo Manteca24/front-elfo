@@ -60,18 +60,22 @@ const ChooseTags = ({
                   </div>
                   {/* Mostrar solo los filtros seleccionados */}
                   {selectedFilters[filter._id] && (
-                    <div className={Styles.lapiz}>
-                      <img
-                        src="./edit.png"
-                        onClick={() => openModal(filter)}
-                        alt="Editar"
-                      />
-                      <ul>
+                    <>
+                      <div className={Styles.lapiz}>
+                        <img
+                          src="./edit.png"
+                          onClick={() => openModal(filter)}
+                          alt="Editar"
+                        />
+                        <div className={Styles.tooltip}>Editar filtro</div>
+                      </div>
+                      <ul className={Styles.listOfFilters}>
                         {selectedFilters[filter._id].map((tag) => (
                           <li key={tag}>
                             {tag}
                             <button
                               type="button"
+                              className={Styles.deleteFilter}
                               onClick={() =>
                                 handleRemoveFilterTag(filter._id, tag)
                               }
@@ -81,7 +85,7 @@ const ChooseTags = ({
                           </li>
                         ))}
                       </ul>
-                    </div>
+                    </>
                   )}
                 </div>
               </div>

@@ -40,7 +40,6 @@ const Home = ({ data, error }) => {
           <Link to="/register" className="specialButton">
             Quiero convertirme en Elfo
           </Link>
-          {/*+botones?botón más grande con otro estilo? pendiente diseño*/}
         </div>
       </div>
       <SearchByFilters />
