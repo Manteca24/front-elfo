@@ -11,6 +11,12 @@
     margin-bottom: 15px;
   }
 
+  .comment-list {
+    display: grid;
+    justify-content: center;
+    list-style-type: none;
+    padding: 0;}
+
   .comment-item {
     margin-bottom: 20px;
     padding: 15px;
@@ -76,6 +82,27 @@
     font-size: 14px;
     line-height: 1.5;
   }
+
+  .logInToComment {
+    font-size: 1rem;
+    color: #333; /* Adjust text color as needed */
+    text-align: center;
+    margin-top: 1rem;
+  }
+  
+  .logInToComment span {
+    font-weight: bold;
+    color: #b6221d; /* Your theme color */
+    cursor: pointer;
+    transition: color 0.3s ease-in-out;
+  }
+  
+  .logInToComment span:hover {
+    color: #69a06f; /* Hover color */
+    text-decoration: underline;
+  }
+  
+
   
   .submit-button {
     align-self: flex-start;
@@ -105,5 +132,106 @@
   .isAdmin {
     color:#4CAF50;
     font-size: 12px;
+  }
+  
+  .comment-actions {
+    display: flex;
+    gap: 0.5rem;
+    align-items: center;
+    justify-content: flex-end;
+    margin-top: 0.3rem;
+  }
+  
+  .comment-actions button {
+    background: none;
+    border: none;
+    cursor: pointer;
+    padding: 0.2rem;
+    transition: opacity 0.3s ease-in-out, transform 0.2s ease-in-out;
+    opacity: 0.6;
+  }
+  
+  .comment-actions button:hover {
+    opacity: 1;
+    transform: scale(1.1);
+  }
+  
+  .comment-actions button img {
+    width: 18px;
+    height: 18px;
+  }
+  
+  /* Positioning for delete (X) */
+  .comment-actions .delete-btn {
+    color: #b6221d; 
+    font-size: 18px;
+    font-weight: bold;
+  }
+  
+  .comment-actions .delete-btn:hover {
+    color: #ff3b3b;
+  }
+  
+  .editingComment {
+    display: flex;
+    flex-direction: column;
+    gap: 0.5rem;
+    margin-top: 0.5rem;
+    padding: 0.8rem;
+    background-color: #f9f9f9;
+    border-radius: 8px;
+    border: 1px solid #ddd;
+  }
+  
+  .editingComment textarea {
+    width: 100%;
+    min-height: 80px;
+    padding: 0.5rem;
+    font-size: 1rem;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    resize: vertical;
+    outline: none;
+    transition: border 0.2s ease-in-out;
+  }
+  
+  .editingComment textarea:focus {
+    border: 1px solid #69a06f;
+  }
+  
+  .saveChangesButtons {
+    display: flex;
+    gap: 0.5rem;
+    justify-content: flex-start;
+  }
+  
+  .saveChangesButtons button {
+    padding: 0.5rem;
+    font-size: 0.9rem;
+    font-weight: bold;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    transition: background 0.3s ease-in-out, transform 0.2s ease-in-out;
+    text-align: center;
+  }
+  
+  .saveChangesButtons button:first-of-type {
+    background-color: #69a06f; 
+    color: white;
+  }
+  
+  .saveChangesButtons button:first-of-type:hover {
+    background-color: #4caf50;
+    transform: scale(1.05);
+  }
+  
+  .saveChangesButtons button:last-of-type {
+    background-color: #ccc;
+    color: #333;
+  }
+  
+  .saveChangesButtons button:last-of-type:hover {
+    background-color: #999;
   }
   

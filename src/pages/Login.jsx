@@ -2,7 +2,7 @@ import { useState, useContext } from "react";
 import { auth } from "../config/firebase";
 import { signInWithEmailAndPassword } from "firebase/auth";
 import axios from "../utils/axiosConfig";
-import { useLocation, useNavigate } from "react-router-dom";
+import { useLocation, useNavigate, Link } from "react-router-dom";
 import { UserContext } from "../contexts/UserContext";
 import "../App.css";
 
@@ -13,6 +13,7 @@ const LogIn = () => {
   const [loading, setLoading] = useState(false);
   const navigate = useNavigate();
   const { setUser } = useContext(UserContext);
+  const location = useLocation();
   const from = location.state?.from?.pathname || "/dashboard";
 
   const handleLogin = async (e) => {
@@ -40,27 +41,10 @@ const LogIn = () => {
 
       navigate(from, { replace: true });
     } catch (err) {
-      console.error("Error al iniciar sesión:", error);
+      console.error("Error al iniciar sesión:", err);
       setError("Error al iniciar sesión. Revisa tus credenciales.");
     }
   };
-
-  // // Obtener el TOKEN
-  // const getToken = async () => {
-  //   try {
-  //     const user = auth.currentUser; // Usuario autenticado
-  //     if (user) {
-  //       const token = await user.getIdToken(); // Obtener el token de acceso
-  //       console.log('Token:', token); // Copia este token
-  //     } else {
-  //       console.error('No hay usuario autenticado');
-  //     }
-  //   } catch (error) {
-  //     console.error('Error al obtener el token:', error);
-  //   }
-  // };
-
-  // getToken();
 
   return (
     <div className="login-container">
@@ -102,6 +86,12 @@ const LogIn = () => {
             {loading ? "Iniciando sesión..." : "Inicia sesión"}
           </button>
         </form>
+        <p className="register-prompt">
+          ¿Aún no tienes cuenta?{" "}
+          <Link to="/register" className="register-link">
+            Regístrate para convertirte en Elfo y empezar a regalar.
+          </Link>
+        </p>
       </div>
     </div>
   );

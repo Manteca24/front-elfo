@@ -14,7 +14,7 @@ const MyComments = () => {
   const [comments, setComments] = useState([]);
   const [commentsToShow, setCommentsToShow] = useState(5);
   const [loading, setLoading] = useState(true);
-  const [editingComment, setEditingComment] = useState(null);
+  const [editingCommentId, setEditingCommentId] = useState(null);
   const [newCommentText, setNewCommentText] = useState("");
 
   useEffect(() => {
@@ -76,7 +76,8 @@ const MyComments = () => {
         )
       );
 
-      setEditingComment(null);
+      setEditingCommentId(null);
+      setNewCommentText("");
     } catch (error) {
       console.error("Error updating comment:", error);
     }
@@ -99,10 +100,10 @@ const MyComments = () => {
           {comments.slice(0, commentsToShow).map((comment) => (
             <li className="comment-item" key={comment._id}>
               <div className="comment-header">
-                {/* Bring profile picture and username from the context */}
+                {/* Display the profile picture and username of the comment author */}
                 <Link to={`/user/${user.user._id}`}>
                   <img
-                    src={user.user.profilePicture}
+                    src={user.user.profilePicture || "./elfoProfile.png"}
                     alt="foto de perfil"
                     className="profile-pic"
                   />
@@ -122,61 +123,64 @@ const MyComments = () => {
                 </div>
               </div>
 
-              <div className={Styles.commentContent}>
-                {editingComment === comment._id ? (
-                  <>
-                    <textarea
-                      value={newCommentText}
-                      onChange={(e) => setNewCommentText(e.target.value)}
-                    />
-                    <button onClick={() => handleEdit(comment._id)}>
-                      Save
-                    </button>
-                    <button onClick={() => setEditingComment(null)}>
-                      Cancel
-                    </button>
-                  </>
-                ) : (
-                  <>
-                    <p className={Styles.commentText}>
-                      {comment.comment}{" "}
-                      {comment.comment.includes("(editado)")
-                        ? ""
-                        : comment.edited
-                        ? "(editado)"
-                        : ""}
-                    </p>
-                    <p className={Styles.fromProduct}>
-                      En:{" "}
-                      <span>
-                        <Link to={`/product/${comment.productId._id}`}>
-                          {comment.productId.name}
-                        </Link>
-                      </span>
-                    </p>
-                  </>
-                )}
-              </div>
+              {/* Display the product the comment was made for */}
+              <p className={Styles.fromProduct}>
+                En:{" "}
+                <span>
+                  <Link to={`/product/${comment.productId._id}`}>
+                    {comment.productId.name}
+                  </Link>
+                </span>
+              </p>
 
-              {(comment.userId === user.user._id || user.user.isAdmin) && (
-                <div className={Styles.commentActions}>
-                  {comment.userId === user.user._id && (
-                    <button
-                      onClick={() => {
-                        setEditingComment(comment._id);
-                        setNewCommentText(comment.comment);
-                      }}
-                    >
-                      Edit
+              {/* Editing Mode */}
+              {editingCommentId === comment._id ? (
+                <div className="editingComment">
+                  <textarea
+                    value={newCommentText}
+                    onChange={(e) => setNewCommentText(e.target.value)}
+                  />
+                  <div className="saveChangesButtons">
+                    <button onClick={() => handleEdit(comment._id)}>
+                      Guardar
                     </button>
-                  )}
-                  {(user.user.isAdmin || comment.userId === user.user._id) && (
-                    <button onClick={() => handleDelete(comment._id)}>
-                      Delete
+                    <button onClick={() => setEditingCommentId(null)}>
+                      Descartar cambios
                     </button>
-                  )}
+                  </div>
                 </div>
+              ) : (
+                <p className="comment-text">{comment.comment}</p>
               )}
+
+              {/* Display the "Edit" and "Delete" buttons */}
+              {user &&
+                (user.user._id === comment.userId._id || user.user.isAdmin) && (
+                  <div className="comment-actions">
+                    {/* Show Edit button if the comment is owned by the logged-in user */}
+                    {comment.userId === user.user._id && (
+                      <button
+                        onClick={() => {
+                          setEditingCommentId(comment._id);
+                          setNewCommentText(comment.comment);
+                        }}
+                      >
+                        <img src="/editpencil.png" alt="Edit" />
+                      </button>
+                    )}
+
+                    {/* Show Delete button for admins or if the comment is owned by the logged-in user */}
+                    {(user.user.isAdmin ||
+                      comment.userId._id === user.user._id) && (
+                      <button
+                        className="delete-btn"
+                        onClick={() => handleDelete(comment._id)}
+                      >
+                        ✖
+                      </button>
+                    )}
+                  </div>
+                )}
             </li>
           ))}
         </ul>

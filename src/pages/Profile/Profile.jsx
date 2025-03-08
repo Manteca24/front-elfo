@@ -28,7 +28,7 @@ const Profile = () => {
     profilePicture: null,
   });
   const [previewImage, setPreviewImage] = useState(
-    user.user.profilePicture || ""
+    user.user.profilePicture || "./elfoProfile.png"
   );
   const [error, setError] = useState("");
   const [loading, setLoading] = useState(false);

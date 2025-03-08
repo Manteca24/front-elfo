@@ -124,47 +124,61 @@ const ProductDetails = () => {
 
   return (
     <div className={Styles.productDetailsBody}>
-      <h2>{product.name}</h2>
-      <div className={Styles.productImage}>
-        <img src={product.image} alt={product.name} />
+      <div className={Styles.productContainer}>
+        {/* Imagen del producto */}
+        <div className={Styles.productImage}>
+          <img src={product.image} alt={product.name} />
+        </div>
+
+        {/* Detalles del producto */}
+        <section className={Styles.productDetails}>
+          <h2>{product.name}</h2>
+          <p>
+            Elfo{" "}
+            <Link to={`/user/${creator._id}`}>
+              <span>@{creator.username}</span>
+            </Link>{" "}
+            le regaló {product.name} a su <span>{product.relation}</span>
+          </p>
+
+          <h4>{creator.username} nos cuenta...</h4>
+          <blockquote>"{product.description}"</blockquote>
+
+          <div className={Styles.productInfo}>
+            <p>
+              <strong>💰 Precio: </strong> {product.price}€
+            </p>
+            <p>
+              <strong>🎂 Edad recomendada: </strong> {product.ageRange}
+            </p>
+            <p>
+              <strong>🧑‍🤝‍🧑 Género: </strong> {product.gender}
+            </p>
+            <p>
+              <strong>🛍 Lugar de compra: </strong>
+              {product.purchaseLocation.ubication === "diy"
+                ? " ¡Lo hizo con sus propias manos!"
+                : `${product.purchaseLocation.ubication} - ${product.purchaseLocation.storeName}`}
+            </p>
+          </div>
+
+          {product.purchaseLocation.url && (
+            <Link
+              className={Styles.urlToProduct}
+              to={product.purchaseLocation.url}
+            >
+              Ver producto aquí
+            </Link>
+          )}
+
+          {/* Tags */}
+          <div className={Styles.tags}>
+            {product.tags.map((tag, index) => (
+              <span key={index}>#{tag}</span>
+            ))}
+          </div>
+        </section>
       </div>
-      <section className={Styles.productDetails}>
-        <p>
-          Elfo{" "}
-          <Link to={`/user/${creator._id}`}>
-            <span>@{creator.username}</span>
-          </Link>{" "}
-          le regaló {product.name} a su <span>{product.relation}</span>
-        </p>
-        <h4>{creator.username} nos cuenta...</h4>
-        <p>"{product.description}"</p>
-        <h4>Precio: </h4>
-        <p>{product.price}€</p>
-        <h4>Edad de la persona a la que se lo regaló: </h4>
-        <p>{product.ageRange}</p>
-        <h4>Género de la persona a la que se lo regaló: </h4>
-        <p>{product.gender}</p>
-        <h4>Lugar donde lo compró: </h4>
-        <p>
-          {product.purchaseLocation.ubication === "diy"
-            ? "¡Lo hizo con sus propias manos!"
-            : product.purchaseLocation.ubication}{" "}
-          - {product.purchaseLocation.storeName}
-        </p>
-        {product.purchaseLocation.url && (
-          <Link
-            className={Styles.urlToProduct}
-            to={product.purchaseLocation.url}
-          >
-            Producto disponible en <span>este</span> enlace.
-          </Link>
-        )}
-        <p className={Styles.tags}>
-          {product.tags.map((tag, index) => (
-            <p key={index}>#{tag}</p>
-          ))}
-        </p>
-      </section>
 
       <section className="comments-section">
         <h2>Comentarios</h2>
@@ -194,12 +208,17 @@ const ProductDetails = () => {
               rows="4"
               className="comment-input"
             ></textarea>
-            <button type="submit" className="submit-button">
+            <button type="submit" className="greenButton">
               Añadir comentario
             </button>
           </form>
         ) : (
-          <p>Inicia sesión para dejar un comentario.</p>
+          <p className="logInToComment">
+            <Link to="/logIn">
+              <span>Inicia sesión</span>
+            </Link>{" "}
+            para dejar un comentario.
+          </p>
         )}
       </section>
     </div>

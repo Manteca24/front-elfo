@@ -4,8 +4,12 @@
 }
 
 a {
+  all: unset; 
   text-decoration: none;
+  color: inherit;
+  cursor: pointer; 
 }
+
 
 a:hover {
   text-decoration: none;
@@ -238,6 +242,26 @@ font-weight: bold;
   color: red;
   font-size: 0.9rem;
 }
+
+.register-prompt {
+  margin-top: 1rem;
+  font-size: 1rem;
+  text-align: center;
+  color: #333; 
+}
+
+.register-link {
+  color: #b6221d; 
+  font-weight: bold;
+  text-decoration: none;
+  transition: color 0.3s ease-in-out;
+}
+
+.register-link:hover {
+  color: #69a06f; 
+  text-decoration: underline;
+}
+
 
 /********************************formulario uploadgift*/
 .upload-gift-container {

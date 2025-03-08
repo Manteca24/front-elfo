@@ -1,46 +1,60 @@
 .userProfile {
-    max-width: 450px;
-    margin: 40px auto;
-    padding: 24px;
-    font-size: 20px;
-    background: linear-gradient(135deg, #1E293B, #354458); /* Dark navy gradient */
-    color: #F1F5F9; /* Light gray text */
-    border-radius: 12px;
-    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
-    text-align: center;
-    transition: transform 0.3s ease, box-shadow 0.3s ease;
-  }
-  
-.userProfile:hover {
-    transform: translateY(-5px);
-    box-shadow: 0 6px 15px rgba(0, 0, 0, 0.3);
-}
-.userData{
-    display: flex;
-    flex-direction: column;
-    gap: 15px;
-  }
+  max-width: 450px;
+  margin: 40px auto;
+  padding: 24px;
+  font-size: 20px;
+  background-color: #f8f7f6; 
+  color: #333; 
+  font-weight: bold;
+  border-radius: 12px;
+  text-align: center;
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+  box-shadow: 0 6px 15px rgba(0, 0, 0, 0.35);
 
+}
+
+/* .userProfile:hover {
+  transform: translateY(-5px);
+  box-shadow: 0 6px 15px rgba(0, 0, 0, 0.7);
+
+} */
+
+.userData {
+  display: flex;
+  flex-direction: column;
+  gap: 15px;
+}
 
 .userProfile h2 {
-    font-size: 38px;
-    margin-bottom: 10px;
-    color: #FACC15; /* Gold for username */
-    font-weight: bold;
-  }
-  
+  font-size: 38px;
+  margin-bottom: 10px;
+}
+
+.userProfile::after {
+  content: "";
+  display: block;
+  width: 60%;
+  height: 4px;
+  margin: 10px auto 0;
+  background: #ba1220; 
+  border-radius: 2px;
+}
+
+
+
   .profilePic {
-    width: 140px;
-    height: 140px;
+    width: 180px;
+    height: 180px;
     border-radius: 50%;
     object-fit: cover;
-    border: 3px solid #94A3B8; /* Neutral gray-blue */
+    border: 3px solid #94A3B8; 
     margin-bottom: 12px;
   }
   
 
   strong {
-    color: #CBD5E1; /* Subtle light gray for labels */
+    font-weight: bold;
+    color: #6f747a; 
   }
   
   /* Status Badge */
@@ -56,7 +70,7 @@
   
   /* Admin Badge */
   .admin {
-    background: linear-gradient(135deg, #475569, #64748B); /* Subtle steel-blue gradient */
+    background: linear-gradient(135deg, #475569, #64748B); 
     color: white;
     padding: 6px 12px;
     border-radius: 6px;

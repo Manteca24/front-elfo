@@ -32,26 +32,26 @@ const User = () => {
     <div className={Styles.userProfile}>
       <h2>{user.username}</h2>
       <img
-        src={user.profilePicture || "/default-profile.png"}
+        src={user.profilePicture || "/elfoProfile.png"}
         alt={`Profile of ${user.username}`}
         className={Styles.profilePic}
       />
       <div className={Styles.userData}>
         <p>
-          <strong>Member Since:</strong>{" "}
+          <strong>Miembro desde:</strong>{" "}
           {new Date(user.createdAt).toLocaleDateString()}
         </p>
         <p>
           <strong>Bio:</strong> {user.bio ? `"${user.bio}"` : "Not available"}
         </p>
         <p>
-          <strong>Birthday:</strong>{" "}
+          <strong>Fecha de nacimiento:</strong>{" "}
           {user.birthday
             ? new Date(user.birthday).toLocaleDateString()
             : "Not specified"}
         </p>
         <p>
-          <strong>Account Status:</strong>{" "}
+          <strong>Estado del usuario:</strong>{" "}
           <span
             className={
               user.status === "active"
@@ -69,11 +69,11 @@ const User = () => {
           </span>
         </p>
         <p>
-          <strong>Role:</strong>{" "}
+          <strong>Rol:</strong>{" "}
           {user.isAdmin ? (
             <span className={Styles.admin}>Admin 🛠️</span>
           ) : (
-            "User"
+            "Elfo"
           )}
         </p>
       </div>

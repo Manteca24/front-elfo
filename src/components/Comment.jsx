@@ -21,7 +21,7 @@ const Comment = ({ comment, handleDelete, handleEdit }) => {
       <div className="comment-header">
         <Link to={`/user/${comment.userId._id}`}>
           <img
-            src={comment.userId.profilePicture}
+            src={comment.userId.profilePicture || "/elfoProfile.png"}
             alt="Profile"
             className="profile-pic"
           />
@@ -42,14 +42,18 @@ const Comment = ({ comment, handleDelete, handleEdit }) => {
       </div>
 
       {editingComment ? (
-        <>
+        <div className="editingComment">
           <textarea
             value={newCommentText}
             onChange={(e) => setNewCommentText(e.target.value)}
           />
-          <button onClick={handleSave}>Save</button>
-          <button onClick={() => setEditingComment(false)}>Cancel</button>
-        </>
+          <div className="saveChangesButtons">
+            <button onClick={handleSave}>Guardar</button>
+            <button onClick={() => setEditingComment(false)}>
+              Descartar cambios
+            </button>
+          </div>
+        </div>
       ) : (
         <>
           <p className="comment-text">{comment.comment}</p>
@@ -64,15 +68,18 @@ const Comment = ({ comment, handleDelete, handleEdit }) => {
                       setNewCommentText(comment.comment);
                     }}
                   >
-                    Edit
+                    <img src="/editpencil.png" alt="Edit" />
                   </button>
                 )}
 
                 {/* Show Delete button for admins or if the comment is owned by the logged-in user */}
                 {(user.user.isAdmin ||
                   comment.userId._id === user.user._id) && (
-                  <button onClick={() => handleDelete(comment._id)}>
-                    Delete
+                  <button
+                    className="delete-btn"
+                    onClick={() => handleDelete(comment._id)}
+                  >
+                    ✖
                   </button>
                 )}
               </div>
