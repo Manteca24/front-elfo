@@ -128,7 +128,8 @@ const ProductCard = () => {
             <div className={styles.cardContent}>
               <h2 className={styles.productTitle}>{product.name}</h2>
               <div className={styles.priceBubble}>
-                <p>{product.price} €</p>
+                <p>{product.price}&nbsp;€</p>
+                {/*The non-breaking space (&nbsp;) ensures that the number and the € symbol are treated as a single unit and will not break onto separate lines. */}
               </div>
             </div>
           </Link>
